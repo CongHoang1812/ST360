@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d code xong, build OK, 23 test đạt, CHƯA chạy thử trên máy** (xem dưới) |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d code xong, đã kiểm một phần trên máy** (xem dưới) |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -122,7 +122,12 @@ chưa chơi, nút dừng bỏ ván):
 - `FaceOverlayView`: vẽ bằng BitmapShader + drawRoundRect; `cornerRatio` 0 cho ảnh chờ "?", 0,12 cho ảnh của filter.
 - Chưa có: đồng hồ 00:00:10 trên đầu màn (5d), quay video thật (5d), thời lượng 15/30/60s (5d, hiện chỉ chọn được).
 
-Giai đoạn 5d đã có (đã cài lên Xiaomi nhưng CHƯA kiểm gì trên máy):
+Giai đoạn 5d đã có. Đã kiểm trên Xiaomi (15/11/2026, camera trước): overlay vẽ cột hạng đúng chỗ, chữ số không bị ngược;
+quay → chốt đủ 12 ô → tự dừng, lưu `Movies/RankingFilter/RankingFilter_<ngày>_<giờ>.mp4` → sang Preview với `video_uri`;
+đồng hồ chạy; lúc quay ô đã chốt hiện ảnh nhỏ + số bên trái, ô trống viền trắng. CHƯA kiểm: mở video xem overlay có trong
+video không, có tiếng không, tự dừng 15s, làm lại, lỗi. Video thử đầu tiên: 576x1280, 38s, 15MB (xem ghi chú độ phân giải).
+Ghi chú độ phân giải: video ra 576x1280 dù xin FHD. Nghi do stream sharing (Preview + VideoCapture chung một luồng qua
+OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (ViewPort). Chưa điều tra.
 - `ui/camera/overlay/`: `CameraOverlay` (OverlayEffect nhắm PREVIEW|VIDEO_CAPTURE, luồng vẽ riêng), `OverlayRenderer`
   (vẽ cột hạng + ảnh trên đầu bằng Canvas), `OverlayScene` (bất biến, luồng chính tạo, luồng vẽ đọc).
   Vẽ bằng tọa độ PreviewView: canvas.setMatrix(frame.sensorToBufferTransform) rồi concat(nghịch đảo của
