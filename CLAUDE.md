@@ -16,9 +16,9 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 |---|---|---|
 | 0 | Khởi tạo project, dependency, Navigation | Xong (build OK, chưa thử trên máy thật) |
 | 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
-| 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16); prompt 2b (API Trending thật) code xong, build OK, chưa kiểm trên máy |
-| 3 | Choose a Filter + New filter | **Code xong, build OK, chưa kiểm trên máy** |
-| 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Code xong, build OK, chưa kiểm trên máy** |
+| 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
+| 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
+| 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
 | 5 | Camera (5a → 5d) | Chưa |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
@@ -59,7 +59,8 @@ newFilter, ChooseFilterViewModel, FilterAdapter, FilterCardItem), `data/Selected
 `app/src/main/assets/` hiện là DỮ LIỆU THỬ (8 filter, thư mục `filters/test`), thay bằng output của
 `export_figma_topics.py` rồi mới kiểm mục "Discover hiện đủ 30 filter".
 
-Giai đoạn 4 đã có (chưa kiểm trên máy):
+Giai đoạn 4 đã có (đã kiểm trên máy: tạo 12 ảnh → Save, còn sau khi tắt app, Edit đổi tên, 11 ảnh → Save xám,
+Leave bỏ thay đổi, Delete xóa cả thư mục ảnh; CHƯA thử Take a Photo, Choose Photos cho ảnh bìa, xoay màn hình):
 - 4a `data/userfilter/`: `UserFilter` + `UserFilterPhoto` (1-n, CASCADE), `UserFilterDao` (`save()` thay toàn bộ ảnh
   trong một transaction), `AppDatabase` (`ranking_filter.db`, schema xuất ở `app/schemas/`), `UserFilterRepository`
   copy ảnh vào `filesDir/user_filters/<id>/` và xóa file thừa khi sửa. Tab My Filters đọc từ Room.
@@ -74,14 +75,22 @@ Giai đoạn 4 đã có (chưa kiểm trên máy):
 - Chưa làm màn Successful (57:137) của Make a Filter: prompt 4b chỉ yêu cầu về My Filters.
 
 Việc còn treo:
-- Kiểm prompt 2b trên máy: Home hiện 30 ô theo thứ tự folders.json; ô 5 (Who’s), 9 (I Wish I Had…), 12 (McDonald’s menu)
-  có ảnh và phát được video; Try now ở Sleep Positions mở đúng filter (cần dữ liệu 30 filter thật để khớp filter_id).
-- Kiểm 4 mục "Xong khi" của giai đoạn 3 và 4 mục của giai đoạn 4 trên máy, rồi sang giai đoạn 5.
-- Điện thoại Xiaomi đang có bản app ký bằng khóa debug của máy khác → `installDebug` báo
-  INSTALL_FAILED_UPDATE_INCOMPATIBLE; phải gỡ bản cũ (`adb uninstall com.example.rankingfilter`) mới cài được.
+- Server Trending: từ 14/11/2026 mọi đường dẫn dưới `https://lvtglobal.site/public/app/` (cả `folders.json`, `avatar.png`)
+  bị Cloudflare chuyển 302 → `/404.html`. App vẫn chạy với dữ liệu dự phòng + dải lỗi Retry. Cần hỏi người quản lý
+  server đường dẫn mới; code 2b (`TrendingApi`) giữ nguyên, chỉ đổi `BASE` nếu server dời chỗ.
+- Thay `app/src/main/assets/` bằng output `export_figma_topics.py`, kiểm lại Discover 30 filter, New filter 6 filter.
+- Chưa thử trên máy: Take a Photo (camera hệ thống), chọn ảnh bìa, Toast khi chọn quá 12 ảnh.
 
-Kiểm thử trên máy thật: dùng emulator nếu được. Nếu dùng điện thoại của người dùng qua adb, kiểm tra app đang
-ở foreground trước mỗi lần `input tap`, không nối nhiều phím BACK (đã từng chạm nhầm sang app khác).
+Lỗi đã gặp khi chạy thật (đừng lặp lại):
+- Theme đặt `app:fontFamily` = Londrina và AppCompat ưu tiên nó hơn `android:fontFamily` → view dùng font khác
+  phải ghi CẢ `android:fontFamily` và `app:fontFamily`.
+- DialogFragment inflate không có view cha → `layout_width` của thẻ gốc bị bỏ; bọc layout popup trong FrameLayout.
+
+Kiểm thử trên máy thật: dùng emulator nếu được (máy này chưa có AVD). Nếu dùng điện thoại của người dùng qua adb
+(Xiaomi 24069RA21C, 1220x2712, density 480 → 1dp = 3px), kiểm tra app đang ở foreground trước mỗi lần `input tap`,
+không nối nhiều phím BACK (đã từng chạm nhầm sang app khác); ẩn bàn phím bằng `keyevent 111` (ESC), không dùng BACK.
+Git Bash đổi đường dẫn `/sdcard/...` → đặt `MSYS_NO_PATHCONV=1` khi gọi `adb shell`. Không tự thao tác Photo Picker
+(lộ ảnh riêng của người dùng): nhờ người dùng chọn ảnh.
 
 Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 
