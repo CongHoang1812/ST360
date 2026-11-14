@@ -154,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/londrina_solid_light"
+                app:fontFamily="@font/londrina_solid_light"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="@string/my_filters_empty_desc"

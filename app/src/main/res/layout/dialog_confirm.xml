@@ -1,54 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Popup xác nhận dùng chung: "Leave without saving?" (Figma 31:2470) và "Delete Filter?" (31:2492).
      Rộng 328dp, nền trắng bo 8dp, padding 20/24, hai nút cao như nhau cách nhau 16dp. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Bọc trong FrameLayout: DialogFragment inflate không có view cha nên layout_width của thẻ gốc bị bỏ qua. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="328dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_dialog"
-    android:orientation="vertical"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="24dp">
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/navy"
-        android:textSize="20sp"
-        tools:text="@string/leave_title" />
-
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_s"
-        android:fontFamily="@font/londrina_solid_light"
-        android:gravity="center"
-        android:textColor="@color/navy"
-        android:textSize="16sp"
-        tools:text="@string/leave_message" />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal">
+        android:background="@drawable/bg_dialog"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="24dp">
 
         <TextView
-            android:id="@+id/btnNegative"
-            style="@style/Text.DialogButton"
-            android:background="@drawable/bg_dialog_button_outline"
-            android:textColor="@color/primary"
-            tools:text="@string/leave_keep_editing" />
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/navy"
+            android:textSize="20sp"
+            tools:text="@string/leave_title" />
 
         <TextView
-            android:id="@+id/btnPositive"
-            style="@style/Text.DialogButton"
-            android:layout_marginStart="@dimen/space_m"
-            android:background="@drawable/bg_dialog_button_blue"
-            android:textColor="@color/white"
-            tools:text="@string/leave_confirm" />
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:fontFamily="@font/londrina_solid_light"
+            app:fontFamily="@font/londrina_solid_light"
+            android:gravity="center"
+            android:textColor="@color/navy"
+            android:textSize="16sp"
+            tools:text="@string/leave_message" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btnNegative"
+                style="@style/Text.DialogButton"
+                android:background="@drawable/bg_dialog_button_outline"
+                android:textColor="@color/primary"
+                tools:text="@string/leave_keep_editing" />
+
+            <TextView
+                android:id="@+id/btnPositive"
+                style="@style/Text.DialogButton"
+                android:layout_marginStart="@dimen/space_m"
+                android:background="@drawable/bg_dialog_button_blue"
+                android:textColor="@color/white"
+                tools:text="@string/leave_confirm" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

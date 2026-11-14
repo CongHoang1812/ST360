@@ -164,6 +164,7 @@
         android:background="@drawable/bg_explore_pack"
         android:drawablePadding="4dp"
         android:fontFamily="@font/roboto_medium"
+        app:fontFamily="@font/roboto_medium"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:includeFontPadding="false"
