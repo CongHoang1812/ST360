@@ -7,7 +7,18 @@
     <string name="title_choose_filter">Choose a Filter</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_setting">Setting</string>
+    <string name="title_make_filter">Make a Filter</string>
+    <string name="title_camera">Camera</string>
     <string name="coming_soon">Coming soon</string>
+    <string name="coming_soon_filter">Filter: %1$s</string>
+
+    <!-- Choose a Filter -->
+    <string name="tab_discover">Discover</string>
+    <string name="tab_my_filters">My Filters</string>
+    <string name="my_filters_empty_title">No Filters Yet</string>
+    <string name="my_filters_empty_desc">Create a filter and start your challenge!</string>
+    <string name="create_filter">Create Filter</string>
+    <string name="filters_empty">No filters available.</string>
 
     <!-- Home -->
     <string name="home_new_filter">New filter</string>

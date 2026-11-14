@@ -1,6 +1,7 @@
 package com.example.rankingfilter.data.trending
 
 import com.example.rankingfilter.data.FilterDto
+import com.example.rankingfilter.data.assetUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -58,7 +59,7 @@ class TrendingRepository(private val configUrl: String) {
         fun fallbackFrom(filters: List<FilterDto>): List<TrendingVideo> = filters.map {
             TrendingVideo(
                 id = "filter_${it.id}",
-                thumbUrl = "file:///android_asset/${it.avatar}",
+                thumbUrl = assetUri(it.avatar),
                 videoUrl = null,
                 title = it.title,
                 filterId = it.id,

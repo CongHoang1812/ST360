@@ -18,6 +18,7 @@ import coil3.request.crossfade
 import coil3.request.error
 import coil3.request.placeholder
 import com.example.rankingfilter.R
+import com.example.rankingfilter.data.assetUri
 import com.example.rankingfilter.data.trending.TrendingVideo
 import com.example.rankingfilter.databinding.FragmentHomeBinding
 import com.example.rankingfilter.ui.common.BottomTab
@@ -98,7 +99,7 @@ class HomeFragment : Fragment() {
         cards.forEachIndexed { index, card ->
             val filter = state.newPack.getOrNull(index)
             if (filter != null) {
-                card.load("file:///android_asset/${filter.avatar}") {
+                card.load(assetUri(filter.avatar)) {
                     crossfade(true)
                     placeholder(R.drawable.bg_image_placeholder)
                     error(R.drawable.bg_image_placeholder)

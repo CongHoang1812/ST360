@@ -15,9 +15,11 @@ import androidx.navigation.fragment.findNavController
 import coil3.load
 import coil3.request.crossfade
 import com.example.rankingfilter.R
+import com.example.rankingfilter.data.SelectedFilterStore
 import com.example.rankingfilter.data.trending.TrendingVideo
 import com.example.rankingfilter.databinding.FragmentPreviewVideoBinding
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
+import com.example.rankingfilter.ui.filter.ChooseFilterFragment
 import com.example.rankingfilter.video.VideoCache
 
 /**
@@ -67,11 +69,17 @@ class PreviewVideoFragment : Fragment() {
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
         binding.btnTryNow.setOnClickListener {
-            // Giai đoạn 5: mở thẳng Camera với filterId. Hiện tại mở màn Choose a Filter.
-            findNavController().navigate(
-                R.id.action_preview_to_chooseFilter,
-                bundleOf(ARG_FILTER_ID to filterId),
-            )
+            val id = filterId
+            if (id != null) {
+                // Video gắn với một filter có sẵn: lưu lựa chọn rồi mở thẳng Camera.
+                SelectedFilterStore(requireContext()).save(id, isUserFilter = false)
+                findNavController().navigate(
+                    R.id.action_preview_to_camera,
+                    bundleOf(ARG_FILTER_ID to id, ChooseFilterFragment.ARG_IS_USER_FILTER to false),
+                )
+            } else {
+                findNavController().navigate(R.id.action_preview_to_chooseFilter)
+            }
         }
     }
 

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Choose a Filter (Figma 25:27 / 25:202 / 57:68) và New filter (25:532).
+     Design 360 x 800, thanh trạng thái design 40dp: vị trí y ở đây = y trong design - 40. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    tools:context=".ui.filter.ChooseFilterFragment">
+
+    <!-- Nền trang trí như Home, chỉ hiện ở chế độ New filter; tràn dưới thanh trạng thái. -->
+    <ImageView
+        android:id="@+id/bgDecor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_home"
+        android:visibility="gone" />
+
+    <!-- Nội dung, có padding top = chiều cao thanh trạng thái (đặt trong code) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Nút Back 36dp tại (16, 52) -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            style="@style/Button.Back"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Tiêu đề Londrina 24sp, giữa, cùng hàng với nút Back -->
+        <TextView
+            android:id="@+id/title"
+            style="@style/Text.ScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            tools:text="@string/title_choose_filter" />
+
+        <!-- Hai tab pill tại y=108, cao 37dp, cách nhau 12dp -->
+        <LinearLayout
+            android:id="@+id/tabs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/screen_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabDiscover"
+                style="@style/Tab.Pill"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/tab_pill_height"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/tab_discover" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tabMyFilters"
+                style="@style/Tab.Pill"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/tab_pill_height"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:text="@string/tab_my_filters" />
+        </LinearLayout>
+
+        <!-- Lưới 2 cột: bắt đầu ở y=165 (dưới tab 20dp); khi ẩn tab (New filter) bắt đầu ở y=108 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFilters"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/screen_padding"
+            android:paddingBottom="@dimen/space_m"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs"
+            app:layout_goneMarginTop="68dp"
+            tools:itemCount="6"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/item_filter"
+            tools:spanCount="2" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:indeterminateTint="@color/primary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/rvFilters"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rvFilters" />
+
+        <!-- Không có filter có sẵn (thiếu assets/filters.json) -->
+        <TextView
+            android:id="@+id/emptyBuiltIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filters_empty"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@color/navy"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/rvFilters"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rvFilters" />
+
+        <!-- Trạng thái My Filters trống (Figma 57:68): tiêu đề ở y=384, mô tả y=412, nút y=440 -->
+        <LinearLayout
+            android:id="@+id/emptyMyFilters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs"
+            app:layout_constraintVertical_bias="0.42"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/my_filters_empty_title"
+                android:textColor="@color/navy"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="258dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/londrina_solid_light"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/my_filters_empty_desc"
+                android:textColor="@color/navy"
+                android:textSize="16sp" />
+
+            <!-- Nút "Create Filter": 210dp, gradient vàng, icon add_circle 24dp + chữ 20sp -->
+            <FrameLayout
+                android:id="@+id/btnCreateFilter"
+                android:layout_width="210dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_create_filter_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="12dp"
+                    android:gravity="center"
+                    android:text="@string/create_filter"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:drawableStartCompat="@drawable/ic_add_circle_24" />
+            </FrameLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

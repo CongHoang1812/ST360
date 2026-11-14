@@ -54,36 +54,78 @@
         <action
             android:id="@+id/action_preview_to_chooseFilter"
             app:destination="@id/chooseFilterFragment" />
+        <action
+            android:id="@+id/action_preview_to_camera"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+
+    <!-- Giai đoạn 3: Choose a Filter (mode ALL) -->
+    <fragment
+        android:id="@+id/chooseFilterFragment"
+        android:name="com.example.rankingfilter.ui.filter.ChooseFilterFragment"
+        android:label="@string/title_choose_filter"
+        tools:layout="@layout/fragment_choose_filter">
+        <argument
+            android:name="mode"
+            android:defaultValue="ALL"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_chooseFilter_to_camera"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_chooseFilter_to_makeFilter"
+            app:destination="@id/makeFilterFragment" />
+    </fragment>
+
+    <!-- Giai đoạn 3: New filter (node 25:532), cùng Fragment với mode NEW_PACK.
+         Dùng chung id action với chooseFilterFragment nên ChooseFilterFragment gọi được ở cả hai màn. -->
+    <fragment
+        android:id="@+id/newFilterFragment"
+        android:name="com.example.rankingfilter.ui.filter.ChooseFilterFragment"
+        android:label="@string/title_new_filter"
+        tools:layout="@layout/fragment_choose_filter">
+        <argument
+            android:name="mode"
+            android:defaultValue="NEW_PACK"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_chooseFilter_to_camera"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_chooseFilter_to_makeFilter"
+            app:destination="@id/makeFilterFragment" />
     </fragment>
 
     <!-- Màn tạm, làm ở các giai đoạn sau -->
-    <!-- Giai đoạn 3: New filter (node 25:532) -->
+    <!-- Giai đoạn 4: Make a Filter -->
     <fragment
-        android:id="@+id/newFilterFragment"
+        android:id="@+id/makeFilterFragment"
         android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
-        android:label="@string/title_new_filter"
+        android:label="@string/title_make_filter"
         tools:layout="@layout/fragment_coming_soon">
         <argument
             android:name="title"
-            android:defaultValue="@string/title_new_filter"
+            android:defaultValue="@string/title_make_filter"
             app:argType="reference" />
     </fragment>
 
-    <!-- Giai đoạn 3: Choose a Filter. filter_id dùng ở giai đoạn 5 để mở thẳng Camera. -->
+    <!-- Giai đoạn 5: Camera, nhận filter_id (+ is_user_filter cho filter tự tạo ở giai đoạn 4) -->
     <fragment
-        android:id="@+id/chooseFilterFragment"
+        android:id="@+id/cameraFragment"
         android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
-        android:label="@string/title_choose_filter"
+        android:label="@string/title_camera"
         tools:layout="@layout/fragment_coming_soon">
         <argument
             android:name="title"
-            android:defaultValue="@string/title_choose_filter"
+            android:defaultValue="@string/title_camera"
             app:argType="reference" />
         <argument
             android:name="filter_id"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="string" />
+        <argument
+            android:name="is_user_filter"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <!-- Giai đoạn 7: Gallery -->

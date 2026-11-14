@@ -1,0 +1,111 @@
+package com.example.rankingfilter.ui.filter
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.rankingfilter.R
+import com.example.rankingfilter.databinding.FragmentChooseFilterBinding
+import com.example.rankingfilter.ui.common.GridSpacingDecoration
+import com.example.rankingfilter.ui.common.applySystemBarsPadding
+import kotlinx.coroutines.launch
+
+/**
+ * Màn chọn filter, dùng chung cho 2 chế độ (argument "mode" trong nav_graph):
+ * - ALL: "Choose a Filter" (Figma 25:27, 25:202, 57:68) với tab Discover / My Filters.
+ * - NEW_PACK: "New filter" (Figma 25:532), không có tab, chỉ filter thuộc pack "New Filter".
+ */
+class ChooseFilterFragment : Fragment() {
+
+    private var _binding: FragmentChooseFilterBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: ChooseFilterViewModel by viewModels()
+    private lateinit var adapter: FilterAdapter
+    private var lastRenderedTab: FilterTab? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentChooseFilterBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val isNewPack = viewModel.mode == FilterMode.NEW_PACK
+
+        binding.content.applySystemBarsPadding(top = true)
+        binding.rvFilters.applySystemBarsPadding(bottom = true)
+
+        // NEW_PACK: tiêu đề "New filter", nền trang trí như Home, không có tab.
+        binding.title.setText(if (isNewPack) R.string.title_new_filter else R.string.title_choose_filter)
+        binding.bgDecor.isVisible = isNewPack
+        binding.tabs.isVisible = !isNewPack
+
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.tabDiscover.setOnClickListener { viewModel.selectTab(FilterTab.DISCOVER) }
+        binding.tabMyFilters.setOnClickListener { viewModel.selectTab(FilterTab.MY_FILTERS) }
+        binding.btnCreateFilter.setOnClickListener {
+            findNavController().navigate(R.id.action_chooseFilter_to_makeFilter)
+        }
+
+        adapter = FilterAdapter(::openCamera)
+        binding.rvFilters.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
+        binding.rvFilters.adapter = adapter
+        binding.rvFilters.addItemDecoration(
+            GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.filter_cell_gap))
+        )
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect(::render)
+            }
+        }
+    }
+
+    private fun render(state: ChooseFilterUiState) {
+        val onMyFilters = state.mode == FilterMode.ALL && state.tab == FilterTab.MY_FILTERS
+        binding.tabDiscover.isChecked = state.tab == FilterTab.DISCOVER
+        binding.tabMyFilters.isChecked = state.tab == FilterTab.MY_FILTERS
+
+        val tabChanged = lastRenderedTab != null && lastRenderedTab != state.tab
+        lastRenderedTab = state.tab
+        adapter.submitList(state.items) {
+            // Chỉ cuộn về đầu khi đổi tab (quay lại từ Camera thì giữ vị trí cuộn).
+            if (tabChanged) _binding?.rvFilters?.scrollToPosition(0)
+        }
+
+        val empty = !state.isLoading && state.items.isEmpty()
+        binding.progress.isVisible = state.isLoading
+        binding.emptyMyFilters.isVisible = empty && onMyFilters
+        binding.emptyBuiltIn.isVisible = empty && !onMyFilters
+    }
+
+    private fun openCamera(item: FilterCardItem) {
+        viewModel.onFilterChosen(item)
+        findNavController().navigate(
+            R.id.action_chooseFilter_to_camera,
+            bundleOf(ARG_FILTER_ID to item.id, ARG_IS_USER_FILTER to item.isUserFilter),
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        lastRenderedTab = null
+    }
+
+    companion object {
+        private const val SPAN_COUNT = 2
+        const val ARG_FILTER_ID = "filter_id"
+        const val ARG_IS_USER_FILTER = "is_user_filter"
+    }
+}

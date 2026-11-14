@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Lớp gradient trắng cao 36dp ở đáy ô filter, chứa tên filter -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient
-        android:angle="90"
-        android:endColor="#00FFFFFF"
-        android:startColor="#FFFFFFFF" />
-</shape>
+<!-- Lớp gradient trắng cao 36dp ở đáy ô filter (Figma 25:152), 5 điểm dừng như design.
+     Dùng vector vì <shape> chỉ hỗ trợ 3 màu. Đặt làm background (tự giãn theo view). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="156dp"
+    android:height="36dp"
+    android:viewportWidth="156"
+    android:viewportHeight="36">
+    <path android:pathData="M0,0h156v36h-156z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="0"
+                android:endY="36"
+                android:startX="0"
+                android:startY="0"
+                android:type="linear">
+                <item android:color="#00FFFFFF" android:offset="0" />
+                <item android:color="#40FFFFFF" android:offset="0.1226" />
+                <item android:color="#80FFFFFF" android:offset="0.2452" />
+                <item android:color="#BFFFFFFF" android:offset="0.476" />
+                <item android:color="#FFFFFFFF" android:offset="0.8606" />
+                <item android:color="#FFFFFFFF" android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

@@ -29,6 +29,14 @@ class ComingSoonFragment : Fragment() {
         val titleRes = arguments?.getInt(ARG_TITLE, 0) ?: 0
         binding.title.setText(if (titleRes != 0) titleRes else R.string.app_name)
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+
+        // Màn Camera tạm: hiện filterId nhận được để kiểm tra luồng chọn filter.
+        val filterId = arguments?.getString(ARG_FILTER_ID)
+        binding.message.text = if (filterId != null) {
+            getString(R.string.coming_soon) + "\n" + getString(R.string.coming_soon_filter, filterId)
+        } else {
+            getString(R.string.coming_soon)
+        }
     }
 
     override fun onDestroyView() {
@@ -38,5 +46,6 @@ class ComingSoonFragment : Fragment() {
 
     companion object {
         const val ARG_TITLE = "title"
+        const val ARG_FILTER_ID = "filter_id"
     }
 }

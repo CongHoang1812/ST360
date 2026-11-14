@@ -16,8 +16,8 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 |---|---|---|
 | 0 | Khởi tạo project, dependency, Navigation | Xong (build OK, chưa thử trên máy thật) |
 | 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
-| 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16; còn điền `AppConfig.CONFIG_URL`) |
-| 3 | Choose a Filter + New filter | **Tiếp theo** |
+| 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16); còn nối API Trending thật (prompt 2b, xem dưới) |
+| 3 | Choose a Filter + New filter | **Code xong, build OK, chưa kiểm trên máy** |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | Chưa |
 | 5 | Camera (5a → 5d) | Chưa |
 | 6 | Add Sound, Preview, Successful | Chưa |
@@ -51,6 +51,18 @@ Giai đoạn 2 đã có:
 - Insets: MainActivity KHÔNG còn padding chung; mỗi Fragment tự gọi `applySystemBarsPadding()` (ui/common/Insets.kt).
 - Asset Figma: `drawable-nodpi/` (nền Home, logo, banner) và vector `ic_crown_gold/silver/bronze`, icon nav, settings.
   Ảnh Figma export qua MCP bị dính nền xám #444 → lấy ảnh gốc (rawImages) và tự cắt, vector thì chuyển tay.
+
+Giai đoạn 3 đã có (chưa kiểm trên máy): `ui/filter/` (ChooseFilterFragment dùng chung cho chooseFilter và
+newFilter, ChooseFilterViewModel, FilterAdapter, FilterCardItem), `data/SelectedFilterStore.kt`,
+`fragment_choose_filter.xml`, `item_filter.xml`, nav_graph nối tới camera / makeFilter.
+`app/src/main/assets/` hiện là DỮ LIỆU THỬ (8 filter, thư mục `filters/test`), thay bằng output của
+`export_figma_topics.py` rồi mới kiểm mục "Discover hiện đủ 30 filter".
+
+Việc còn treo:
+- Prompt 2b trong sổ tay (mục "API server"): đổi `TrendingRepository` sang đọc `folders.json`
+  (BASE `https://lvtglobal.site/public/app/ST316_RankingFilterFunChallenge_0783/VideosTrending/`), thêm `TrendingApi.kt`.
+  Tên trong folders.json dùng `'` và `...`, thư mục thật dùng `’` và `…` → phải đổi trước khi ghép URL, không thì 10/30 thư mục 404.
+- Kiểm 4 mục "Xong khi" của giai đoạn 3 trên máy, rồi sang giai đoạn 4.
 
 Kiểm thử trên máy thật: dùng emulator nếu được. Nếu dùng điện thoại của người dùng qua adb, kiểm tra app đang
 ở foreground trước mỗi lần `input tap`, không nối nhiều phím BACK (đã từng chạm nhầm sang app khác).
