@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Ranking Filter</string>
+    <!-- Ngôn ngữ mặc định: English. Bản dịch ở values-es, values-fr, values-hi, values-pt, values-in. -->
+    <string name="app_name" translatable="false">Ranking Filter</string>
     <string name="placeholder_text">Ranking Filter</string>
+
+    <!-- Mô tả cho trình đọc màn hình -->
+    <string name="cd_back">Back</string>
 </resources>

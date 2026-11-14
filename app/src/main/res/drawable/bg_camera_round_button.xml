@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút tròn trên camera: nền #33000000, viền trắng -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/overlay_20" />
+    <stroke android:width="@dimen/stroke_1" android:color="@color/white" />
+</shape>

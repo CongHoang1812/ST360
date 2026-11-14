@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ô số trên camera: nền #80000000, bo 10dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/overlay_50" />
+    <corners android:radius="@dimen/rank_slot_corner" />
+</shape>

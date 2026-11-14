@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Bảng màu theo design Figma -->
+    <color name="navy">#183D76</color>
+    <color name="primary">#00AAFF</color>
+    <color name="bg_cream">#FBF7F2</color>
+    <color name="card_blue">#EBF8FF</color>
+    <color name="disabled">#CDCDCD</color>
+    <color name="record_red">#FF3333</color>
+    <color name="overlay_50">#80000000</color>
+    <color name="overlay_20">#33000000</color>
+
+    <!-- Nút Back tròn vàng (node 25:222) -->
+    <color name="back_yellow_top">#FFFBD2</color>
+    <color name="back_yellow_bottom">#FFF69A</color>
+    <color name="back_arrow_brown">#87561E</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

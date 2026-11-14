@@ -1,8 +1,52 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.RankingFilter" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    <!-- Theme sáng duy nhất (không có values-night), nền kem, font mặc định Londrina Solid -->
+    <style name="Base.Theme.RankingFilter" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/card_blue</item>
+        <item name="colorOnPrimaryContainer">@color/navy</item>
+        <item name="colorSecondary">@color/navy</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorError">@color/record_red</item>
+        <item name="colorOutline">@color/navy</item>
+
+        <item name="android:colorBackground">@color/bg_cream</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/navy</item>
+        <item name="colorOnBackground">@color/navy</item>
+        <item name="android:windowBackground">@color/bg_cream</item>
+        <item name="android:textColorPrimary">@color/navy</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor" tools:targetApi="34">@android:color/transparent</item>
+        <item name="android:navigationBarColor" tools:targetApi="34">@android:color/transparent</item>
+
+        <!-- Font mặc định -->
+        <item name="android:fontFamily">@font/londrina_solid</item>
+        <item name="fontFamily">@font/londrina_solid</item>
+
+        <!-- Kiểu chữ Material 3 dùng Londrina (trừ Body dùng cho ghi chú) -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.RankingFilter.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.RankingFilter.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.RankingFilter.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.RankingFilter.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.RankingFilter.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.RankingFilter.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.RankingFilter.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.RankingFilter.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.RankingFilter.TitleSmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.RankingFilter.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.RankingFilter.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.RankingFilter.LabelSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.RankingFilter.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.RankingFilter.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.RankingFilter.BodySmall</item>
+
+        <!-- Kiểu mặc định cho widget -->
+        <item name="materialButtonStyle">@style/Button.Primary</item>
+        <item name="textInputStyle">@style/Input.Rounded</item>
+        <item name="materialCardViewStyle">@style/Card.Blue</item>
     </style>
 
     <style name="Theme.RankingFilter" parent="Base.Theme.RankingFilter" />

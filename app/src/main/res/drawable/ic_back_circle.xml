@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút Back tròn vàng 36dp, chuyển từ SVG Figma node 25:222.
+     Bỏ hiệu ứng inner shadow của Figma (gần như không thấy ở 36dp). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="36dp"
+    android:height="36dp"
+    android:autoMirrored="true"
+    android:viewportWidth="36"
+    android:viewportHeight="36">
+    <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endColor="@color/back_yellow_bottom"
+                android:endX="18"
+                android:endY="36"
+                android:startColor="@color/back_yellow_top"
+                android:startX="18"
+                android:startY="0"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M18,0.5a17.5,17.5 0,1 1,0 35a17.5,17.5 0,1 1,0 -35z"
+        android:strokeWidth="1"
+        android:strokeColor="@color/white" />
+    <path
+        android:fillColor="@color/back_arrow_brown"
+        android:fillType="evenOdd"
+        android:pathData="M24.9732,16.9509H13.5039L18.5147,11.8056C18.9151,11.3944 18.9151,10.7196 18.5147,10.3084C18.1142,9.8972 17.4674,9.8972 17.0669,10.3084L10.3003,17.2567C9.89989,17.6679 9.89989,18.3321 10.3003,18.7433L17.0669,25.6916C17.4674,26.1028 18.1142,26.1028 18.5147,25.6916C18.9151,25.2804 18.9151,24.6161 18.5147,24.2049L13.5039,19.0596H24.9732C25.5379,19.0596 26,18.5852 26,18.0053C26,17.4254 25.5379,16.9509 24.9732,16.9509Z" />
+</vector>

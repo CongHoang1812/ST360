@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Khoảng cách chung -->
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">16dp</dimen>
+    <dimen name="space_l">24dp</dimen>
+
+    <!-- Bo góc -->
+    <dimen name="corner_4">4dp</dimen>
+    <dimen name="corner_8">8dp</dimen>
+    <dimen name="corner_12">12dp</dimen>
+    <dimen name="corner_pill">100dp</dimen>
+    <dimen name="stroke_1">1dp</dimen>
+
+    <!-- Chữ -->
+    <dimen name="text_title">24sp</dimen>
+    <dimen name="text_section">18sp</dimen>
+    <dimen name="text_button">16sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+
+    <!-- Thanh tiêu đề: nút Back 36dp tại (16, 52) -->
+    <dimen name="back_button_size">36dp</dimen>
+    <dimen name="back_button_top">52dp</dimen>
+
+    <!-- Lưới filter -->
+    <dimen name="filter_cell_size">156dp</dimen>
+    <dimen name="filter_cell_gap">16dp</dimen>
+    <dimen name="filter_name_gradient_height">36dp</dimen>
+    <dimen name="tab_pill_height">37dp</dimen>
+
+    <!-- Make a Filter -->
+    <dimen name="photo_cell_size">100dp</dimen>
+    <dimen name="photo_cell_gap">6dp</dimen>
+    <dimen name="cover_cell_size">136dp</dimen>
+
+    <!-- Camera: 12 ô số nhỏ hơn design để không đè dải thời lượng -->
+    <dimen name="rank_slot_size">36dp</dimen>
+    <dimen name="rank_slot_corner">10dp</dimen>
+    <dimen name="rank_slot_gap">6dp</dimen>
+    <dimen name="rank_slot_text">20sp</dimen>
+    <dimen name="camera_round_button">36dp</dimen>
+    <dimen name="record_button_inner">56dp</dimen>
+    <dimen name="record_button_ring">3dp</dimen>
+
+    <!-- Bottom nav -->
+    <dimen name="bottom_nav_height">80dp</dimen>
+    <dimen name="bottom_nav_corner">36dp</dimen>
+    <dimen name="bottom_nav_camera">68dp</dimen>
+
+    <!-- Badge số trong ô trống -->
+    <dimen name="badge_size">24dp</dimen>
+</resources>

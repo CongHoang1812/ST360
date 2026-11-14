@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ===== Hình dạng bo góc ===== -->
+    <style name="Shape.Rounded4" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_4</item>
+    </style>
+    <style name="Shape.Rounded8" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_8</item>
+    </style>
+    <style name="Shape.Rounded12" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_12</item>
+    </style>
+    <style name="Shape.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- ===== Nút chính: nền #00AAFF, chữ trắng, bo 12dp, Londrina 16sp =====
+         Khi setEnabled(false) nền tự chuyển sang #CDCDCD (Save Filter chưa đủ ảnh). -->
+    <style name="Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_primary_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.RankingFilter.LabelLarge</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="shapeAppearance">@style/Shape.Rounded12</item>
+    </style>
+
+    <!-- ===== Card xanh nhạt: nền #EBF8FF, bo 12dp, đổ bóng nhẹ ===== -->
+    <style name="Card.Blue" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/card_blue</item>
+        <item name="cardElevation">2dp</item>
+        <item name="shapeAppearance">@style/Shape.Rounded12</item>
+        <item name="contentPadding">@dimen/space_m</item>
+    </style>
+
+    <!-- ===== Ô nhập: nền trắng, viền navy 1dp, bo 12dp, chữ Roboto ===== -->
+    <style name="Input.Rounded" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxStrokeColor">@color/navy</item>
+        <item name="boxStrokeWidth">@dimen/stroke_1</item>
+        <item name="boxStrokeWidthFocused">@dimen/stroke_1</item>
+        <item name="shapeAppearance">@style/Shape.Rounded12</item>
+        <item name="hintTextColor">@color/navy</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.RankingFilter.Input</item>
+    </style>
+    <style name="ThemeOverlay.RankingFilter.Input" parent="">
+        <item name="editTextStyle">@style/Widget.RankingFilter.EditText</item>
+    </style>
+    <style name="Widget.RankingFilter.EditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:textAppearance">@style/TextAppearance.RankingFilter.BodyLarge</item>
+        <item name="android:textColor">@color/navy</item>
+    </style>
+
+    <!-- ===== Tab dạng pill (Discover / My Filters) =====
+         Dùng trong MaterialButtonToggleGroup: tab chọn nền #00AAFF chữ trắng,
+         tab chưa chọn nền trắng chữ navy, viền navy 1dp. -->
+    <style name="Tab.Pill" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:checkable">true</item>
+        <item name="android:minHeight">@dimen/tab_pill_height</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/tab_pill_bg</item>
+        <item name="android:textColor">@color/tab_pill_text</item>
+        <item name="strokeColor">@color/navy</item>
+        <item name="strokeWidth">@dimen/stroke_1</item>
+        <item name="shapeAppearance">@style/Shape.Pill</item>
+        <item name="android:textAppearance">@style/TextAppearance.RankingFilter.LabelLarge</item>
+    </style>
+
+    <!-- ===== Tiêu đề màn: Londrina 24sp, navy, giữa ===== -->
+    <style name="Text.ScreenTitle" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.RankingFilter.HeadlineSmall</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- ===== Nút Back tròn vàng 36dp ===== -->
+    <style name="Button.Back" parent="">
+        <item name="android:layout_width">@dimen/back_button_size</item>
+        <item name="android:layout_height">@dimen/back_button_size</item>
+        <item name="android:src">@drawable/ic_back_circle</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:contentDescription">@string/cd_back</item>
+    </style>
+</resources>

@@ -15,8 +15,8 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | Giai đoạn | Nội dung | Trạng thái |
 |---|---|---|
 | 0 | Khởi tạo project, dependency, Navigation | Xong (build OK, chưa thử trên máy thật) |
-| 1 | Theme, font, dữ liệu 30 chủ đề | **Tiếp theo** |
-| 2 | Home | Chưa |
+| 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
+| 2 | Home | Tiếp theo, sau khi có `filters.json` |
 | 3 | Choose a Filter | Chưa |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | Chưa |
 | 5 | Camera (5a → 5d) | Chưa |
@@ -25,9 +25,20 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
 | 9 | Hoàn thiện, release | Chưa |
 
-Giai đoạn 1 cần người dùng chuẩn bị trước:
-- Font vào `app/src/main/res/font/`: `londrina_solid_regular.ttf`, `londrina_solid_light.ttf`, `roboto_regular.ttf`, `roboto_medium.ttf`.
-- Chạy `export_figma_topics.py` (người dùng giữ file này, không có trong repo) rồi chép `out/assets/*` vào `app/src/main/assets/`.
+Giai đoạn 1 đã có: font (Londrina Solid Regular/Light, Roboto Regular/Medium, tải từ Google Fonts),
+colors/dimens/themes/type/styles, drawable dùng chung, `data/FilterDto.kt`, `data/BuiltInFilters.kt`
+(`loadBuiltInFilters()`), thư mục `values-es/fr/hi/pt/in`. Màn tạm `PlaceholderFragment` hiển thị mẫu
+các style và log số filter (tag `Phase1`).
+
+Còn thiếu để đóng giai đoạn 1:
+- Chạy `export_figma_topics.py` (người dùng giữ file này, không có trong repo) rồi chép `out/assets/*`
+  vào `app/src/main/assets/`. Khi đó Logcat tag `Phase1` phải báo 30 filter.
+- Chạy app trên máy thật, nhìn màn tạm để xác nhận font Londrina, nút Back, tab pill, nút xám khi disabled.
+
+Ghi chú style (tên trong `res/values/styles.xml`): `Button.Primary` (mặc định cho mọi MaterialButton,
+disabled tự xám), `Button.Back` (ImageButton), `Card.Blue`, `Input.Rounded`, `Tab.Pill`
+(dùng trong MaterialButtonToggleGroup), `Text.ScreenTitle`, `Shape.Rounded4/8/12`, `Shape.Pill`.
+Theme chỉ có bản sáng (đã bỏ values-night). Màu nút Back lấy từ Figma node 25:222.
 
 Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 

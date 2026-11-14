@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Londrina Solid: tiêu đề, nút, nhãn -->
+    <style name="TextAppearance.RankingFilter.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+    <!-- Tiêu đề màn: 24sp, navy -->
+    <style name="TextAppearance.RankingFilter.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textColor">@color/navy</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+    <!-- Nhãn mục (ví dụ "New filter"): 18sp -->
+    <style name="TextAppearance.RankingFilter.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+        <item name="android:textSize">@dimen/text_section</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <!-- Tên filter, tên bài nhạc: 16sp -->
+    <style name="TextAppearance.RankingFilter.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <!-- Chữ trên nút: 16sp, không viết hoa -->
+    <style name="TextAppearance.RankingFilter.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+        <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/londrina_solid</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <!-- Nhãn nhỏ dùng Londrina Light (ví dụ thời lượng bài nhạc 12sp) -->
+    <style name="TextAppearance.RankingFilter.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/londrina_solid_light</item>
+        <item name="android:fontFamily">@font/londrina_solid_light</item>
+        <item name="android:textSize">@dimen/text_caption</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- Roboto: ô nhập, ghi chú -->
+    <style name="TextAppearance.RankingFilter.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+    <style name="TextAppearance.RankingFilter.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+</resources>
