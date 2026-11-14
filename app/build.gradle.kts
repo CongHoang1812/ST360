@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
@@ -36,6 +38,11 @@ android {
     }
 }
 
+room {
+    // Xuất schema để viết migration khi đổi cấu trúc bảng.
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -67,6 +74,11 @@ dependencies {
     // Media3
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // ML Kit
     implementation(libs.mlkit.face.detection)

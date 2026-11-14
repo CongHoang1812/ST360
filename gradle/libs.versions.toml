@@ -17,6 +17,9 @@ kotlinxSerializationJson = "1.13.0"
 camerax = "1.6.2"
 media3 = "1.11.1"
 mlkitFaceDetection = "16.1.7"
+# KSP2 (2.3.x) không còn gắn với số phiên bản Kotlin.
+ksp = "2.3.12"
+room = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,7 +59,14 @@ androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.re
 # ML Kit
 mlkit-face-detection = { group = "com.google.mlkit", name = "face-detection", version.ref = "mlkitFaceDetection" }
 
+# Room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidx-room = { id = "androidx.room", version.ref = "room" }

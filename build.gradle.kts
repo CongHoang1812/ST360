@@ -4,4 +4,6 @@ plugins {
     // AGP 9 has built-in Kotlin; declaring this here only pins the Kotlin Gradle Plugin version.
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.androidx.room) apply false
 }
