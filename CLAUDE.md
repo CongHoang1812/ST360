@@ -126,6 +126,10 @@ Giai đoạn 5d đã có. Đã kiểm trên Xiaomi (15/11/2026, camera trước)
 quay → chốt đủ 12 ô → tự dừng, lưu `Movies/RankingFilter/RankingFilter_<ngày>_<giờ>.mp4` → sang Preview với `video_uri`;
 đồng hồ chạy; lúc quay ô đã chốt hiện ảnh nhỏ + số bên trái, ô trống viền trắng. CHƯA kiểm: mở video xem overlay có trong
 video không, có tiếng không, tự dừng 15s, làm lại, lỗi. Video thử đầu tiên: 576x1280, 38s, 15MB (xem ghi chú độ phân giải).
+LỖI ĐÃ GẶP (15/11): ảnh trên đầu bị đẩy ra góc phải trên màn hình khi có OverlayEffect. `PreviewView.outputTransform`
+không còn khớp ảnh phân tích khi preview đi qua hiệu ứng (stream sharing). Đã sửa: FaceAnalyzer đổi tọa độ qua cảm biến
+(ảnh thẳng đứng → bộ đệm → `ImageInfo.sensorToBufferTransformMatrix`⁻¹ → `PreviewView.sensorToViewTransform`).
+Build OK, CHƯA kiểm lại trên máy.
 Ghi chú độ phân giải: video ra 576x1280 dù xin FHD. Nghi do stream sharing (Preview + VideoCapture chung một luồng qua
 OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (ViewPort). Chưa điều tra.
 - `ui/camera/overlay/`: `CameraOverlay` (OverlayEffect nhắm PREVIEW|VIDEO_CAPTURE, luồng vẽ riêng), `OverlayRenderer`

@@ -820,8 +820,9 @@ class CameraFragment : Fragment() {
         placeholder = BitmapFactory.decodeResource(resources, R.drawable.head_placeholder)
         analysisExecutor = Executors.newSingleThreadExecutor()
         faceAnalyzer = FaceAnalyzer(
-            // outputTransform chỉ gọi được trên luồng chính; FaceAnalyzer chỉ gọi lambda này ở luồng chính.
-            previewTransform = { _binding?.previewView?.outputTransform },
+            // sensorToViewTransform chỉ gọi được trên luồng chính; FaceAnalyzer chỉ gọi lambda này ở luồng chính.
+            // Không gọi khi đang hiện bảng xin quyền (preview không chạy).
+            sensorToView = { if (cameraVisible) _binding?.previewView?.sensorToViewTransform else null },
             onFace = ::onFaceResult,
         )
     }

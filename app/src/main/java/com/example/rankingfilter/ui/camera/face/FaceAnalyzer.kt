@@ -1,14 +1,12 @@
 package com.example.rankingfilter.ui.camera.face
 
+import android.graphics.Matrix
 import android.graphics.RectF
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import androidx.camera.view.transform.CoordinateTransform
-import androidx.camera.view.transform.ImageProxyTransformFactory
-import androidx.camera.view.transform.OutputTransform
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
@@ -29,29 +27,34 @@ data class TrackedFace(
  * và đổi khung mặt sang tọa độ của PreviewView.
  *
  * ### Đổi tọa độ (ảnh phân tích → PreviewView)
- * ML Kit trả khung mặt trong hệ tọa độ của ảnh đã xoay thẳng đứng
- * (`InputImage.fromMediaImage(image, rotationDegrees)`), chưa lật gương, chưa cắt, chưa co giãn.
- * Preview thì khác: xoay theo màn hình, lật gương với camera trước, cắt giữa (fillCenter) và phóng to
- * cho vừa PreviewView. Thay vì tự nhân ma trận, ta dùng `CoordinateTransform` của CameraX:
- *  - `ImageProxyTransformFactory` (đặt `isUsingRotationDegrees = true` vì ML Kit đã xoay ảnh)
- *    mô tả ảnh phân tích: ma trận từ tọa độ ảnh → tọa độ cảm biến;
- *  - `PreviewView.outputTransform` mô tả preview: ma trận từ tọa độ cảm biến → tọa độ view
- *    (đã gồm lật gương của camera trước và phần cắt giữa);
- *  - `CoordinateTransform(nguồn, đích)` ghép hai ma trận đó.
- * Điều kiện: Preview và ImageAnalysis dùng chung một `ViewPort` (xem `CameraFragment.bindCamera`),
- * để hai luồng nhìn cùng một vùng cảm biến, nếu không khung sẽ lệch.
+ * Đi qua TỌA ĐỘ CẢM BIẾN, hệ chung tuyệt đối mà mọi luồng hình của CameraX đều báo:
+ *
+ *     ảnh thẳng đứng (ML Kit) →[xoay ngược rotationDegrees]→ bộ đệm phân tích
+ *       →[nghịch đảo ImageInfo.sensorToBufferTransformMatrix]→ cảm biến
+ *       →[PreviewView.sensorToViewTransform]→ view
+ *
+ * - ML Kit trả tọa độ trong ảnh đã xoay thẳng đứng (`InputImage.fromMediaImage(image, rotationDegrees)`),
+ *   nên bước đầu phải xoay ngược lại về bộ đệm gốc.
+ * - `sensorToBufferTransformMatrix` của ImageProxy mô tả bộ đệm phân tích nằm ở đâu trên cảm biến.
+ * - `PreviewView.sensorToViewTransform` mô tả cảm biến hiện lên màn hình ra sao (gồm xoay, cắt giữa, phóng to
+ *   và lật gương của camera trước). Đây cũng là ma trận mà CameraOverlay dùng để vẽ, nên mặt và hình vẽ luôn khớp.
+ *
+ * KHÔNG dùng `CoordinateTransform(ImageProxyTransformFactory, PreviewView.outputTransform)` như bước 5b:
+ * khi có OverlayEffect, CameraX cho preview và video dùng chung một luồng hình đã qua hiệu ứng
+ * (stream sharing) và `outputTransform` không còn khớp với ảnh phân tích. Ảnh trên đầu bị đẩy lệch hẳn
+ * ra góc màn hình (đã gặp trên Xiaomi, 15/11/2026).
  *
  * ### Góc nghiêng đầu
  * `headEulerAngleZ` dương = mặt xoay ngược chiều kim đồng hồ trong ảnh phân tích. Ta đổi sang chiều kim
- * đồng hồ, dựng vector "đỉnh đầu" rồi biến đổi vector đó bằng chính phép biến đổi của khung mặt:
+ * đồng hồ, dựng vector "đỉnh đầu" rồi biến đổi vector đó bằng chính ma trận của khung mặt:
  * lật gương tự đảo dấu góc, không cần phân biệt camera trước/sau. Xem [HeadPlacements].
  *
  * Chạy trên một luồng riêng; kết quả [onFace] được gọi trên luồng chính (ML Kit trả Task về luồng chính),
- * nơi PreviewView.outputTransform được phép gọi.
+ * nơi PreviewView.sensorToViewTransform được phép gọi.
  */
 class FaceAnalyzer(
     /** Gọi trên luồng chính. Trả null khi preview chưa chạy. */
-    private val previewTransform: () -> OutputTransform?,
+    private val sensorToView: () -> Matrix?,
     /** Gọi trên luồng chính. null = không thấy mặt trong khung hình này. */
     private val onFace: (TrackedFace?) -> Unit,
 ) : ImageAnalysis.Analyzer {
@@ -67,10 +70,6 @@ class FaceAnalyzer(
             .build()
     )
 
-    // ML Kit đã xoay ảnh theo rotationDegrees nên tọa độ nguồn nằm trong ảnh đã xoay.
-    // Không bật isUsingCropRect: ta đưa nguyên ảnh (không cắt) cho ML Kit.
-    private val sourceFactory = ImageProxyTransformFactory().apply { isUsingRotationDegrees = true }
-
     @Volatile
     private var closed = false
 
@@ -84,12 +83,19 @@ class FaceAnalyzer(
             imageProxy.close()
             return
         }
-        // Tính ma trận nguồn ngay đây, khi ImageProxy chắc chắn còn mở.
-        val source = sourceFactory.getOutputTransform(imageProxy)
-        val input = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+        // Tính ma trận ảnh thẳng đứng → cảm biến ngay đây, khi ImageProxy chắc chắn còn mở.
+        val rotation = imageProxy.imageInfo.rotationDegrees
+        val uprightToSensor = uprightToSensor(
+            imageProxy.width, imageProxy.height, rotation, imageProxy.imageInfo.sensorToBufferTransformMatrix,
+        )
+        if (uprightToSensor == null) {
+            imageProxy.close()
+            return
+        }
+        val input = InputImage.fromMediaImage(mediaImage, rotation)
         try {
             detector.process(input)
-                .addOnSuccessListener { faces -> if (!closed) deliver(faces, source) }
+                .addOnSuccessListener { faces -> if (!closed) deliver(faces, uprightToSensor) }
                 .addOnFailureListener { e -> if (!closed) Log.w(TAG, "ML Kit lỗi", e) }
                 .addOnCompleteListener { imageProxy.close() }
         } catch (e: Exception) {
@@ -98,26 +104,26 @@ class FaceAnalyzer(
         }
     }
 
-    private fun deliver(faces: List<Face>, source: OutputTransform) {
-        val target = previewTransform()
-        val face = if (target == null) null else pick(faces)
-        if (face == null || target == null) {
+    private fun deliver(faces: List<Face>, uprightToSensor: Matrix) {
+        val sensorToViewMatrix = sensorToView()
+        val face = if (sensorToViewMatrix == null) null else pick(faces)
+        if (face == null || sensorToViewMatrix == null) {
             trackedId = null
             onFace(null)
             return
         }
         trackedId = face.trackingId
 
-        val transform = CoordinateTransform(source, target)
+        val toView = Matrix(uprightToSensor).apply { postConcat(sensorToViewMatrix) }
 
         val box = RectF(face.boundingBox)
-        transform.mapRect(box)
+        toView.mapRect(box)
 
         // Vector "đỉnh đầu" trong ảnh phân tích (dài 100 đơn vị cho đỡ sai số), biến đổi như khung mặt.
         val phi = HeadPlacements.clockwiseDegreesFromEulerZ(face.headEulerAngleZ)
         val (ux, uy) = HeadPlacements.upVector(phi)
         val points = floatArrayOf(0f, 0f, ux * UP_LENGTH, uy * UP_LENGTH)
-        transform.mapPoints(points)
+        toView.mapPoints(points)
         val roll = HeadPlacements.viewRollDegrees(points[2] - points[0], points[3] - points[1])
 
         onFace(TrackedFace(box, roll, face.trackingId))
@@ -142,5 +148,29 @@ class FaceAnalyzer(
         /** Bỏ qua mặt nhỏ hơn 15% chiều rộng khung hình: nhanh hơn và đỡ nhận nhầm. */
         const val MIN_FACE_SIZE = 0.15f
         const val UP_LENGTH = 100f
+
+        /**
+         * Ma trận từ tọa độ ảnh thẳng đứng (ML Kit) sang tọa độ cảm biến; null nếu ma trận không nghịch đảo được.
+         *
+         * Bộ đệm gốc rộng [width] × cao [height]. ML Kit xoay nó [rotation] độ theo chiều kim đồng hồ cho thẳng đứng:
+         *  - 90°:  (x, y) → (height − y, x)
+         *  - 180°: (x, y) → (width − x, height − y)
+         *  - 270°: (x, y) → (y, width − x)
+         * Ta dựng phép xoay đó (bộ đệm → thẳng đứng) rồi nghịch đảo, sau đó nối với bộ đệm → cảm biến.
+         */
+        fun uprightToSensor(width: Int, height: Int, rotation: Int, sensorToBuffer: Matrix): Matrix? {
+            val bufferToUpright = Matrix().apply {
+                postRotate(rotation.toFloat())
+                when (rotation) {
+                    90 -> postTranslate(height.toFloat(), 0f)
+                    180 -> postTranslate(width.toFloat(), height.toFloat())
+                    270 -> postTranslate(0f, width.toFloat())
+                }
+            }
+            val uprightToBuffer = Matrix()
+            val bufferToSensor = Matrix()
+            if (!bufferToUpright.invert(uprightToBuffer) || !sensorToBuffer.invert(bufferToSensor)) return null
+            return uprightToBuffer.apply { postConcat(bufferToSensor) }
+        }
     }
 }
