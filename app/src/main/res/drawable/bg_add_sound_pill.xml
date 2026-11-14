@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pill "Add Sound" (Figma 14:521): đen 50%, viền trắng 1dp, bo tròn -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/overlay_50" />
+    <stroke android:width="@dimen/stroke_1" android:color="@color/white" />
+    <corners android:radius="@dimen/corner_pill" />
+</shape>

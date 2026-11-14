@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một ô hạng trên Camera (Figma 5:18, thu nhỏ còn 36dp để đủ 12 ô): nền đen 50%, bo 10dp, số trắng 20sp.
+     CameraFragment tạo 12 ô bằng vòng lặp và tự đặt lại kích thước nếu màn thấp.
+     ivPhoto dùng ở bước 5c: hiện ảnh đã chốt thay cho số. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/rank_slot_size"
+    android:layout_height="@dimen/rank_slot_size"
+    android:background="@drawable/bg_rank_slot">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:shapeAppearance="@style/Shape.RankSlot" />
+
+    <TextView
+        android:id="@+id/tvNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:importantForAccessibility="no"
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/rank_slot_text"
+        tools:text="1" />
+</FrameLayout>

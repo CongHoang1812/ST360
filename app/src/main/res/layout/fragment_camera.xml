@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Camera (Figma 5:9). Design 360 x 800, thanh trạng thái design 40dp: vị trí y ở đây = y trong design - 40.
+     Hàng trên bám đỉnh, cụm dưới (dải thời lượng, nút quay, nút chọn filter) bám đáy;
+     cột ô số nằm giữa và tự co nếu màn thấp. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:keepScreenOn="true"
+    tools:context=".ui.camera.CameraFragment">
+
+    <!-- Hình camera toàn màn, tràn dưới thanh trạng thái và thanh điều hướng -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        app:scaleType="fillCenter" />
+
+    <!-- Các nút điều khiển; padding trên/dưới = thanh hệ thống (đặt trong code) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Nút Back 36dp tại (16, 52) -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            style="@style/Button.Back"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Pill "Add Sound" ở giữa, cao 36dp, cùng hàng với nút Back -->
+        <LinearLayout
+            android:id="@+id/btnAddSound"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/camera_round_button"
+            android:background="@drawable/bg_add_sound_pill"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_music_20" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_s"
+                android:includeFontPadding="false"
+                android:text="@string/camera_add_sound"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Nút lật camera tại (308, 52) và flash tại (308, 96): tròn 36dp, đen 20%, viền trắng -->
+        <ImageButton
+            android:id="@+id/btnFlip"
+            android:layout_width="@dimen/camera_round_button"
+            android:layout_height="@dimen/camera_round_button"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:background="@drawable/bg_camera_round_button"
+            android:contentDescription="@string/cd_flip_camera"
+            android:scaleType="center"
+            android:src="@drawable/ic_flip_camera_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <ImageButton
+            android:id="@+id/btnFlash"
+            android:layout_width="@dimen/camera_round_button"
+            android:layout_height="@dimen/camera_round_button"
+            android:layout_marginTop="@dimen/space_s"
+            android:background="@drawable/bg_camera_round_button_toggle"
+            android:contentDescription="@string/cd_flash"
+            android:scaleType="center"
+            android:src="@drawable/ic_zap_20"
+            app:layout_constraintEnd_toEndOf="@id/btnFlip"
+            app:layout_constraintTop_toBottomOf="@id/btnFlip"
+            app:tint="@color/camera_toggle_icon" />
+
+        <!-- Cột 12 ô số: các ô do CameraFragment tạo bằng vòng lặp.
+             Cao 0dp (từ y=128 tới trên dải thời lượng) để code biết còn bao nhiêu chỗ. -->
+        <LinearLayout
+            android:id="@+id/rankColumn"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/rank_column_start"
+            android:layout_marginTop="@dimen/rank_column_top"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/durationStrip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Dải thời lượng 60s / 30s / Free / 15s tại y=665. Trong design "Free" nằm đúng giữa màn,
+             nên thêm một ô rỗng ở cuối để dải 5 ô có "Free" ở giữa. -->
+        <LinearLayout
+            android:id="@+id/durationStrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/btnRecord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <FrameLayout style="@style/Frame.DurationCell">
+
+                <TextView
+                    android:id="@+id/duration60"
+                    style="@style/Text.DurationOption"
+                    tools:text="60s" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Frame.DurationCell">
+
+                <TextView
+                    android:id="@+id/duration30"
+                    style="@style/Text.DurationOption"
+                    tools:text="30s" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Frame.DurationCell">
+
+                <TextView
+                    android:id="@+id/durationFree"
+                    style="@style/Text.DurationOption"
+                    android:text="@string/camera_duration_free" />
+            </FrameLayout>
+
+            <FrameLayout style="@style/Frame.DurationCell">
+
+                <TextView
+                    android:id="@+id/duration15"
+                    style="@style/Text.DurationOption"
+                    tools:text="15s" />
+            </FrameLayout>
+
+            <Space
+                android:layout_width="@dimen/duration_cell_width"
+                android:layout_height="0dp" />
+        </LinearLayout>
+
+        <!-- Nút quay tại (146, 704): vòng trắng 68dp viền 3dp, chấm đỏ 56dp; cách đáy 28dp -->
+        <FrameLayout
+            android:id="@+id/btnRecord"
+            android:layout_width="@dimen/record_button_outer"
+            android:layout_height="@dimen/record_button_outer"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/bg_record_ring"
+            android:clickable="true"
+            android:contentDescription="@string/cd_record"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <View
+                android:layout_width="@dimen/record_button_inner"
+                android:layout_height="@dimen/record_button_inner"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_record_dot" />
+        </FrameLayout>
+
+        <!-- Nút chọn filter 48dp tại (288, 714): cách phải 24dp, cùng tâm dọc với nút quay -->
+        <ImageButton
+            android:id="@+id/btnChooseFilter"
+            android:layout_width="@dimen/choose_filter_button"
+            android:layout_height="@dimen/choose_filter_button"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/bg_choose_filter_button"
+            android:contentDescription="@string/cd_choose_filter"
+            android:scaleType="center"
+            android:src="@drawable/ic_choose_filter_48"
+            app:layout_constraintBottom_toBottomOf="@id/btnRecord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnRecord" />
+
+        <!-- Ẩn cả cụm điều khiển camera khi chưa có quyền -->
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/cameraControls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="btnAddSound,btnFlip,btnFlash,rankColumn,durationStrip,btnRecord,btnChooseFilter" />
+
+        <!-- Chưa có quyền camera / micro: giải thích và nút xin lại quyền hoặc mở Settings -->
+        <LinearLayout
+            android:id="@+id/permissionPanel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/camera_permission_title"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:fontFamily="@font/londrina_solid_light"
+                android:gravity="center"
+                android:text="@string/camera_permission_message"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:fontFamily="@font/londrina_solid_light" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPermission"
+                style="@style/Button.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_l"
+                android:minWidth="180dp"
+                tools:text="@string/camera_permission_settings" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

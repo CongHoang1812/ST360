@@ -163,4 +163,34 @@
         <item name="android:focusable">true</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
+
+    <!-- ===== Camera ===== -->
+    <!-- Ảnh đã chốt trong ô hạng: bo 10dp như ô -->
+    <style name="Shape.RankSlot" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/rank_slot_corner</item>
+    </style>
+
+    <!-- Một ô trong dải thời lượng: rộng 52dp, pill nằm giữa -->
+    <style name="Frame.DurationCell" parent="">
+        <item name="android:layout_width">@dimen/duration_cell_width</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Mục thời lượng (Figma 14:708): Londrina Light 16sp, padding 8/4; chọn = pill trắng chữ đen -->
+    <style name="Text.DurationOption" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/bg_duration_option</item>
+        <item name="android:paddingHorizontal">@dimen/space_s</item>
+        <item name="android:paddingVertical">@dimen/space_xs</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/londrina_solid_light</item>
+        <item name="fontFamily">@font/londrina_solid_light</item>
+        <item name="android:textColor">@color/duration_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
 </resources>

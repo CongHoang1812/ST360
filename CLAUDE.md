@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | Chưa |
+| 5 | Camera (5a → 5d) | **5a code xong, build OK, chưa kiểm trên máy**; 5b, 5c, 5d chưa làm |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -74,7 +74,25 @@ Leave bỏ thay đổi, Delete xóa cả thư mục ảnh; CHƯA thử Take a Ph
 - Nút Save Filter khi bấm được dùng gradient vàng theo Figma (29:1871), không phải xanh như sổ tay ghi.
 - Chưa làm màn Successful (57:137) của Make a Filter: prompt 4b chỉ yêu cầu về My Filters.
 
+Giai đoạn 5a đã có (chưa kiểm trên máy):
+- `ui/camera/CameraFragment` + `fragment_camera.xml` (Figma 5:9): PreviewView toàn màn, hàng trên (Back, pill Add Sound,
+  lật camera, flash), cột 12 ô số, dải 60s/30s/Free/15s, nút quay, nút chọn filter. Hàng trên bám đỉnh, cụm dưới bám đáy.
+- 12 ô số tạo bằng vòng lặp từ `item_rank_slot.xml` (có sẵn `ivPhoto` ẩn cho 5c); `sizeRankSlots()` tự thu nhỏ ô
+  nếu cột không đủ cao. Kích thước lấy từ `dimens.xml` (`rank_slot_*`, `rank_column_*`).
+- CameraX: chỉ `Preview`, mặc định camera trước; `bindCamera()` gọi lại khi lật. Flash = torch
+  (`cameraControl.enableTorch`), nút tự mờ khi camera không có đèn; nút lật mờ khi máy chỉ có một camera.
+- Quyền CAMERA + RECORD_AUDIO: tự hỏi một lần khi vào màn; bị từ chối thì hiện bảng giải thích, nút "Allow" hỏi lại,
+  hoặc "Open Settings" khi đã bị từ chối hẳn. Kiểm lại quyền mỗi lần `onStart`.
+- `CameraViewModel`: đọc `filter_id` / `is_user_filter` (thiếu thì lấy `SelectedFilterStore`), giải mã ảnh filter thành
+  bitmap phần mềm 384px bằng Coil (`state.filter.photos`) để 5b–5d vẽ; log tag `CameraViewModel` báo số ảnh.
+  Giữ thời lượng đã chọn (`RecordDuration`) và camera trước/sau trong SavedStateHandle.
+- Nút chọn filter: quay về Choose a Filter (popBackStack, không có trong back stack thì mở mới).
+- Nút quay và Add Sound hiện Toast "Coming soon" (làm ở 5d và giai đoạn 6).
+- Thanh trạng thái đổi sang icon trắng khi ở màn Camera (`onStart`), trả lại icon đen ở `onStop`.
+
 Việc còn treo:
+- Kiểm 5a trên máy thật (cần cắm lại điện thoại): preview trước/sau, lật, flash ở camera sau, bảng xin quyền khi từ chối,
+  Logcat `CameraViewModel` báo 12 ảnh với cả filter có sẵn và filter tự tạo, 12 ô không đè dải thời lượng.
 - Server Trending: từ 14/11/2026 mọi đường dẫn dưới `https://lvtglobal.site/public/app/` (cả `folders.json`, `avatar.png`)
   bị Cloudflare chuyển 302 → `/404.html`. App vẫn chạy với dữ liệu dự phòng + dải lỗi Retry. Cần hỏi người quản lý
   server đường dẫn mới; code 2b (`TrendingApi`) giữ nguyên, chỉ đổi `BASE` nếu server dời chỗ.

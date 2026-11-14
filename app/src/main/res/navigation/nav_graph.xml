@@ -114,13 +114,9 @@
     <!-- Giai đoạn 5: Camera, nhận filter_id (+ is_user_filter cho filter tự tạo ở giai đoạn 4) -->
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
+        android:name="com.example.rankingfilter.ui.camera.CameraFragment"
         android:label="@string/title_camera"
-        tools:layout="@layout/fragment_coming_soon">
-        <argument
-            android:name="title"
-            android:defaultValue="@string/title_camera"
-            app:argType="reference" />
+        tools:layout="@layout/fragment_camera">
         <argument
             android:name="filter_id"
             app:argType="string" />

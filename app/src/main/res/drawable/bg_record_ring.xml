@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vòng trắng 3dp quanh nút quay (Figma 5:10) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <stroke android:width="@dimen/record_button_ring" android:color="@color/white" />
+</shape>

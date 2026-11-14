@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nền mục thời lượng: pill trắng khi đang chọn, trong suốt khi chưa chọn -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_duration_selected" android:state_selected="true" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

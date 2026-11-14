@@ -44,6 +44,13 @@
     <dimen name="camera_round_button">36dp</dimen>
     <dimen name="record_button_inner">56dp</dimen>
     <dimen name="record_button_ring">3dp</dimen>
+    <dimen name="record_button_outer">68dp</dimen>
+    <dimen name="choose_filter_button">48dp</dimen>
+    <!-- Cột ô số: cách trái 42dp, cách đỉnh nội dung 88dp (128 trong design trừ thanh trạng thái 40) -->
+    <dimen name="rank_column_start">42dp</dimen>
+    <dimen name="rank_column_top">88dp</dimen>
+    <!-- Mỗi mục trong dải thời lượng chiếm 52dp (khoảng cách tâm các mục trong design) -->
+    <dimen name="duration_cell_width">52dp</dimen>
 
     <!-- Bottom nav -->
     <dimen name="bottom_nav_height">80dp</dimen>

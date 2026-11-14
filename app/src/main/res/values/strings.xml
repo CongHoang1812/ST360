@@ -47,6 +47,17 @@
     <string name="camera_permission_denied">Camera permission is needed to take a photo.</string>
     <string name="no_camera_app">No camera app found.</string>
 
+    <!-- Camera -->
+    <string name="camera_add_sound">Add Sound</string>
+    <string name="camera_duration_seconds">%1$ds</string>
+    <string name="camera_duration_free">Free</string>
+    <string name="camera_permission_title">Allow camera and microphone</string>
+    <string name="camera_permission_message">Ranking Filter needs your camera and microphone to record ranking videos.</string>
+    <string name="camera_permission_allow">Allow</string>
+    <string name="camera_permission_settings">Open Settings</string>
+    <string name="camera_open_error">Can\'t open the camera.</string>
+    <string name="camera_filter_missing">This filter is no longer available.</string>
+
     <!-- Popup -->
     <string name="leave_title">Leave without saving?</string>
     <string name="leave_message">Your changes will be lost.</string>
@@ -84,4 +95,9 @@
     <string name="cd_remove_photo">Remove photo</string>
     <string name="cd_cover_photo">Cover photo</string>
     <string name="cd_close">Close</string>
+    <string name="cd_flip_camera">Switch camera</string>
+    <string name="cd_flash">Flash</string>
+    <string name="cd_record">Record</string>
+    <string name="cd_choose_filter">Choose a filter</string>
+    <string name="cd_rank_slot">Rank %1$d</string>
 </resources>
