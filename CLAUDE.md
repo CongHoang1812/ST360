@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a code xong, build OK, chưa kiểm trên máy**; 5b, 5c, 5d chưa làm |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi 14/11/2026); 5b, 5c, 5d chưa làm |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -74,7 +74,8 @@ Leave bỏ thay đổi, Delete xóa cả thư mục ảnh; CHƯA thử Take a Ph
 - Nút Save Filter khi bấm được dùng gradient vàng theo Figma (29:1871), không phải xanh như sổ tay ghi.
 - Chưa làm màn Successful (57:137) của Make a Filter: prompt 4b chỉ yêu cầu về My Filters.
 
-Giai đoạn 5a đã có (chưa kiểm trên máy):
+Giai đoạn 5a đã có (đã kiểm trên máy: preview trước/sau, lật, đèn pin ở camera sau, chọn thời lượng, nút chọn filter, Back,
+bảng xin quyền khi từ chối → Open Settings → cấp quyền → quay lại camera tự mở, Logcat báo 12 ảnh filter có sẵn):
 - `ui/camera/CameraFragment` + `fragment_camera.xml` (Figma 5:9): PreviewView toàn màn, hàng trên (Back, pill Add Sound,
   lật camera, flash), cột 12 ô số, dải 60s/30s/Free/15s, nút quay, nút chọn filter. Hàng trên bám đỉnh, cụm dưới bám đáy.
 - 12 ô số tạo bằng vòng lặp từ `item_rank_slot.xml` (có sẵn `ivPhoto` ẩn cho 5c); `sizeRankSlots()` tự thu nhỏ ô
@@ -91,8 +92,9 @@ Giai đoạn 5a đã có (chưa kiểm trên máy):
 - Thanh trạng thái đổi sang icon trắng khi ở màn Camera (`onStart`), trả lại icon đen ở `onStop`.
 
 Việc còn treo:
-- Kiểm 5a trên máy thật (cần cắm lại điện thoại): preview trước/sau, lật, flash ở camera sau, bảng xin quyền khi từ chối,
-  Logcat `CameraViewModel` báo 12 ảnh với cả filter có sẵn và filter tự tạo, 12 ô không đè dải thời lượng.
+- 5a chưa kiểm: Camera với filter TỰ TẠO (Logcat `CameraViewModel` phải báo 12 ảnh; cần người dùng tạo filter vì phải
+  chọn ảnh qua Photo Picker), xoay màn hình / hệ thống đóng app khi đang ở Camera, camera trước có người thật
+  (hướng và lật gương của preview; lúc kiểm điện thoại đặt nằm nên chỉ thấy trần nhà).
 - Server Trending: từ 14/11/2026 mọi đường dẫn dưới `https://lvtglobal.site/public/app/` (cả `folders.json`, `avatar.png`)
   bị Cloudflare chuyển 302 → `/404.html`. App vẫn chạy với dữ liệu dự phòng + dải lỗi Retry. Cần hỏi người quản lý
   server đường dẫn mới; code 2b (`TrendingApi`) giữ nguyên, chỉ đổi `BASE` nếu server dời chỗ.
@@ -107,6 +109,9 @@ Lỗi đã gặp khi chạy thật (đừng lặp lại):
 Kiểm thử trên máy thật: dùng emulator nếu được (máy này chưa có AVD). Nếu dùng điện thoại của người dùng qua adb
 (Xiaomi 24069RA21C, 1220x2712, density 480 → 1dp = 3px), kiểm tra app đang ở foreground trước mỗi lần `input tap`,
 không nối nhiều phím BACK (đã từng chạm nhầm sang app khác); ẩn bàn phím bằng `keyevent 111` (ESC), không dùng BACK.
+Nếu adb treo: `taskkill //PID <pid adb.exe> //F` rồi `adb start-server`; bọc lệnh adb trong `timeout`.
+Thu hồi quyền để thử luồng bị từ chối: `adb shell pm revoke com.example.rankingfilter android.permission.CAMERA`
+(và `RECORD_AUDIO`); hộp thoại quyền hiện từng quyền một (camera rồi micro).
 Git Bash đổi đường dẫn `/sdcard/...` → đặt `MSYS_NO_PATHCONV=1` khi gọi `adb shell`. Không tự thao tác Photo Picker
 (lộ ảnh riêng của người dùng): nhờ người dùng chọn ảnh.
 
