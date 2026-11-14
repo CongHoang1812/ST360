@@ -1,4 +1,4 @@
-package com.facemaker.st316
+package com.example.rankingfilter
 
 import org.junit.Test
 

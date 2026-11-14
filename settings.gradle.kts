@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ST316"
+rootProject.name = "RankingFilter"
 include(":app")
