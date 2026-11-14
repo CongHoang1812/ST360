@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút "Explore pack": nền #00AAFF, viền trắng 0.6dp, bo 4dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/primary" />
+    <stroke
+        android:width="0.6dp"
+        android:color="@color/white" />
+    <corners android:radius="4dp" />
+</shape>

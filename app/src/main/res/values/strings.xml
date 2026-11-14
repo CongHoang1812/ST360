@@ -1,8 +1,33 @@
 <resources>
     <!-- Ngôn ngữ mặc định: English. Bản dịch ở values-es, values-fr, values-hi, values-pt, values-in. -->
     <string name="app_name" translatable="false">Ranking Filter</string>
-    <string name="placeholder_text">Ranking Filter</string>
+
+    <!-- Tiêu đề màn -->
+    <string name="title_new_filter">New filter</string>
+    <string name="title_choose_filter">Choose a Filter</string>
+    <string name="title_gallery">Gallery</string>
+    <string name="title_setting">Setting</string>
+    <string name="coming_soon">Coming soon</string>
+
+    <!-- Home -->
+    <string name="home_new_filter">New filter</string>
+    <string name="home_trending_videos">Trending Videos</string>
+    <string name="home_explore_pack">Explore pack</string>
+    <string name="home_trending_error">Couldn\'t load trending videos. Check your connection.</string>
+    <string name="home_trending_empty">No videos yet.</string>
+    <string name="retry">Retry</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_gallery">Gallery</string>
+
+    <!-- Preview video -->
+    <string name="preview_try_now">Try now</string>
+    <string name="preview_play_error">Can\'t play this video.</string>
 
     <!-- Mô tả cho trình đọc màn hình -->
     <string name="cd_back">Back</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_camera">Open camera</string>
+    <string name="cd_trending_video">Trending video</string>
 </resources>

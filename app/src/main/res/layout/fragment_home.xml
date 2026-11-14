@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Màn Home (Figma node 25:257). Design 360 x 800, thanh trạng thái design cao 40dp:
+     vị trí trong design trừ đi 40 rồi cộng chiều cao thanh trạng thái thật (đặt trong code). -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    tools:context=".ui.home.HomeFragment">
+
+    <ImageView
+        android:id="@+id/bgHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:paddingHorizontal="@dimen/screen_padding">
+
+            <!-- Logo 240 x 44 ở giữa, y=48 (8dp dưới thanh trạng thái) -->
+            <FrameLayout
+                android:id="@+id/logo"
+                android:layout_width="240dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/logo_ranking_filter" />
+
+                <!-- Vương miện nhỏ trên chữ R: 14 x 10.84, xoay -20.34° -->
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="10.84dp"
+                    android:layout_marginStart="9.45dp"
+                    android:layout_marginTop="2.1dp"
+                    android:importantForAccessibility="no"
+                    android:rotation="-20.34"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_crown_gold" />
+            </FrameLayout>
+
+            <!-- Nút Setting 36dp tại (308, 52) -->
+            <ImageButton
+                android:id="@+id/btnSettings"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_settings"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_settings_circle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- "New filter" tại y=112 -->
+            <TextView
+                android:id="@+id/labelNewFilter"
+                style="@style/Text.Section"
+                android:layout_width="0dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/home_new_filter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo" />
+
+            <include
+                android:id="@+id/banner"
+                layout="@layout/view_new_filter_banner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintDimensionRatio="328:114"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelNewFilter" />
+
+            <!-- "Trending Videos" tại y=278 -->
+            <TextView
+                android:id="@+id/labelTrending"
+                style="@style/Text.Section"
+                android:layout_width="0dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/home_trending_videos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/banner" />
+
+            <!-- Báo lỗi mạng + nút thử lại (hiện phía trên lưới dự phòng) -->
+            <LinearLayout
+                android:id="@+id/errorRow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_error_row"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="4dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="4dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelTrending"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/home_trending_error"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/navy" />
+
+                <Button
+                    android:id="@+id/btnRetry"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/retry"
+                    android:textAppearance="@style/TextAppearance.RankingFilter.LabelLarge"
+                    android:textColor="@color/primary" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTrending"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/errorRow"
+                tools:itemCount="4"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_trending_video"
+                tools:spanCount="2" />
+
+            <ProgressBar
+                android:id="@+id/progressTrending"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="48dp"
+                android:indeterminateTint="@color/primary"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelTrending"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/emptyTrending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="@string/home_trending_empty"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="@color/navy"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/errorRow" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/view_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

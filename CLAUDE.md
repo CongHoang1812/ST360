@@ -16,8 +16,8 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 |---|---|---|
 | 0 | Khởi tạo project, dependency, Navigation | Xong (build OK, chưa thử trên máy thật) |
 | 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
-| 2 | Home | Tiếp theo, sau khi có `filters.json` |
-| 3 | Choose a Filter | Chưa |
+| 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16; còn điền `AppConfig.CONFIG_URL`) |
+| 3 | Choose a Filter + New filter | **Tiếp theo** |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | Chưa |
 | 5 | Camera (5a → 5d) | Chưa |
 | 6 | Add Sound, Preview, Successful | Chưa |
@@ -39,6 +39,21 @@ Ghi chú style (tên trong `res/values/styles.xml`): `Button.Primary` (mặc đ�
 disabled tự xám), `Button.Back` (ImageButton), `Card.Blue`, `Input.Rounded`, `Tab.Pill`
 (dùng trong MaterialButtonToggleGroup), `Text.ScreenTitle`, `Shape.Rounded4/8/12`, `Shape.Pill`.
 Theme chỉ có bản sáng (đã bỏ values-night). Màu nút Back lấy từ Figma node 25:222.
+
+Giai đoạn 2 đã có:
+- `ui/home/HomeFragment` + `HomeViewModel` + `TrendingAdapter`; layout `fragment_home.xml`,
+  `view_new_filter_banner.xml` (đặt theo % khung 328:114), `item_trending_video.xml` (tỉ lệ 156:240).
+- `ui/common/BottomNav.kt` + `view_bottom_nav.xml`: bottom nav tự vẽ, dùng lại ở Gallery (giai đoạn 7) với `BottomTab.GALLERY`.
+- `ui/preview/PreviewVideoFragment`: ExoPlayer lặp video, cache đĩa 200 MB (`video/VideoCache.kt`), nút Try now → chooseFilter (truyền `filter_id`).
+- `data/trending/`: đọc `config.json` (HttpURLConnection + kotlinx.serialization). Thêm 2 trường tùy chọn
+  cho mỗi video: `title`, `filter_id`. Lỗi mạng hoặc `CONFIG_URL` rỗng → dùng avatar filter làm dữ liệu dự phòng.
+- `ui/common/ComingSoonFragment`: màn tạm cho newFilter, chooseFilter, gallery, setting (arg `title` kiểu reference).
+- Insets: MainActivity KHÔNG còn padding chung; mỗi Fragment tự gọi `applySystemBarsPadding()` (ui/common/Insets.kt).
+- Asset Figma: `drawable-nodpi/` (nền Home, logo, banner) và vector `ic_crown_gold/silver/bronze`, icon nav, settings.
+  Ảnh Figma export qua MCP bị dính nền xám #444 → lấy ảnh gốc (rawImages) và tự cắt, vector thì chuyển tay.
+
+Kiểm thử trên máy thật: dùng emulator nếu được. Nếu dùng điện thoại của người dùng qua adb, kiểm tra app đang
+ở foreground trước mỗi lần `input tap`, không nối nhiều phím BACK (đã từng chạm nhầm sang app khác).
 
 Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 

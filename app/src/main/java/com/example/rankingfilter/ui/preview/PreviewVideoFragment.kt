@@ -1,0 +1,132 @@
+package com.example.rankingfilter.ui.preview
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.navigation.fragment.findNavController
+import coil3.load
+import coil3.request.crossfade
+import com.example.rankingfilter.R
+import com.example.rankingfilter.data.trending.TrendingVideo
+import com.example.rankingfilter.databinding.FragmentPreviewVideoBinding
+import com.example.rankingfilter.ui.common.applySystemBarsPadding
+import com.example.rankingfilter.video.VideoCache
+
+/**
+ * Màn Preview video (Figma node 25:562): phát video Trending toàn màn, lặp lại,
+ * nút Back, tên filter và nút "Try now" mở màn chọn filter.
+ */
+class PreviewVideoFragment : Fragment() {
+
+    private var _binding: FragmentPreviewVideoBinding? = null
+    private val binding get() = _binding!!
+
+    private var player: ExoPlayer? = null
+    /** Vị trí phát, giữ lại khi app vào nền rồi quay lại. */
+    private var resumePositionMs = 0L
+
+    private val videoUrl get() = arguments?.getString(ARG_VIDEO_URL)
+    private val filterId get() = arguments?.getString(ARG_FILTER_ID)
+
+    private val playerListener = object : Player.Listener {
+        override fun onRenderedFirstFrame() {
+            _binding?.thumb?.isVisible = false
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            _binding?.let {
+                it.thumb.isVisible = true
+                it.errorText.isVisible = true
+            }
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentPreviewVideoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        resumePositionMs = savedInstanceState?.getLong(STATE_POSITION) ?: 0L
+        binding.overlay.applySystemBarsPadding(top = true, bottom = true)
+
+        val args = requireArguments()
+        binding.thumb.load(args.getString(ARG_THUMB_URL)) { crossfade(true) }
+        val title = args.getString(ARG_TITLE)
+        binding.title.text = title
+        binding.title.isVisible = !title.isNullOrBlank()
+
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.btnTryNow.setOnClickListener {
+            // Giai đoạn 5: mở thẳng Camera với filterId. Hiện tại mở màn Choose a Filter.
+            findNavController().navigate(
+                R.id.action_preview_to_chooseFilter,
+                bundleOf(ARG_FILTER_ID to filterId),
+            )
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val url = videoUrl ?: return // Dữ liệu dự phòng: chỉ có ảnh, không có video.
+        binding.errorText.isVisible = false
+        player = VideoCache.buildPlayer(requireContext()).also {
+            it.addListener(playerListener)
+            it.repeatMode = Player.REPEAT_MODE_ONE
+            it.setMediaItem(MediaItem.fromUri(url))
+            it.seekTo(resumePositionMs)
+            it.playWhenReady = true
+            it.prepare()
+        }
+        binding.playerView.player = player
+    }
+
+    override fun onStop() {
+        super.onStop()
+        releasePlayer()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong(STATE_POSITION, player?.currentPosition ?: resumePositionMs)
+    }
+
+    private fun releasePlayer() {
+        player?.let {
+            resumePositionMs = it.currentPosition
+            it.removeListener(playerListener)
+            it.release()
+        }
+        player = null
+        _binding?.playerView?.player = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        const val ARG_THUMB_URL = "thumb_url"
+        const val ARG_VIDEO_URL = "video_url"
+        const val ARG_TITLE = "title"
+        const val ARG_FILTER_ID = "filter_id"
+        private const val STATE_POSITION = "position"
+
+        fun args(item: TrendingVideo): Bundle = bundleOf(
+            ARG_THUMB_URL to item.thumbUrl,
+            ARG_VIDEO_URL to item.videoUrl,
+            ARG_TITLE to item.title,
+            ARG_FILTER_ID to item.filterId,
+        )
+    }
+}

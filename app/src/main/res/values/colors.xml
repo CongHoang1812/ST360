@@ -15,6 +15,15 @@
     <color name="back_yellow_bottom">#FFF69A</color>
     <color name="back_arrow_brown">#87561E</color>
 
+    <!-- Bottom nav: tab chưa chọn (đen 30%) -->
+    <color name="nav_inactive">#4D000000</color>
+    <!-- Bóng của ảnh trong banner New filter: rgba(52,147,195,0.4) -->
+    <color name="banner_card_shadow">#663493C3</color>
+    <!-- Số trên vương miện hạng 1, 2, 3 -->
+    <color name="crown_text_gold">#BD5900</color>
+    <color name="crown_text_silver">#666666</color>
+    <color name="crown_text_bronze">#9C2E01</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

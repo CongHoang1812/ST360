@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Banner "New filter" (Figma node 31:2616), khung thiết kế 328 x 114 dp.
+     Mọi phần tử đặt theo tỉ lệ phần trăm của khung để co giãn đều trên màn khác.
+     Công thức bias: vị trí / (kích thước khung - kích thước phần tử). -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    app:layout_constraintDimensionRatio="328:114">
+
+    <!-- Nền mây xanh: 328 x 104, sát đáy -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bannerBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner_new_filter_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.9123"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearance="@style/Shape.Rounded8" />
+
+    <!-- Ảnh 3 (60dp, xoay 13.35°) vẽ trước để ảnh 2 đè lên -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/card3"
+        style="@style/Banner.Card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="13.35"
+        app:layout_constraintHorizontal_bias="0.9258"
+        app:layout_constraintVertical_bias="0.6504"
+        app:layout_constraintWidth_percent="0.1829" />
+
+    <!-- Ảnh 1 (70dp, xoay -7.55°) -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/card1"
+        style="@style/Banner.Card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="-7.55"
+        app:layout_constraintHorizontal_bias="0.4353"
+        app:layout_constraintVertical_bias="0.575"
+        app:layout_constraintWidth_percent="0.2134" />
+
+    <!-- Ảnh 2 (66dp, xoay 3.92°) -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/card2"
+        style="@style/Banner.Card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="3.92"
+        app:layout_constraintHorizontal_bias="0.6915"
+        app:layout_constraintVertical_bias="0.5871"
+        app:layout_constraintWidth_percent="0.2012" />
+
+    <!-- Vương miện hạng 1 (vàng), 29 x 22.5, xoay -9.88° -->
+    <FrameLayout
+        android:id="@+id/crown1"
+        style="@style/Banner.Crown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="-9.88"
+        app:layout_constraintHorizontal_bias="0.367"
+        app:layout_constraintVertical_bias="0.1129"
+        app:layout_constraintWidth_percent="0.08856">
+
+        <ImageView
+            style="@style/Banner.CrownImage"
+            android:src="@drawable/ic_crown_gold" />
+
+        <TextView
+            style="@style/Banner.CrownNumber"
+            android:paddingTop="5dp"
+            android:text="1"
+            tools:ignore="HardcodedText,SmallSp"
+            android:textColor="@color/crown_text_gold"
+            android:textSize="9.5sp" />
+    </FrameLayout>
+
+    <!-- Vương miện hạng 2 (bạc), 23.2 x 17.9, xoay 6.44° -->
+    <FrameLayout
+        android:id="@+id/crown2"
+        style="@style/Banner.Crown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="6.44"
+        app:layout_constraintHorizontal_bias="0.669"
+        app:layout_constraintVertical_bias="0.1586"
+        app:layout_constraintWidth_percent="0.07066">
+
+        <ImageView
+            style="@style/Banner.CrownImage"
+            android:src="@drawable/ic_crown_silver" />
+
+        <TextView
+            style="@style/Banner.CrownNumber"
+            android:paddingTop="2dp"
+            android:text="2"
+            tools:ignore="HardcodedText,SmallSp"
+            android:textColor="@color/crown_text_silver"
+            android:textSize="8.8sp" />
+    </FrameLayout>
+
+    <!-- Vương miện hạng 3 (đồng), 22.5 x 17.3, xoay 19.04° -->
+    <FrameLayout
+        android:id="@+id/crown3"
+        style="@style/Banner.Crown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="19.04"
+        app:layout_constraintHorizontal_bias="0.9629"
+        app:layout_constraintVertical_bias="0.2916"
+        app:layout_constraintWidth_percent="0.0685">
+
+        <ImageView
+            style="@style/Banner.CrownImage"
+            android:src="@drawable/ic_crown_bronze" />
+
+        <TextView
+            style="@style/Banner.CrownNumber"
+            android:paddingTop="3dp"
+            android:text="3"
+            tools:ignore="HardcodedText,SmallSp"
+            android:textColor="@color/crown_text_bronze"
+            android:textSize="8.8sp" />
+    </FrameLayout>
+
+    <!-- Nút "Explore pack" tại (241, 90) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideExploreX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7348" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideExploreY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7895" />
+
+    <TextView
+        android:id="@+id/btnExplore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_explore_pack"
+        android:drawablePadding="4dp"
+        android:fontFamily="@font/roboto_medium"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:text="@string/home_explore_pack"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        tools:ignore="SmallSp"
+        app:drawableEndCompat="@drawable/ic_arrow_forward_12"
+        app:layout_constraintStart_toStartOf="@id/guideExploreX"
+        app:layout_constraintTop_toTopOf="@id/guideExploreY" />
+
+    <!-- Ảnh cô gái 155 x 114 ở góc trái, nằm trên cùng -->
+    <ImageView
+        android:id="@+id/bannerGirl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner_new_filter_girl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4726" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Ảnh filter trong banner: viền trắng 3dp, bo 8dp, đổ bóng xanh nhạt.
+         Phần tử vuông, chiều rộng theo % khung banner (đặt layout_constraintWidth_percent ở layout). -->
+    <style name="Banner.Card" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="android:padding">1.5dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/bg_image_placeholder</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="28">@color/banner_card_shadow</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="28">@color/banner_card_shadow</item>
+        <item name="strokeColor">@color/white</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="shapeAppearance">@style/Shape.Rounded8</item>
+    </style>
+
+    <!-- Vương miện: tỉ lệ 29.047 : 22.488 như Figma -->
+    <style name="Banner.Crown" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="layout_constraintDimensionRatio">29.047:22.488</item>
+        <item name="android:elevation">3dp</item>
+    </style>
+
+    <style name="Banner.CrownImage" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="Banner.CrownNumber" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:fontFamily">@font/londrina_solid</item>
+    </style>
+
+    <!-- Nhãn mục trên Home ("New filter", "Trending Videos"): Londrina 18sp navy, cao 20dp -->
+    <style name="Text.Section" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textAppearance">@style/TextAppearance.RankingFilter.TitleMedium</item>
+        <item name="android:textColor">@color/navy</item>
+    </style>
+</resources>

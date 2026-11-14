@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút Setting tròn xanh 36dp (Figma node 27:1049). Bỏ inner shadow. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="36"
+    android:viewportHeight="36">
+    <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endColor="#A7E2FF"
+                android:endX="18"
+                android:endY="36"
+                android:startColor="#D8F2FF"
+                android:startX="18"
+                android:startY="0"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M18,0.5a17.5,17.5 0,1 1,0 35a17.5,17.5 0,1 1,0 -35z"
+        android:strokeWidth="1"
+        android:strokeColor="@color/white" />
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M24.054,18C24.0538,17.6322 24.02,17.2651 23.9531,16.9033L26,15.7333L23.982,12.2667L21.9344,13.4393C21.3691,12.96 20.7194,12.588 20.018,12.342V10H15.982V12.342C15.2806,12.588 14.6309,12.96 14.0656,13.4393L12.018,12.2667L10,15.7333L12.0469,16.9033C11.9125,17.6284 11.9125,18.3716 12.0469,19.0967L10,20.2667L12.018,23.7333L14.0656,22.5613C14.631,23.0405 15.2806,23.4122 15.982,23.658V26H20.018V23.658C20.7194,23.412 21.3691,23.04 21.9344,22.5607L23.982,23.7333L26,20.2667L23.9531,19.0967C24.02,18.7349 24.0538,18.3678 24.054,18ZM20.018,18C20.018,18.3956 19.8996,18.7822 19.6779,19.1111C19.4562,19.44 19.141,19.6964 18.7723,19.8478C18.4035,19.9991 17.9978,20.0387 17.6063,19.9616C17.2149,19.8844 16.8553,19.6939 16.5731,19.4142C16.2908,19.1345 16.0986,18.7781 16.0208,18.3902C15.9429,18.0022 15.9829,17.6001 16.1356,17.2346C16.2884,16.8692 16.547,16.5568 16.8789,16.3371C17.2107,16.1173 17.6009,16 18,16C18.5352,16 19.0485,16.2107 19.4269,16.5858C19.8054,16.9609 20.018,17.4696 20.018,18Z" />
+</vector>
