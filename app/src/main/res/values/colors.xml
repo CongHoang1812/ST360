@@ -26,6 +26,10 @@
     <color name="crown_text_silver">#666666</color>
     <color name="crown_text_bronze">#9C2E01</color>
 
+    <!-- Add Sound: dòng đang chọn (Figma 22:757) và đường kẻ giữa các dòng -->
+    <color name="music_selected">#B9E8FF</color>
+    <color name="divider_light">#1F183D76</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

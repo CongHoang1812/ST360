@@ -1,17 +1,12 @@
 package com.example.rankingfilter.ui.camera.record
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
 import android.os.StatFs
-import android.provider.MediaStore
 import android.util.Log
 import androidx.camera.core.MirrorMode
 import androidx.camera.video.FallbackStrategy
-import androidx.camera.video.MediaStoreOutputOptions
+import androidx.camera.video.FileOutputOptions
 import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import androidx.camera.video.Recorder
@@ -20,13 +15,11 @@ import androidx.camera.video.VideoCapture
 import androidx.camera.video.VideoRecordEvent
 import androidx.core.content.ContextCompat
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import java.util.concurrent.Executors
 
 /**
- * Quay video bằng CameraX `VideoCapture<Recorder>`, có tiếng, lưu vào MediaStore (Movies/RankingFilter).
+ * Quay video bằng CameraX `VideoCapture<Recorder>`, có tiếng, ghi vào một file bản nháp trong bộ nhớ của app
+ * (`VideoLibrary.newDraft`). Video chỉ ra thư viện ảnh của máy khi người dùng bấm Download ở màn Successful.
  * Hình ảnh trên đầu và cột hạng do `CameraOverlay` vẽ vào khung hình trước khi tới đây,
  * nên lớp này không biết gì về overlay.
  *
@@ -58,7 +51,7 @@ class VideoRecorder(context: Context) {
         /** Thời lượng đã ghi, gọi nhiều lần mỗi giây. */
         fun onProgress(elapsedMs: Long)
         /** Video đã đóng file xong và dùng được (dừng bằng tay, xếp xong, hoặc hết giờ). */
-        fun onSaved(uri: Uri)
+        fun onSaved(file: File)
         /** Bản ghi bị bỏ theo yêu cầu ([stop] với keep = false); file đã bị xóa. */
         fun onDiscarded()
         /** Bản ghi hỏng; file dở (nếu có) đã bị xóa. */
@@ -88,7 +81,7 @@ class VideoRecorder(context: Context) {
         .setMirrorMode(MirrorMode.MIRROR_MODE_ON_FRONT_ONLY)
         .build()
 
-    private class Session {
+    private class Session(val file: File) {
         lateinit var recording: Recording
         var keep = true
         var stopRequested = false
@@ -100,26 +93,22 @@ class VideoRecorder(context: Context) {
     val isBusy: Boolean get() = session != null
 
     /**
-     * Bắt đầu quay. [durationLimitMs] = null là không giới hạn (chế độ Free).
+     * Bắt đầu quay vào [output]. [durationLimitMs] = null là không giới hạn (chế độ Free).
      * Trả về null nếu bắt đầu được; nếu không, trả về lý do và KHÔNG gọi callback nào.
      * Phải có quyền RECORD_AUDIO (CameraFragment đã kiểm).
      */
     @SuppressLint("MissingPermission")
-    fun start(durationLimitMs: Long?): Failure? {
+    fun start(durationLimitMs: Long?, output: File): Failure? {
         if (session != null) return Failure.UNKNOWN
-        if (!hasEnoughStorage()) return Failure.NO_STORAGE
+        if (!hasEnoughStorage(output)) return Failure.NO_STORAGE
 
-        val options = MediaStoreOutputOptions.Builder(
-            appContext.contentResolver,
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-        )
-            .setContentValues(newVideoValues())
+        val options = FileOutputOptions.Builder(output)
             // Recorder tự dừng đúng lúc hết giờ và báo Finalize với ERROR_DURATION_LIMIT_REACHED
             // (tên là "error" nhưng video hoàn toàn dùng được).
             .apply { if (durationLimitMs != null) setDurationLimitMillis(durationLimitMs) }
             .build()
 
-        val holder = Session()
+        val holder = Session(output)
         return try {
             holder.recording = recorder.prepareRecording(appContext, options)
                 .withAudioEnabled()
@@ -168,26 +157,26 @@ class VideoRecorder(context: Context) {
 
     private fun onFinalize(holder: Session, event: VideoRecordEvent.Finalize) {
         if (session === holder) session = null
-        val uri = event.outputResults.outputUri.takeIf { it != Uri.EMPTY }
+        val file = holder.file
         val error = event.error
         val usable = error == VideoRecordEvent.Finalize.ERROR_NONE ||
             error == VideoRecordEvent.Finalize.ERROR_DURATION_LIMIT_REACHED ||
             error == VideoRecordEvent.Finalize.ERROR_FILE_SIZE_LIMIT_REACHED
         if (error != VideoRecordEvent.Finalize.ERROR_NONE) {
-            Log.w(TAG, "Finalize: error=$error keep=${holder.keep} uri=$uri", event.cause)
+            Log.w(TAG, "Finalize: error=$error keep=${holder.keep} file=$file", event.cause)
         }
 
         val currentListener = listener
         when {
             // Bị bỏ theo yêu cầu, hoặc không còn ai nhận video.
             !holder.keep || currentListener == null -> {
-                delete(uri)
+                delete(file)
                 currentListener?.onDiscarded()
             }
-            usable && uri != null -> currentListener.onSaved(uri)
+            usable && file.length() > 0 -> currentListener.onSaved(file)
             else -> {
-                // Lỗi thật: file dở có thể vẫn mở được nhưng thiếu đoạn cuối; xóa cho khỏi rác thư viện.
-                delete(uri)
+                // Lỗi thật: file dở có thể vẫn mở được nhưng thiếu đoạn cuối; xóa luôn.
+                delete(file)
                 currentListener.onFailed(
                     when (error) {
                         VideoRecordEvent.Finalize.ERROR_INSUFFICIENT_STORAGE -> Failure.NO_STORAGE
@@ -200,49 +189,21 @@ class VideoRecorder(context: Context) {
         }
     }
 
-    private fun newVideoValues(): ContentValues {
-        val name = "RankingFilter_" + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        return ContentValues().apply {
-            put(MediaStore.Video.Media.DISPLAY_NAME, name)
-            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.Video.Media.RELATIVE_PATH, "${Environment.DIRECTORY_MOVIES}/$ALBUM")
-            } else {
-                // Android 9 trở xuống chưa có RELATIVE_PATH: chỉ đường dẫn tuyệt đối (cần quyền
-                // WRITE_EXTERNAL_STORAGE, đã khai trong manifest với maxSdkVersion 28).
-                @Suppress("DEPRECATION")
-                val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), ALBUM)
-                dir.mkdirs()
-                @Suppress("DEPRECATION")
-                put(MediaStore.Video.Media.DATA, File(dir, "$name.mp4").absolutePath)
-            }
-        }
-    }
-
     /** Còn dưới [MIN_FREE_BYTES] thì không quay: thà báo trước còn hơn hỏng giữa chừng. */
-    private fun hasEnoughStorage(): Boolean = try {
-        @Suppress("DEPRECATION")
-        StatFs(Environment.getExternalStorageDirectory().path).availableBytes >= MIN_FREE_BYTES
+    private fun hasEnoughStorage(output: File): Boolean = try {
+        StatFs((output.parentFile ?: appContext.filesDir).path).availableBytes >= MIN_FREE_BYTES
     } catch (e: Exception) {
         true // Không đo được thì cứ thử quay; đầy thật thì Finalize sẽ báo ERROR_INSUFFICIENT_STORAGE.
     }
 
-    private fun delete(uri: Uri?) {
-        if (uri == null) return
+    private fun delete(file: File) {
         cleanupExecutor.execute {
-            try {
-                appContext.contentResolver.delete(uri, null, null)
-            } catch (e: Exception) {
-                Log.w(TAG, "Không xóa được video $uri", e)
-            }
+            if (file.exists() && !file.delete()) Log.w(TAG, "Không xóa được video $file")
         }
     }
 
     companion object {
         private const val TAG = "VideoRecorder"
-
-        /** Thư mục con trong Movies. */
-        const val ALBUM = "RankingFilter"
 
         /** 60 giây Full HD khoảng 80–100 MB; dưới 150 MB trống thì không bắt đầu. */
         private const val MIN_FREE_BYTES = 150L * 1024 * 1024

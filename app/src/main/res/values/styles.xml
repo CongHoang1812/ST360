@@ -193,4 +193,26 @@
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
+
+    <!-- ===== Successful ===== -->
+    <!-- Tiêu đề mục "Share to" / "Try More Filters": 18sp navy -->
+    <style name="Text.SuccessSection" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/screen_padding</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:textColor">@color/navy</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Image.ShareIcon" parent="">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+    <style name="Space.ShareGap" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 </resources>

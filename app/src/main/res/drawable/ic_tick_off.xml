@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút tick Add Sound khi chưa chọn bài (Figma 22:861): tròn xám -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="36dp" android:height="36dp"
+    android:viewportWidth="36" android:viewportHeight="36">
+    <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="18" android:startY="0" android:endX="18" android:endY="36"
+                android:startColor="#E4E4E4" android:endColor="#CFCFCF" />
+        </aapt:attr>
+    </path>
+    <path android:pathData="M18,0.5a17.5,17.5 0,1 1,0 35a17.5,17.5 0,1 1,0 -35z"
+        android:strokeColor="@color/white" android:strokeWidth="1" />
+    <path android:pathData="M25.4753 12.8096L24.7908 12.3047C24.5254 12.1081 24.1868 12 23.8393 12C23.3939 12 22.9765 12.1739 22.6929 12.4772L16.1788 19.4931L13.2387 16.5978C12.9584 16.3223 12.5558 16.1642 12.1351 16.1642C11.7637 16.1642 11.4086 16.2858 11.1359 16.506L10.4745 17.0388C9.88433 17.5153 9.83851 18.3308 10.3717 18.8564L15.156 23.5656C15.4363 23.8419 15.8389 24 16.2596 24C16.7058 24 17.1233 23.8261 17.406 23.5228L25.6721 14.6201C26.1771 14.0738 26.089 13.2619 25.4753 12.8096Z" android:fillColor="#848788" />
+</vector>

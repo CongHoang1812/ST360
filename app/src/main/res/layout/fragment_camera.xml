@@ -58,11 +58,16 @@
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_music_20" />
 
+            <!-- "Add Sound", hoặc tên bài đã chọn -->
             <TextView
+                android:id="@+id/tvAddSound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_s"
+                android:ellipsize="end"
                 android:includeFontPadding="false"
+                android:maxWidth="160dp"
+                android:maxLines="1"
                 android:text="@string/camera_add_sound"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

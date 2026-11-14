@@ -18,10 +18,15 @@ class FilterAdapter(
     private val onClick: (FilterCardItem) -> Unit,
     /** Bấm nút "…" trên filter tự tạo (null = không hiện nút). [anchor] là chính nút đó. */
     private val onMoreClick: ((item: FilterCardItem, anchor: View) -> Unit)? = null,
+    /** Chiều rộng cố định của ô (danh sách cuộn ngang, ví dụ "Try More Filters"); null = theo lưới. */
+    private val itemWidthPx: Int? = null,
 ) : ListAdapter<FilterCardItem, FilterAdapter.Holder>(Diff) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
-        Holder(ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val binding = ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        itemWidthPx?.let { width -> binding.root.layoutParams = binding.root.layoutParams.apply { this.width = width } }
+        return Holder(binding)
+    }
 
     override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(getItem(position))
 

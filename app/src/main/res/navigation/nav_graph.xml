@@ -124,28 +124,63 @@
             android:name="is_user_filter"
             android:defaultValue="false"
             app:argType="boolean" />
-        <!-- Xếp đủ 12 ô thì sang màn Preview (giai đoạn 6) -->
+        <!-- Quay xong thì sang màn Preview (giai đoạn 6) -->
         <action
             android:id="@+id/action_camera_to_preview"
             app:destination="@id/resultPreviewFragment" />
+        <action
+            android:id="@+id/action_camera_to_addSound"
+            app:destination="@id/addSoundFragment" />
     </fragment>
 
-    <!-- Giai đoạn 6: Preview video vừa quay (Figma 8:334). Tạm là màn trống. -->
+    <!-- Giai đoạn 6: Preview video vừa quay (Figma 8:334) -->
     <fragment
         android:id="@+id/resultPreviewFragment"
-        android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
+        android:name="com.example.rankingfilter.ui.result.PreviewFragment"
         android:label="@string/title_preview"
-        tools:layout="@layout/fragment_coming_soon">
+        tools:layout="@layout/fragment_preview">
+        <!-- Bản nháp trong filesDir/drafts -->
         <argument
-            android:name="title"
-            android:defaultValue="@string/title_preview"
-            app:argType="reference" />
-        <!-- content:// của video vừa quay (MediaStore, Movies/RankingFilter) -->
+            android:name="video_path"
+            app:argType="string" />
+        <!-- Nhạc đã chọn ở Add Sound, -1 = giữ tiếng gốc -->
         <argument
-            android:name="video_uri"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
+            android:name="music_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <!-- Lưu xong: Back từ Successful về thẳng Home -->
+        <action
+            android:id="@+id/action_preview_to_success"
+            app:destination="@id/successFragment"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+
+    <!-- Giai đoạn 6: Successful (Figma 14:451) -->
+    <fragment
+        android:id="@+id/successFragment"
+        android:name="com.example.rankingfilter.ui.result.SuccessFragment"
+        android:label="@string/title_success"
+        tools:layout="@layout/fragment_success">
+        <argument
+            android:name="video_path"
+            app:argType="string" />
+        <!-- Try More Filters: quay tiếp với filter khác; Back từ Camera về Home -->
+        <action
+            android:id="@+id/action_success_to_camera"
+            app:destination="@id/cameraFragment"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+
+    <!-- Giai đoạn 6: Add Sound (Figma 14:620 / 22:738), mở từ pill trên Camera -->
+    <fragment
+        android:id="@+id/addSoundFragment"
+        android:name="com.example.rankingfilter.ui.sound.AddSoundFragment"
+        android:label="@string/camera_add_sound"
+        tools:layout="@layout/fragment_add_sound">
+        <argument
+            android:name="selected_music_id"
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
 
     <!-- Giai đoạn 7: Gallery -->

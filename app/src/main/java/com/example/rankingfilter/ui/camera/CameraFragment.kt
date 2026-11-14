@@ -10,7 +10,6 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.RectF
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -49,6 +48,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.withStarted
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.rankingfilter.R
@@ -63,7 +64,11 @@ import com.example.rankingfilter.ui.camera.overlay.CameraOverlay
 import com.example.rankingfilter.ui.camera.overlay.OverlayRenderer
 import com.example.rankingfilter.ui.camera.overlay.OverlayScene
 import com.example.rankingfilter.ui.camera.record.VideoRecorder
-import com.example.rankingfilter.ui.common.ComingSoonFragment
+import com.example.rankingfilter.data.music.MusicRepository
+import com.example.rankingfilter.data.video.VideoLibrary
+import com.example.rankingfilter.ui.result.PreviewViewModel
+import com.example.rankingfilter.ui.sound.AddSoundFragment
+import com.example.rankingfilter.ui.sound.AddSoundViewModel
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -71,6 +76,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -121,6 +127,13 @@ class CameraFragment : Fragment() {
     private var overlay: CameraOverlay? = null
     private var recorder: VideoRecorder? = null
     private var recPhase = RecPhase.IDLE
+
+    /**
+     * Nhạc đã chọn, phát trong lúc quay để người chơi nghe nhịp (video lưu ra sẽ thay tiếng micro bằng chính bài này
+     * ở màn Preview). Tạo ở onStart khi bài đã có trên máy, giải phóng ở onStop.
+     */
+    private var musicPlayer: ExoPlayer? = null
+    private var musicPlayerFile: File? = null
 
     /** Người dùng bấm "làm lại": khi bản ghi cũ bị bỏ xong thì quay lại từ đầu. */
     private var restartPending = false
@@ -190,8 +203,8 @@ class CameraFragment : Fragment() {
         binding.btnFlip.setOnClickListener { flipCamera() }
         binding.btnFlash.setOnClickListener { toggleTorch() }
         binding.btnChooseFilter.setOnClickListener { openChooseFilter() }
-        // Add Sound làm ở giai đoạn 6.
-        binding.btnAddSound.setOnClickListener { toast(R.string.coming_soon) }
+        binding.btnAddSound.setOnClickListener { openAddSound() }
+        listenMusicResult()
         binding.btnRecord.setOnClickListener { onRecordClicked() }
         binding.btnRestart.setOnClickListener { restartRecording() }
         binding.btnPermission.setOnClickListener { onPermissionButtonClicked() }
@@ -208,6 +221,7 @@ class CameraFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         setLightStatusBarIcons(false)
+        prepareMusicPlayer()
         // Kiểm tra lại mỗi lần quay về màn (ví dụ sau khi cấp quyền trong Settings).
         when {
             hasAllPermissions() -> showCamera()
@@ -231,6 +245,7 @@ class CameraFragment : Fragment() {
         // Camera dừng thì không còn khung hình nào về nữa; ẩn ảnh để lần sau không hiện vị trí cũ.
         headSmoother.clear()
         publishScene()
+        releaseMusicPlayer()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -301,7 +316,7 @@ class CameraFragment : Fragment() {
             }
         }
         val limitMs = viewModel.state.value.duration.seconds?.let { it * 1000L }
-        val failure = current.start(limitMs)
+        val failure = current.start(limitMs, VideoLibrary.newDraft(requireContext()))
         if (failure != null) {
             showRecordFailure(failure)
             return
@@ -336,21 +351,34 @@ class CameraFragment : Fragment() {
             setRecPhase(RecPhase.RECORDING)
             // Ván bắt đầu đúng lúc video bắt đầu ghi, để video có trọn ván.
             viewModel.startGame()
+            // Nhạc cũng bắt đầu từ giây 0, trùng với lúc nhạc bắt đầu trong video lưu ra.
+            musicPlayer?.let {
+                it.seekTo(0)
+                it.play()
+            }
         }
 
         override fun onProgress(elapsedMs: Long) {
             if (_binding != null) showElapsed(elapsedMs)
         }
 
-        override fun onSaved(uri: Uri) {
-            if (_binding == null) return
+        override fun onSaved(file: File) {
+            if (_binding == null) {
+                // Màn đã rời đi: không ai xem bản nháp này nữa.
+                VideoLibrary.deleteDraft(file)
+                return
+            }
             resetAfterRecording()
+            val musicId = viewModel.state.value.music?.id ?: -1
             // Chuyển màn khi Fragment ở trạng thái cho phép (callback có thể đến lúc app vừa xuống nền).
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.lifecycle.withStarted {
                     findNavController().navigate(
                         R.id.action_camera_to_preview,
-                        bundleOf(ComingSoonFragment.ARG_VIDEO_URI to uri.toString()),
+                        bundleOf(
+                            PreviewViewModel.ARG_VIDEO_PATH to file.absolutePath,
+                            PreviewViewModel.ARG_MUSIC_ID to musicId,
+                        ),
                     )
                 }
             }
@@ -374,6 +402,7 @@ class CameraFragment : Fragment() {
 
     /** Bản ghi đã kết thúc (lưu, bỏ hoặc lỗi): về trạng thái chưa quay, chưa chơi. */
     private fun resetAfterRecording() {
+        musicPlayer?.pause()
         restartPending = false
         finishJob?.cancel()
         finishJob = null
@@ -441,6 +470,8 @@ class CameraFragment : Fragment() {
 
     private fun render(state: CameraUiState) {
         durationViews().forEach { (duration, view) -> view.isSelected = duration == state.duration }
+        binding.tvAddSound.text = state.music?.title ?: getString(R.string.camera_add_sound)
+        if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) prepareMusicPlayer()
         game = state.game
         updateControls()
         rankSlots.forEachIndexed { index, slot -> renderSlot(index, slot, state.game.slots.getOrNull(index)) }
@@ -588,6 +619,51 @@ class CameraFragment : Fragment() {
                 navOptions { popUpTo(R.id.cameraFragment) { inclusive = true } },
             )
         }
+    }
+
+    // ---------------------------------------------------------------- Nhạc nền
+
+    private fun openAddSound() {
+        if (isBusy) return
+        findNavController().navigate(
+            R.id.action_camera_to_addSound,
+            bundleOf(AddSoundViewModel.ARG_SELECTED to (viewModel.state.value.music?.id ?: -1)),
+        )
+    }
+
+    /** Add Sound trả về id bài đã chọn qua savedStateHandle của màn này. */
+    private fun listenMusicResult() {
+        val entry = findNavController().currentBackStackEntry ?: return
+        entry.savedStateHandle.getLiveData<Int>(AddSoundFragment.RESULT_MUSIC_ID).observe(viewLifecycleOwner) { id ->
+            if (id == null) return@observe
+            entry.savedStateHandle.remove<Int>(AddSoundFragment.RESULT_MUSIC_ID)
+            viewModel.setMusic(id)
+        }
+    }
+
+    /**
+     * Chuẩn bị sẵn trình phát nhạc (đã nạp file, đang dừng) để bấm quay là phát ngay.
+     * Chỉ phát file đã tải về máy (Add Sound tải lúc bấm tick); thiếu file thì quay không nhạc,
+     * màn Preview sẽ thử tải lại.
+     */
+    private fun prepareMusicPlayer() {
+        val track = viewModel.state.value.music
+        val file = track?.let { MusicRepository.cachedFile(requireContext(), it) }?.takeIf(File::exists)
+        if (file == musicPlayerFile && (file == null || musicPlayer != null)) return
+        releaseMusicPlayer()
+        if (file == null) return
+        musicPlayerFile = file
+        musicPlayer = ExoPlayer.Builder(requireContext()).build().apply {
+            setMediaItem(MediaItem.fromUri(Uri.fromFile(file)))
+            repeatMode = androidx.media3.common.Player.REPEAT_MODE_ONE
+            prepare()
+        }
+    }
+
+    private fun releaseMusicPlayer() {
+        musicPlayer?.release()
+        musicPlayer = null
+        musicPlayerFile = null
     }
 
     // ---------------------------------------------------------------- Overlay trên khung hình camera
@@ -882,12 +958,8 @@ class CameraFragment : Fragment() {
         private const val KEY_PERMANENTLY_DENIED = "permanently_denied"
         private const val DISABLED_ALPHA = 0.4f
 
-        private val REQUIRED_PERMISSIONS: Array<String> = buildList {
-            add(Manifest.permission.CAMERA)
-            add(Manifest.permission.RECORD_AUDIO)
-            // Android 9 trở xuống: ghi video vào Movies/RankingFilter cần quyền bộ nhớ.
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }.toTypedArray()
+        // Video quay vào bộ nhớ riêng của app nên không cần quyền bộ nhớ (chỉ xin khi Download, xem SuccessFragment).
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
 
         /** Ảnh trên đầu đổi mỗi ~150ms (sổ tay). */
         private const val SPIN_INTERVAL_MS = 150L

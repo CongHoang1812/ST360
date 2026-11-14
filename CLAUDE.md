@@ -20,7 +20,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
 | 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
-| 6 | Add Sound, Preview, Successful | Chưa |
+| 6 | Add Sound, Preview, Successful | **Code xong, build OK, CHƯA chạy thử trên máy** |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
 | 9 | Hoàn thiện, release | Chưa |
@@ -152,6 +152,24 @@ OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (View
   ảnh trên đầu + cột hạng không (mở bằng app Ảnh); đồng hồ; tự dừng 15s; xếp đủ 12 ô tự dừng; làm lại; có tiếng; file nằm ở
   Movies/RankingFilter; nhận diện mặt còn khớp không khi có stream sharing.
 
+Giai đoạn 6 đã có (CHƯA chạy thử trên máy). Quyết định (người dùng chưa chọn, lấy phương án đề xuất):
+(1) chọn nhạc thì nhạc THAY tiếng micro, nhạc phát ra loa lúc quay; (2) quay vào bộ nhớ app, Save lưu vào thư viện của app,
+Download mới chép ra thư viện ảnh; (3) Successful làm theo design (Download, Share to, Try More Filters, Home).
+- `data/music/MusicRepository`: 74 `MusicTrack` theo quy tắc link; thời lượng đọc từng bài khi dòng hiện ra (MediaMetadataRetriever,
+  tối đa 2 bài cùng lúc, nhớ trong bộ nhớ); `localFile()` tải về `cacheDir/music/` (ghi .part rồi đổi tên).
+- `data/video/VideoLibrary`: `filesDir/drafts/` (video vừa quay, chỉ 1 file) → Save → `filesDir/videos/` (Gallery giai đoạn 7 đọc ở đây)
+  → Download → MediaStore `Movies/RankingFilter`. Trộn nhạc bằng Media3 Transformer (`media3-transformer` 1.11.1): chuỗi 1 = video
+  bỏ tiếng, chuỗi 2 = nhạc lặp (`setIsLooping`), thử `setTransmuxVideo(true)` trước, lỗi thì mã hóa lại.
+- `VideoRecorder` giờ ghi `FileOutputOptions` vào bản nháp (không còn MediaStore); Camera không còn xin quyền bộ nhớ.
+- `ui/sound/` AddSound (Figma 14:620/22:738): chạm dòng = chọn + nghe thử (ExoPlayer qua `VideoCache`), chạm lại = tạm dừng;
+  tick xám tới khi chọn; bấm tick = tải bài về máy rồi trả `RESULT_MUSIC_ID` qua savedStateHandle cho Camera.
+  Pill trên Camera hiện tên bài đã chọn. CHƯA có cách bỏ nhạc đã chọn (phải thoát Camera).
+- `ui/result/PreviewFragment` (8:334): phát lặp bản nháp; có nhạc thì tắt tiếng video + phát nhạc, về giây 0 mỗi vòng.
+  Nút vòng tròn trái = bỏ + quay lại Camera; Home / Back = hỏi trước rồi bỏ. Save → Transformer → Successful (popUpTo Home).
+- `ui/result/SuccessFragment` (14:451): ảnh thu nhỏ (giây 1), Download (Android 9- xin WRITE_EXTERNAL_STORAGE), Share tới đúng
+  app nếu đã cài (FileProvider `files/videos`), không có thì bảng chia sẻ; Try More Filters (10 filter ngẫu nhiên) → Camera.
+- Nền Preview/Successful dùng lại `bg_home` (ảnh nền trong Figma giống hệt). Icon mạng xã hội: `drawable-nodpi/ic_share_*.png` 64px.
+
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch
   khỏi đầu (thấy 1 khung hình lệch hẳn sang trái màn). Nghi do euler Z sai khi bị che; CHƯA xác nhận bằng log.
@@ -200,7 +218,9 @@ Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 - Mọi chữ hiển thị nằm trong `strings.xml` (6 ngôn ngữ: en, es, fr, hi, pt, in). Tên 30 chủ đề giữ tiếng Anh.
 - Mọi filter có đúng 12 ảnh → Camera luôn 12 ô.
 - Không có quảng cáo (bỏ AdMob, bỏ dòng "This action can contain ads").
-- Video Trending trên server, đọc qua `folders.json` (không có config.json); nhạc 74 bài trong `assets/music/`.
+- Video Trending trên server, đọc qua `folders.json` (không có config.json).
+- Nhạc 74 bài trên server (KHÔNG có trong assets): `https://lvtglobal.site/public/app/ST314_FunnyFaceFilters/music/music_<1..74>.mp3`
+  (quy tắc lấy từ `config.json` của ST314; người dùng dặn không cần gọi thử API). Hằng số trong `data/music/MusicRepository`.
 
 ## Build
 

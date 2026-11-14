@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Một dòng nhạc (Figma 18:35): nền trắng (chọn: #B9E8FF, đặt trong code), padding 16/8,
+     ảnh bìa 44dp viền navy, tên 16sp + thời lượng 12sp, nút phát 24dp bên phải, đường kẻ 328dp ở đáy. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/screen_padding"
+        android:paddingTop="@dimen/space_s"
+        android:paddingEnd="8dp"
+        android:paddingBottom="@dimen/space_s">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:importantForAccessibility="no"
+            android:padding="0.4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/music_cover"
+            app:shapeAppearance="@style/Shape.Rounded4"
+            app:strokeColor="@color/navy"
+            app:strokeWidth="0.8dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:textColor="@color/navy"
+                android:textSize="16sp"
+                tools:text="Music 1" />
+
+            <TextView
+                android:id="@+id/tvDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:fontFamily="@font/londrina_solid_light"
+                android:fontFeatureSettings="tnum"
+                android:includeFontPadding="false"
+                android:textColor="@color/navy"
+                android:textSize="12sp"
+                app:fontFamily="@font/londrina_solid_light"
+                tools:text="00:33" />
+        </LinearLayout>
+
+        <!-- Icon 24dp, vùng chạm 40dp -->
+        <ImageButton
+            android:id="@+id/btnPlay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/ic_music_play" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/screen_padding"
+        android:background="@color/divider_light" />
+</FrameLayout>

@@ -61,6 +61,10 @@
     <dimen name="bottom_nav_corner">36dp</dimen>
     <dimen name="bottom_nav_camera">68dp</dimen>
 
+    <!-- Successful: ô filter trong dải Try More Filters (Figma 28:1514) và khoảng cách giữa các ô -->
+    <dimen name="success_filter_cell">124dp</dimen>
+    <dimen name="success_filter_gap">12dp</dimen>
+
     <!-- Badge số trong ô trống -->
     <dimen name="badge_size">24dp</dimen>
 </resources>

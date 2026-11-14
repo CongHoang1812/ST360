@@ -10,6 +10,7 @@
     <string name="title_make_filter">Make a Filter</string>
     <string name="title_camera">Camera</string>
     <string name="title_preview">Preview</string>
+    <string name="title_success">Successful</string>
     <string name="coming_soon">Coming soon</string>
     <string name="coming_soon_filter">Filter: %1$s</string>
 
@@ -62,8 +63,39 @@
     <string name="record_error_storage">Not enough storage to record a video.</string>
     <string name="record_error_camera">The camera was interrupted. Please try again.</string>
     <string name="record_error_generic">Couldn\'t record the video. Please try again.</string>
-    <string name="coming_soon_video">Video: %1$s</string>
     <string name="camera_filter_incomplete">This filter doesn\'t have enough photos to play.</string>
+
+    <!-- Add Sound -->
+    <string name="add_sound_duration_unknown">--:--</string>
+    <string name="add_sound_play_error">Can\'t play this sound. Check your connection.</string>
+    <string name="add_sound_download_error">Couldn\'t load this sound. Check your connection.</string>
+
+    <!-- Preview -->
+    <string name="preview_save">Save</string>
+    <string name="preview_saving">Saving…</string>
+    <string name="preview_saving_progress">Saving… %1$d%%</string>
+    <string name="preview_save_error">Couldn\'t save the video. Please try again.</string>
+    <string name="preview_music_missing">Couldn\'t load the sound. The video keeps its original audio.</string>
+    <string name="preview_leave_message">This video will be deleted.</string>
+    <string name="preview_draft_missing">This video is no longer available.</string>
+
+    <!-- Successful -->
+    <string name="success_saved">Your video has been saved successfully.</string>
+    <string name="success_download">Download</string>
+    <string name="success_downloaded_button">Downloaded</string>
+    <string name="success_downloaded">Saved to Movies/RankingFilter</string>
+    <string name="success_download_error">Couldn\'t download the video. Please try again.</string>
+    <string name="success_storage_denied">Storage permission is needed to download the video.</string>
+    <string name="success_share_to">Share to</string>
+    <string name="success_share_title">Share video</string>
+    <string name="success_try_more">Try More Filters</string>
+    <string name="success_no_player">No app can play this video.</string>
+    <string name="share_facebook" translatable="false">Facebook</string>
+    <string name="share_instagram" translatable="false">Instagram</string>
+    <string name="share_messenger" translatable="false">Messenger</string>
+    <string name="share_whatsapp" translatable="false">WhatsApp</string>
+    <string name="share_line" translatable="false">LINE</string>
+    <string name="share_tiktok" translatable="false">TikTok</string>
 
     <!-- Popup -->
     <string name="leave_title">Leave without saving?</string>
@@ -109,4 +141,12 @@
     <string name="cd_rank_slot">Rank %1$d</string>
     <string name="cd_stop">Stop</string>
     <string name="cd_restart">Start over</string>
+    <string name="cd_play_music">Play %1$s</string>
+    <string name="cd_pause_music">Pause %1$s</string>
+    <string name="cd_confirm_music">Use this sound</string>
+    <string name="cd_retake">Record again</string>
+    <string name="cd_home">Home</string>
+    <string name="cd_video_preview">Video preview</string>
+    <string name="cd_video_thumbnail">Saved video</string>
+    <string name="cd_share_more">More apps</string>
 </resources>

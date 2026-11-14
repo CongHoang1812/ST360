@@ -17,6 +17,8 @@ import com.example.rankingfilter.data.BuiltInFilterRepository
 import com.example.rankingfilter.data.FilterDto
 import com.example.rankingfilter.data.SelectedFilterStore
 import com.example.rankingfilter.data.assetUri
+import com.example.rankingfilter.data.music.MusicRepository
+import com.example.rankingfilter.data.music.MusicTrack
 import com.example.rankingfilter.data.userfilter.UserFilterRepository
 import com.example.rankingfilter.ui.camera.game.RankingGame
 import kotlinx.coroutines.CancellationException
@@ -78,6 +80,8 @@ data class CameraUiState(
     val duration: RecordDuration = RecordDuration.FREE,
     val lensFacing: Int = CameraSelector.LENS_FACING_FRONT,
     val game: GameUi = GameUi(),
+    /** Nhạc đã chọn ở Add Sound; null = giữ tiếng gốc. */
+    val music: MusicTrack? = null,
 )
 
 sealed interface CameraEvent {
@@ -96,6 +100,7 @@ class CameraViewModel(
                 ?.let { runCatching { RecordDuration.valueOf(it) }.getOrNull() }
                 ?: RecordDuration.FREE,
             lensFacing = savedState.get<Int>(KEY_LENS) ?: CameraSelector.LENS_FACING_FRONT,
+            music = savedState.get<Int>(KEY_MUSIC)?.let(MusicRepository::track),
         )
     )
     val state: StateFlow<CameraUiState> = _state.asStateFlow()
@@ -110,6 +115,13 @@ class CameraViewModel(
     fun setDuration(duration: RecordDuration) {
         savedState[KEY_DURATION] = duration.name
         _state.update { it.copy(duration = duration) }
+    }
+
+    /** Chọn nhạc nền (null = bỏ nhạc, giữ tiếng gốc). */
+    fun setMusic(id: Int?) {
+        val track = id?.let(MusicRepository::track)
+        savedState[KEY_MUSIC] = track?.id
+        _state.update { it.copy(music = track) }
     }
 
     fun setLensFacing(lensFacing: Int) {
@@ -249,6 +261,7 @@ class CameraViewModel(
         private const val TAG = "CameraViewModel"
         private const val KEY_DURATION = "duration"
         private const val KEY_LENS = "lens_facing"
+        private const val KEY_MUSIC = "music_id"
 
         /** Cạnh dài tối đa của ảnh sau khi giải mã: đủ nét cho ảnh trên đầu (~100dp) mà nhẹ bộ nhớ. */
         private const val PHOTO_SIZE_PX = 384

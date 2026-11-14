@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút tick ở Add Sound: xám khi chưa chọn bài (Figma 22:861), xanh khi đã chọn (18:124) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_tick_off" android:state_enabled="false" />
+    <item android:drawable="@drawable/ic_tick_on" />
+</selector>

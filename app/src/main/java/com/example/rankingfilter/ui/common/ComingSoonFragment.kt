@@ -32,12 +32,10 @@ class ComingSoonFragment : Fragment() {
 
         // Màn Camera tạm: hiện filterId nhận được để kiểm tra luồng chọn filter.
         val filterId = arguments?.getString(ARG_FILTER_ID)
-        // Màn Preview tạm (giai đoạn 6): hiện link video vừa quay để kiểm tra luồng quay.
-        val videoUri = arguments?.getString(ARG_VIDEO_URI)
-        binding.message.text = when {
-            videoUri != null -> getString(R.string.coming_soon) + "\n" + getString(R.string.coming_soon_video, videoUri)
-            filterId != null -> getString(R.string.coming_soon) + "\n" + getString(R.string.coming_soon_filter, filterId)
-            else -> getString(R.string.coming_soon)
+        binding.message.text = if (filterId != null) {
+            getString(R.string.coming_soon) + "\n" + getString(R.string.coming_soon_filter, filterId)
+        } else {
+            getString(R.string.coming_soon)
         }
     }
 
@@ -49,6 +47,5 @@ class ComingSoonFragment : Fragment() {
     companion object {
         const val ARG_TITLE = "title"
         const val ARG_FILTER_ID = "filter_id"
-        const val ARG_VIDEO_URI = "video_uri"
     }
 }

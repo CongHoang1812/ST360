@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút quay lại làm lại ở Preview (Figma 11:388): tròn vàng, mũi tên vòng -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="36dp" android:height="36dp"
+    android:viewportWidth="36" android:viewportHeight="36">
+    <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="18" android:startY="0" android:endX="18" android:endY="36"
+                android:startColor="#FFF5DE" android:endColor="#FFF47B" />
+        </aapt:attr>
+    </path>
+    <path android:pathData="M18,0.5a17.5,17.5 0,1 1,0 35a17.5,17.5 0,1 1,0 -35z"
+        android:strokeColor="@color/white" android:strokeWidth="1" />
+    <path android:pathData="M15.0005 16.493H10.5005V11.993M10.5005 16.493L13.9805 13.223C15.0162 12.1891 16.3599 11.5197 17.809 11.3158C19.2582 11.1119 20.7344 11.3845 22.0152 12.0926C23.2959 12.8006 24.3119 13.9057 24.91 15.2413C25.5081 16.577 25.6559 18.0708 25.3312 19.4978C25.0065 20.9247 24.2268 22.2075 23.1096 23.1528C21.9925 24.0981 20.5983 24.6548 19.1373 24.7389C17.6763 24.8229 16.2275 24.4299 15.0093 23.619C13.791 22.8081 12.8693 21.6233 12.383 20.243"
+        android:strokeColor="#6B5B00" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round" />
+</vector>
