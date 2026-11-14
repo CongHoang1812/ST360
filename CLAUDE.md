@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d code xong, đã kiểm một phần trên máy** (xem dưới) |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -124,12 +124,16 @@ chưa chơi, nút dừng bỏ ván):
 
 Giai đoạn 5d đã có. Đã kiểm trên Xiaomi (15/11/2026, camera trước): overlay vẽ cột hạng đúng chỗ, chữ số không bị ngược;
 quay → chốt đủ 12 ô → tự dừng, lưu `Movies/RankingFilter/RankingFilter_<ngày>_<giờ>.mp4` → sang Preview với `video_uri`;
-đồng hồ chạy; lúc quay ô đã chốt hiện ảnh nhỏ + số bên trái, ô trống viền trắng. CHƯA kiểm: mở video xem overlay có trong
-video không, có tiếng không, tự dừng 15s, làm lại, lỗi. Video thử đầu tiên: 576x1280, 38s, 15MB (xem ghi chú độ phân giải).
+đồng hồ chạy; lúc quay ô đã chốt hiện ảnh nhỏ + số bên trái, ô trống viền trắng. Kiểm thêm: mở video bằng app Ảnh thấy đủ cột hạng +
+ảnh trên đầu, giống hệt preview; có track tiếng (`soun`); 15s tự dừng (file 14,999s); làm lại xóa video cũ, chỉ lưu 1 file.
+CHƯA kiểm: các lỗi (hết bộ nhớ, camera bị chiếm, mất quyền micro giữa chừng), camera sau, Android 9 trở xuống. Video thử đầu tiên: 576x1280, 38s, 15MB (xem ghi chú độ phân giải).
 LỖI ĐÃ GẶP (15/11): ảnh trên đầu bị đẩy ra góc phải trên màn hình khi có OverlayEffect. `PreviewView.outputTransform`
 không còn khớp ảnh phân tích khi preview đi qua hiệu ứng (stream sharing). Đã sửa: FaceAnalyzer đổi tọa độ qua cảm biến
 (ảnh thẳng đứng → bộ đệm → `ImageInfo.sensorToBufferTransformMatrix`⁻¹ → `PreviewView.sensorToViewTransform`).
-Build OK, CHƯA kiểm lại trên máy.
+Đã kiểm lại trên máy: ảnh nằm đúng trên đầu.
+- Ảnh trên đầu vẽ TRƯỚC, cột hạng vẽ SAU (`OverlayRenderer.draw`): đầu nghiêng thì ảnh trùm sang cột hạng, che ô.
+- Khi mặt quay nghiêng / cúi nhìn điện thoại, ảnh dời theo hướng đỉnh đầu nên lệch sang bên: đúng theo thiết kế
+  của `HeadPlacements`, không phải lỗi tọa độ.
 Ghi chú độ phân giải: video ra 576x1280 dù xin FHD. Nghi do stream sharing (Preview + VideoCapture chung một luồng qua
 OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (ViewPort). Chưa điều tra.
 - `ui/camera/overlay/`: `CameraOverlay` (OverlayEffect nhắm PREVIEW|VIDEO_CAPTURE, luồng vẽ riêng), `OverlayRenderer`

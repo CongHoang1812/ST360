@@ -56,8 +56,10 @@ class OverlayRenderer(
     private val strokeRect = RectF()
 
     fun draw(canvas: Canvas, scene: OverlayScene) {
-        scene.slots.forEach { drawSlot(canvas, it, scene.slotsOutlined) }
+        // Ảnh trên đầu vẽ trước, cột hạng vẽ sau: khi đầu nghiêng, ảnh có thể trùm sang cột hạng,
+        // mà người chơi cần thấy các ô để chạm (đã gặp trên máy thật).
         drawHead(canvas, scene)
+        scene.slots.forEach { drawSlot(canvas, it, scene.slotsOutlined) }
     }
 
     private fun drawSlot(canvas: Canvas, slot: OverlayScene.Slot, outlined: Boolean) {
