@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút "…" 28dp trên ô filter tự tạo (Figma 29:2022) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="28dp" android:height="28dp"
+    android:viewportWidth="28" android:viewportHeight="28">
+    <path android:pathData="M14,0a14,14 0,1 1,0 28a14,14 0,1 1,0 -28z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="14" android:startY="0" android:endX="14" android:endY="28"
+                android:startColor="#D8F2FF" android:endColor="#A7E2FF" />
+        </aapt:attr>
+    </path>
+    <path android:pathData="M14,0.5a13.5,13.5 0,1 1,0 27a13.5,13.5 0,1 1,0 -27z"
+        android:strokeColor="@color/white" android:strokeWidth="1" />
+    <group android:translateX="7.8" android:translateY="12.6">
+        <path android:fillColor="#00417B" android:pathData="M1.4,0a1.4,1.4 0,1 1,0 2.8a1.4,1.4 0,1 1,0 -2.8z" />
+        <path android:fillColor="#00417B" android:pathData="M6.2,0a1.4,1.4 0,1 1,0 2.8a1.4,1.4 0,1 1,0 -2.8z" />
+        <path android:fillColor="#00417B" android:pathData="M11.0,0a1.4,1.4 0,1 1,0 2.8a1.4,1.4 0,1 1,0 -2.8z" />
+    </group>
+</vector>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Make a Filter (Figma 57:247; trạng thái 28:1638, 29:1796, 29:1884; sửa 29:2091).
+     Design 360 x 800, thanh trạng thái design 40dp: vị trí y ở đây = y trong design - 40. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    tools:context=".ui.makefilter.MakeFilterFragment">
+
+    <!-- Nút Back 36dp tại (16, 52) -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        style="@style/Button.Back"
+        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Text.ScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="60dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/title_make_filter"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+    <!-- Cột nội dung bắt đầu ở y=112 (dưới nút Back 24dp), các card cách nhau 20dp -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_padding">
+
+            <!-- Card 1: Filter Name -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Card.Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentPadding="@dimen/space_s">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.CardLabel"
+                        android:labelFor="@id/etName"
+                        android:text="@string/make_filter_name_label" />
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:autofillHints=""
+                        android:background="@drawable/bg_input_rounded"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="@string/make_filter_name_hint"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"
+                        android:maxLength="40"
+                        android:minHeight="40dp"
+                        android:paddingHorizontal="@dimen/space_m"
+                        android:paddingVertical="12dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="#4D000000"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card 2: Photos -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Card.Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:contentPadding="@dimen/space_s">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvPhotosCount"
+                            style="@style/Text.CardLabel"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            tools:text="Photos 0/12" />
+
+                        <!-- Nhãn nhắc: xanh 50% khi chưa đủ, xanh đậm khi đủ 12 ảnh -->
+                        <TextView
+                            android:id="@+id/tvPhotosHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_photo_hint"
+                            android:fontFamily="@font/roboto_medium"
+                            android:paddingHorizontal="@dimen/space_s"
+                            android:paddingVertical="@dimen/space_xs"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            tools:backgroundTint="#8000AAFF"
+                            tools:text="Need 12 photos" />
+                    </LinearLayout>
+
+                    <!-- Lưới 3 cột, ô vuông 100dp, cách nhau 6dp -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPhotos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:itemCount="12"
+                        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        tools:listitem="@layout/item_photo_slot"
+                        tools:spanCount="3" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddPhotos"
+                        style="@style/Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:minHeight="40dp"
+                        android:text="@string/make_filter_add_photos" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card 3: Cover photo -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Card.Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:contentPadding="@dimen/space_s">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.CardLabel"
+                        android:text="@string/make_filter_cover_label" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:id="@+id/coverCell"
+                            android:layout_width="@dimen/cover_cell_size"
+                            android:layout_height="@dimen/cover_cell_size"
+                            android:background="@drawable/bg_photo_cell_empty"
+                            android:contentDescription="@string/cd_cover_photo"
+                            android:foreground="@drawable/fg_photo_cell">
+
+                            <ImageView
+                                android:id="@+id/ivCoverPlaceholder"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_image_placeholder_36" />
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivCover"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:importantForAccessibility="no"
+                                android:scaleType="centerCrop"
+                                android:visibility="gone"
+                                app:shapeAppearance="@style/Shape.Rounded4" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/londrina_solid_light"
+                                android:gravity="center"
+                                android:text="@string/make_filter_cover_hint"
+                                android:textColor="@color/navy"
+                                android:textSize="12sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnChooseCover"
+                                style="@style/Button.Primary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_s"
+                                android:minHeight="40dp"
+                                android:text="@string/make_filter_choose_photos" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Save Filter: xám khi chưa có tên hoặc chưa đủ 12 ảnh, gradient vàng khi bấm được -->
+            <FrameLayout
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_save_filter_button"
+                android:clickable="true"
+                android:enabled="false"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:paddingHorizontal="@dimen/space_s"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="12dp"
+                    android:gravity="center"
+                    android:text="@string/make_filter_save"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:drawableStartCompat="@drawable/ic_save_24" />
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Lớp chặn bấm khi đang tải filter để sửa hoặc đang lưu -->
+    <FrameLayout
+        android:id="@+id/busyOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/overlay_20"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

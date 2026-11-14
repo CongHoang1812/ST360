@@ -3,6 +3,8 @@
     <!-- Bảng màu theo design Figma -->
     <color name="navy">#183D76</color>
     <color name="primary">#00AAFF</color>
+    <!-- Nhãn "Need 12 photos" khi chưa đủ ảnh: #00AAFF 50% -->
+    <color name="primary_50">#8000AAFF</color>
     <color name="bg_cream">#FBF7F2</color>
     <color name="card_blue">#EBF8FF</color>
     <color name="disabled">#CDCDCD</color>

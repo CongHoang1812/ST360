@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ô ảnh trống / ô Add / ô Cover: trắng, viền navy 1dp, bo 4dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/white" />
+    <stroke android:width="@dimen/stroke_1" android:color="@color/navy" />
+    <corners android:radius="@dimen/corner_4" />
+</shape>

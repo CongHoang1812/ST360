@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút "Leave" (Figma 31:2477): gradient #98DDFF → #009FEE, bo 12dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:angle="270" android:startColor="#98DDFF" android:endColor="#009FEE" />
+    <corners android:radius="@dimen/corner_12" />
+</shape>

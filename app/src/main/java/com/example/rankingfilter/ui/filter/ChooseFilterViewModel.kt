@@ -74,6 +74,11 @@ class ChooseFilterViewModel(
         savedState[KEY_TAB] = newTab
     }
 
+    /** Xóa filter tự tạo (Room + thư mục ảnh); lưới tự cập nhật qua Flow. */
+    fun deleteUserFilter(id: String) {
+        viewModelScope.launch { userRepository.delete(id) }
+    }
+
     /** Lưu filter vừa chọn để Camera dùng (giai đoạn 5). */
     fun onFilterChosen(item: FilterCardItem) {
         selectedStore.save(item.id, item.isUserFilter)

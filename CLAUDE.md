@@ -18,7 +18,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
 | 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16); prompt 2b (API Trending thật) code xong, build OK, chưa kiểm trên máy |
 | 3 | Choose a Filter + New filter | **Code xong, build OK, chưa kiểm trên máy** |
-| 4 | Make a Filter + Room (thêm Room + KSP ở đây) | Chưa |
+| 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Code xong, build OK, chưa kiểm trên máy** |
 | 5 | Camera (5a → 5d) | Chưa |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
@@ -59,10 +59,26 @@ newFilter, ChooseFilterViewModel, FilterAdapter, FilterCardItem), `data/Selected
 `app/src/main/assets/` hiện là DỮ LIỆU THỬ (8 filter, thư mục `filters/test`), thay bằng output của
 `export_figma_topics.py` rồi mới kiểm mục "Discover hiện đủ 30 filter".
 
+Giai đoạn 4 đã có (chưa kiểm trên máy):
+- 4a `data/userfilter/`: `UserFilter` + `UserFilterPhoto` (1-n, CASCADE), `UserFilterDao` (`save()` thay toàn bộ ảnh
+  trong một transaction), `AppDatabase` (`ranking_filter.db`, schema xuất ở `app/schemas/`), `UserFilterRepository`
+  copy ảnh vào `filesDir/user_filters/<id>/` và xóa file thừa khi sửa. Tab My Filters đọc từ Room.
+- 4b `ui/makefilter/`: `MakeFilterFragment` (tạo mới và sửa, arg `filter_id`), `MakeFilterViewModel` (lưu nháp vào
+  SavedStateHandle), `PhotoSlotAdapter` (luôn 12 ô: ảnh → ô Add → ô số), `AddPhotoDialogFragment`.
+  Take a Photo: xin quyền CAMERA rồi `TakePicture` vào `cache/captures/` qua FileProvider (`res/xml/file_paths.xml`).
+  Upload: `PickMultipleVisualMedia(12)`, thừa thì cắt và báo Toast.
+- `ui/common/ConfirmDialogFragment` (popup Leave / Delete, kết quả qua Fragment Result API), `ui/filter/FilterMenuPopup`
+  (nút "…" trên ô filter tự tạo → Edit / Delete, theo Figma 29:2008; dùng lại ở Gallery giai đoạn 7).
+- Lưu xong → quay lại Choose a Filter và tự mở tab My Filters (`MakeFilterFragment.RESULT_FILTER_SAVED`).
+- Nút Save Filter khi bấm được dùng gradient vàng theo Figma (29:1871), không phải xanh như sổ tay ghi.
+- Chưa làm màn Successful (57:137) của Make a Filter: prompt 4b chỉ yêu cầu về My Filters.
+
 Việc còn treo:
 - Kiểm prompt 2b trên máy: Home hiện 30 ô theo thứ tự folders.json; ô 5 (Who’s), 9 (I Wish I Had…), 12 (McDonald’s menu)
   có ảnh và phát được video; Try now ở Sleep Positions mở đúng filter (cần dữ liệu 30 filter thật để khớp filter_id).
-- Kiểm 4 mục "Xong khi" của giai đoạn 3 trên máy, rồi sang giai đoạn 4.
+- Kiểm 4 mục "Xong khi" của giai đoạn 3 và 4 mục của giai đoạn 4 trên máy, rồi sang giai đoạn 5.
+- Điện thoại Xiaomi đang có bản app ký bằng khóa debug của máy khác → `installDebug` báo
+  INSTALL_FAILED_UPDATE_INCOMPATIBLE; phải gỡ bản cũ (`adb uninstall com.example.rankingfilter`) mới cài được.
 
 Kiểm thử trên máy thật: dùng emulator nếu được. Nếu dùng điện thoại của người dùng qua adb, kiểm tra app đang
 ở foreground trước mỗi lần `input tap`, không nối nhiều phím BACK (đã từng chạm nhầm sang app khác).
@@ -75,7 +91,8 @@ Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 - Package / applicationId: `com.example.rankingfilter`.
 - AGP 9.5.1 có Kotlin tích hợp: KHÔNG apply plugin `kotlin-android` trong `app/build.gradle.kts`.
   Kotlin 2.4.21 được ghim bằng `apply false` ở `build.gradle.kts` gốc; serialization plugin apply ở module app.
-- Phiên bản thư viện nằm trong `gradle/libs.versions.toml`. Room + KSP chưa thêm (giai đoạn 4; KSP phải khớp Kotlin).
+- Phiên bản thư viện nằm trong `gradle/libs.versions.toml`. Room 2.8.5 + KSP 2.3.12 (KSP2 không còn gắn số phiên bản
+  với Kotlin; chạy được với Kotlin 2.4.21). Plugin `androidx.room` đặt `schemaDirectory`.
 - Coil 3 (`io.coil-kt.coil3`) kèm `coil-network-okhttp`.
 - Mọi chữ hiển thị nằm trong `strings.xml` (6 ngôn ngữ: en, es, fr, hi, pt, in). Tên 30 chủ đề giữ tiếng Anh.
 - Mọi filter có đúng 12 ảnh → Camera luôn 12 ô.

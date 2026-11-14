@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Popup "Add Photo" (Figma 57:332 trong frame 23:1135): card trắng 328dp ở giữa màn,
+     nút đóng tròn vàng 36dp nằm dưới card 28dp. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/add_photo_title"
+            android:textColor="@color/navy"
+            android:textSize="20sp" />
+
+        <FrameLayout
+            android:id="@+id/btnTakePhoto"
+            style="@style/Frame.AddPhotoOption"
+            android:layout_marginTop="@dimen/space_m">
+
+            <TextView
+                style="@style/Text.AddPhotoOption"
+                android:text="@string/add_photo_take"
+                app:drawableStartCompat="@drawable/ic_camera_22" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btnUploadPhoto"
+            style="@style/Frame.AddPhotoOption"
+            android:layout_marginTop="@dimen/space_s">
+
+            <TextView
+                style="@style/Text.AddPhotoOption"
+                android:text="@string/add_photo_upload"
+                app:drawableStartCompat="@drawable/ic_gallery_22" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="28dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/cd_close"
+        android:src="@drawable/ic_close_circle" />
+</LinearLayout>

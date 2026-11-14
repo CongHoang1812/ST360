@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nhãn "Need 12 photos" (Figma 57:277): bo 8dp; màu đặt bằng backgroundTint -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/white" />
+    <corners android:radius="@dimen/corner_8" />
+</shape>

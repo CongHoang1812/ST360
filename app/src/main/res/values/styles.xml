@@ -103,4 +103,64 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:contentDescription">@string/cd_back</item>
     </style>
+
+    <!-- ===== Nhãn card trong Make a Filter ("Filter Name", "Photos n/12", "Cover photo"): 16sp navy, cao 24dp ===== -->
+    <style name="Text.CardLabel" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/navy</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- ===== Nút trong popup xác nhận: chia đôi chiều ngang, padding 12dp, chữ 16sp ===== -->
+    <style name="Text.DialogButton" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- ===== Lựa chọn trong popup Add Photo: khung viền #00AAFF bo 12dp, icon 22dp + chữ 18sp ở giữa ===== -->
+    <style name="Frame.AddPhotoOption" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_dialog_button_outline</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingVertical">12dp</item>
+    </style>
+    <style name="Text.AddPhotoOption" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- ===== Dòng trong menu Edit / Delete: icon 24dp + chữ 16sp trắng ===== -->
+    <style name="Text.FilterMenuItem" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/space_s</item>
+        <item name="android:paddingEnd">@dimen/space_s</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
 </resources>

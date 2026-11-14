@@ -96,18 +96,20 @@
             app:destination="@id/makeFilterFragment" />
     </fragment>
 
-    <!-- Màn tạm, làm ở các giai đoạn sau -->
-    <!-- Giai đoạn 4: Make a Filter -->
+    <!-- Giai đoạn 4: Make a Filter / Edit filter (filter_id khác null = sửa filter tự tạo) -->
     <fragment
         android:id="@+id/makeFilterFragment"
-        android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
+        android:name="com.example.rankingfilter.ui.makefilter.MakeFilterFragment"
         android:label="@string/title_make_filter"
-        tools:layout="@layout/fragment_coming_soon">
+        tools:layout="@layout/fragment_make_filter">
         <argument
-            android:name="title"
-            android:defaultValue="@string/title_make_filter"
-            app:argType="reference" />
+            android:name="filter_id"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
+
+    <!-- Màn tạm, làm ở các giai đoạn sau -->
 
     <!-- Giai đoạn 5: Camera, nhận filter_id (+ is_user_filter cho filter tự tạo ở giai đoạn 4) -->
     <fragment

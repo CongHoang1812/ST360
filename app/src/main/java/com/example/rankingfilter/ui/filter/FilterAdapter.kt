@@ -1,6 +1,8 @@
 package com.example.rankingfilter.ui.filter
 
 import android.view.LayoutInflater
+import android.view.View
+import androidx.core.view.isVisible
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -14,6 +16,8 @@ import com.example.rankingfilter.databinding.ItemFilterBinding
 
 class FilterAdapter(
     private val onClick: (FilterCardItem) -> Unit,
+    /** Bấm nút "…" trên filter tự tạo (null = không hiện nút). [anchor] là chính nút đó. */
+    private val onMoreClick: ((item: FilterCardItem, anchor: View) -> Unit)? = null,
 ) : ListAdapter<FilterCardItem, FilterAdapter.Holder>(Diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -31,6 +35,8 @@ class FilterAdapter(
                 error(R.drawable.bg_image_placeholder)
             }
             binding.root.setOnClickListener { onClick(item) }
+            binding.btnMore.isVisible = item.isUserFilter && onMoreClick != null
+            binding.btnMore.setOnClickListener { onMoreClick?.invoke(item, it) }
         }
     }
 

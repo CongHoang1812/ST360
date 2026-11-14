@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút đóng popup Add Photo (Figma 57:357): tròn vàng 36dp, X nâu 16dp -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="36dp" android:height="36dp"
+    android:viewportWidth="36" android:viewportHeight="36">
+    <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="18" android:startY="0" android:endX="18" android:endY="36"
+                android:startColor="@color/back_yellow_top" android:endColor="@color/back_yellow_bottom" />
+        </aapt:attr>
+    </path>
+    <path android:pathData="M18,0.5a17.5,17.5 0,1 1,0 35a17.5,17.5 0,1 1,0 -35z"
+        android:strokeColor="@color/white" android:strokeWidth="1" />
+    <group android:translateX="10" android:translateY="10">
+        <path android:fillColor="@color/back_arrow_brown" android:pathData="M3.1 14.3C2.7134 14.6866 2.0866 14.6866 1.7 14.3C1.3134 13.9134 1.3134 13.2866 1.7 12.9L6.6 8L1.7 3.1C1.3134 2.7134 1.3134 2.0866 1.7 1.7C2.0866 1.3134 2.7134 1.3134 3.1 1.7L8 6.6L12.9 1.7C13.2866 1.3134 13.9134 1.3134 14.3 1.7C14.6866 2.0866 14.6866 2.7134 14.3 3.1L9.4 8L14.3 12.9C14.6866 13.2866 14.6866 13.9134 14.3 14.3C13.9134 14.6866 13.2866 14.6866 12.9 14.3L8 9.4L3.1 14.3Z" />
+    </group>
+</vector>

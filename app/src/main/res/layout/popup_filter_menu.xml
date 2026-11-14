@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Menu Edit / Delete khi bấm nút "…" trên ô filter tự tạo (Figma 22:557):
+     nền đen 50%, viền trắng, bo 8dp, padding 20/12; mỗi dòng icon 24dp + chữ 16sp trắng. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_filter_menu"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="12dp">
+
+    <TextView
+        android:id="@+id/menuEdit"
+        style="@style/Text.FilterMenuItem"
+        android:text="@string/filter_menu_edit"
+        app:drawableStartCompat="@drawable/ic_edit_24" />
+
+    <View
+        android:layout_width="82dp"
+        android:layout_height="1dp"
+        android:layout_marginVertical="@dimen/space_s"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/menuDelete"
+        style="@style/Text.FilterMenuItem"
+        android:text="@string/filter_menu_delete"
+        app:drawableStartCompat="@drawable/ic_delete_24" />
+</LinearLayout>

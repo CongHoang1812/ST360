@@ -15,7 +15,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rankingfilter.R
 import com.example.rankingfilter.databinding.FragmentChooseFilterBinding
+import com.example.rankingfilter.ui.common.ConfirmDialogFragment
 import com.example.rankingfilter.ui.common.GridSpacingDecoration
+import com.example.rankingfilter.ui.makefilter.MakeFilterFragment
+import com.example.rankingfilter.ui.makefilter.MakeFilterViewModel
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import kotlinx.coroutines.launch
 
@@ -57,18 +60,54 @@ class ChooseFilterFragment : Fragment() {
             findNavController().navigate(R.id.action_chooseFilter_to_makeFilter)
         }
 
-        adapter = FilterAdapter(::openCamera)
+        adapter = FilterAdapter(::openCamera, onMoreClick = ::showFilterMenu)
         binding.rvFilters.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
         binding.rvFilters.adapter = adapter
         binding.rvFilters.addItemDecoration(
             GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.filter_cell_gap))
         )
 
+        ConfirmDialogFragment.listen(this, REQUEST_DELETE) { id -> id?.let(viewModel::deleteUserFilter) }
+
+        // Make a Filter lưu xong → mở tab My Filters để thấy filter vừa tạo / vừa sửa.
+        val entry = findNavController().currentBackStackEntry
+        entry?.savedStateHandle?.getLiveData<String>(MakeFilterFragment.RESULT_FILTER_SAVED)
+            ?.observe(viewLifecycleOwner) { id ->
+                if (id == null) return@observe
+                entry.savedStateHandle.remove<String>(MakeFilterFragment.RESULT_FILTER_SAVED)
+                if (viewModel.mode == FilterMode.ALL) onTabClicked(FilterTab.MY_FILTERS)
+            }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect(::render)
             }
         }
+    }
+
+    /** Menu Edit / Delete trên ô filter tự tạo (Figma 22:557). */
+    private fun showFilterMenu(item: FilterCardItem, anchor: View) {
+        FilterMenuPopup.show(
+            anchor = anchor,
+            onEdit = {
+                findNavController().navigate(
+                    R.id.action_chooseFilter_to_makeFilter,
+                    bundleOf(MakeFilterViewModel.ARG_FILTER_ID to item.id),
+                )
+            },
+            onDelete = {
+                ConfirmDialogFragment.show(
+                    host = this,
+                    requestKey = REQUEST_DELETE,
+                    title = R.string.delete_filter_title,
+                    message = R.string.delete_filter_message,
+                    negative = R.string.cancel,
+                    positive = R.string.delete,
+                    style = ConfirmDialogFragment.Style.DESTRUCTIVE,
+                    payload = item.id,
+                )
+            },
+        )
     }
 
     /**
@@ -118,6 +157,7 @@ class ChooseFilterFragment : Fragment() {
 
     companion object {
         private const val SPAN_COUNT = 2
+        private const val REQUEST_DELETE = "delete_user_filter"
         const val ARG_FILTER_ID = "filter_id"
         const val ARG_IS_USER_FILTER = "is_user_filter"
     }
