@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b code xong, build OK, test đơn vị đạt, chưa kiểm với mặt thật**; 5c, 5d chưa làm |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong** (đã kiểm với mặt thật ở camera trước, test đơn vị đạt); 5c, 5d chưa làm |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -91,7 +91,8 @@ bảng xin quyền khi từ chối → Open Settings → cấp quyền → quay 
 - Nút quay và Add Sound hiện Toast "Coming soon" (làm ở 5d và giai đoạn 6).
 - Thanh trạng thái đổi sang icon trắng khi ở màn Camera (`onStart`), trả lại icon đen ở `onStop`.
 
-Giai đoạn 5b đã có (chưa kiểm với mặt thật trên máy):
+Giai đoạn 5b đã có (đã kiểm trên Xiaomi, camera trước: ảnh nằm trên đầu, căn giữa, nghiêng đầu sang phải/trái thì ảnh
+nghiêng đúng chiều và dời theo hướng đỉnh đầu, che kín mặt thì ẩn, bỏ tay ra thì hiện lại):
 - `ui/camera/face/FaceAnalyzer`: ImageAnalysis + ML Kit (fast, tracking, không landmark/contour/classification, minFaceSize 0.15).
   Đổi tọa độ bằng `CoordinateTransform(ImageProxyTransformFactory{isUsingRotationDegrees=true}, PreviewView.outputTransform)`;
   Preview và ImageAnalysis PHẢI chung `ViewPort` (`UseCaseGroup` trong `CameraFragment.bindCamera`), không thì khung bị lệch.
@@ -105,6 +106,13 @@ Giai đoạn 5b đã có (chưa kiểm với mặt thật trên máy):
   Ảnh chờ: `drawable-nodpi/head_placeholder.jpg` ("?" trong Figma 5:13, ảnh JPEG 640x640 thật sự, không trong suốt).
 - Quay video (5d) cần vẽ lên cả video bằng OverlayEffect: `FaceOverlayView` chỉ vẽ lên preview, phần tính vị trí
   (`HeadPlacements`) và nhận mặt (`FaceAnalyzer`) dùng lại được.
+
+Hạn chế đã biết của 5b:
+- Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch
+  khỏi đầu (thấy 1 khung hình lệch hẳn sang trái màn). Nghi do euler Z sai khi bị che; CHƯA xác nhận bằng log.
+  Nếu cần xử lý: coi |roll| > ~75° là mặt không tin cậy (ẩn ảnh) hoặc kẹp góc.
+- Khi đầu di chuyển nhanh ảnh hơi trễ phía sau đầu (làm mượt 0,5 + khung hình ~14 fps trong phòng thiếu sáng).
+- Chưa thử camera SAU với mặt thật (cùng đường code, chỉ khác ma trận lật gương).
 
 Việc còn treo:
 - 5a chưa kiểm: Camera với filter TỰ TẠO (Logcat `CameraViewModel` phải báo 12 ảnh; cần người dùng tạo filter vì phải
