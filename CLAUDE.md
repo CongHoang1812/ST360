@@ -20,7 +20,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
 | 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
-| 6 | Add Sound, Preview, Successful | **Code xong, build OK, CHƯA chạy thử trên máy** |
+| 6 | Add Sound, Preview, Successful | **Xong phần không cần nhạc** (đã kiểm trên Xiaomi); nhạc chưa kiểm vì server 404 |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
 | 9 | Hoàn thiện, release | Chưa |
@@ -152,7 +152,15 @@ OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (View
   ảnh trên đầu + cột hạng không (mở bằng app Ảnh); đồng hồ; tự dừng 15s; xếp đủ 12 ô tự dừng; làm lại; có tiếng; file nằm ở
   Movies/RankingFilter; nhận diện mặt còn khớp không khi có stream sharing.
 
-Giai đoạn 6 đã có (CHƯA chạy thử trên máy). Quyết định (người dùng chưa chọn, lấy phương án đề xuất):
+Giai đoạn 6 đã kiểm trên Xiaomi (15/11/2026): Add Sound đúng design; nghe thử báo lỗi êm khi server 404 (không crash);
+quay → Preview phát video có overlay → Save → bản nháp chuyển sang files/videos → Successful đúng design → Download chép ra
+Movies/RankingFilter, nút thành "Downloaded" → "…" mở bảng chia sẻ → Try More Filters mở Camera đúng filter → Back về Home.
+SERVER NHẠC TRẢ 404 (`.../ST314_FunnyFaceFilters/music/music_1.mp3`), cùng tình trạng với server Trending: chưa kiểm được
+nghe thử, thời lượng, tick tải bài, phát nhạc lúc quay, trộn nhạc khi Save. Cần hỏi người quản lý server.
+Lỗi đã gặp: theme đặt `materialCardViewStyle` = Card.Blue (contentPadding 16dp) cho MỌI MaterialCardView → khung video
+có viền đen dày; đã thêm `app:contentPadding="0dp"` (chưa nhìn lại trên máy vì mất kết nối).
+Trên điện thoại người dùng có app TurboVPN tự bật quảng cáo toàn màn hình: tap.sh đã chặn chạm nhầm, nhờ người dùng tắt.
+Quyết định (người dùng chưa chọn, lấy phương án đề xuất): Quyết định (người dùng chưa chọn, lấy phương án đề xuất):
 (1) chọn nhạc thì nhạc THAY tiếng micro, nhạc phát ra loa lúc quay; (2) quay vào bộ nhớ app, Save lưu vào thư viện của app,
 Download mới chép ra thư viện ảnh; (3) Successful làm theo design (Download, Share to, Try More Filters, Home).
 - `data/music/MusicRepository`: 74 `MusicTrack` theo quy tắc link; thời lượng đọc từng bài khi dòng hiện ra (MediaMetadataRetriever,

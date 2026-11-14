@@ -49,6 +49,7 @@
                 app:cardBackgroundColor="@color/black"
                 app:cardCornerRadius="@dimen/corner_8"
                 app:cardElevation="0dp"
+                app:contentPadding="0dp"
                 app:strokeColor="@color/white"
                 app:strokeWidth="2dp">
 

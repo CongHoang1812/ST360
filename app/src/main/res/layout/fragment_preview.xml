@@ -57,6 +57,7 @@
             app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="@dimen/corner_8"
             app:cardElevation="0dp"
+            app:contentPadding="0dp"
             app:layout_constraintBottom_toTopOf="@id/btnSave"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
