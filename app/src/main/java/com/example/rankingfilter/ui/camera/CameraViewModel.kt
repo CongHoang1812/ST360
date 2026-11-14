@@ -18,6 +18,7 @@ import com.example.rankingfilter.data.FilterDto
 import com.example.rankingfilter.data.SelectedFilterStore
 import com.example.rankingfilter.data.assetUri
 import com.example.rankingfilter.data.userfilter.UserFilterRepository
+import com.example.rankingfilter.ui.camera.game.RankingGame
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -50,11 +51,33 @@ class CameraFilter(
     val photos: List<Bitmap>,
 )
 
+/**
+ * Trạng thái trò chơi xếp hạng để vẽ lên màn hình. Mặc định là chưa chơi.
+ * Ở bước 5d, "đang chơi" cũng chính là "đang quay video".
+ */
+data class GameUi(
+    /** Đã bắt đầu chơi (kể cả lúc vừa xếp xong, chờ chuyển màn). */
+    val isActive: Boolean = false,
+    /** Ảnh đã chốt theo từng ô, null = ô trống. Rỗng khi chưa chơi. */
+    val slots: List<Bitmap?> = emptyList(),
+    /** Ảnh đang hiện trên đầu; null khi chưa chơi hoặc hết ảnh. */
+    val head: Bitmap? = null,
+    /** Đã chốt đủ 12 ô. */
+    val isFinished: Boolean = false,
+) {
+    /** Đang chơi và còn ô để chốt. */
+    val isPlaying: Boolean get() = isActive && !isFinished
+}
+
+/** Kết quả của [CameraViewModel.startGame]. */
+enum class GameStart { STARTED, FILTER_NOT_READY, NOT_ENOUGH_PHOTOS }
+
 data class CameraUiState(
     val filter: CameraFilter? = null,
     val isFilterLoading: Boolean = true,
     val duration: RecordDuration = RecordDuration.FREE,
     val lensFacing: Int = CameraSelector.LENS_FACING_FRONT,
+    val game: GameUi = GameUi(),
 )
 
 sealed interface CameraEvent {
@@ -92,6 +115,65 @@ class CameraViewModel(
     fun setLensFacing(lensFacing: Int) {
         savedState[KEY_LENS] = lensFacing
         _state.update { it.copy(lensFacing = lensFacing) }
+    }
+
+    // ---------------------------------------------------------------- Trò chơi xếp hạng
+    // Trò chơi nằm trong ViewModel nên xoay màn hình không làm mất ván đang chơi.
+
+    private var game: RankingGame<Bitmap>? = null
+
+    /** Bắt đầu một ván mới với 12 ảnh của filter (xáo trộn, ô trống hết). Gọi khi bấm nút quay. */
+    fun startGame(): GameStart {
+        val filter = _state.value.filter ?: return GameStart.FILTER_NOT_READY
+        if (filter.photos.size < FilterDto.PHOTO_COUNT) return GameStart.NOT_ENOUGH_PHOTOS
+        game = RankingGame(filter.photos, FilterDto.PHOTO_COUNT)
+        publishGame()
+        return GameStart.STARTED
+    }
+
+    /** Làm lại: ván mới, xáo lại ảnh, xóa hết ô đã chốt. Không làm gì nếu chưa chơi. */
+    fun restartGame() {
+        if (game != null) startGame()
+    }
+
+    /** Dừng ván hiện tại và về trạng thái chưa chơi (bấm dừng, hoặc sau khi xếp xong và đã chuyển màn). */
+    fun stopGame() {
+        game = null
+        publishGame()
+    }
+
+    /** Đổi ảnh trên đầu ngẫu nhiên. Gọi mỗi ~150ms khi đang chơi và thấy mặt. */
+    fun spin() {
+        val current = game ?: return
+        if (current.isFinished) return
+        current.spin()
+        publishGame()
+    }
+
+    /** Chốt ảnh đang hiện vào ô [index] (0..11). Trả về true nếu thành công. */
+    fun placePhoto(index: Int): Boolean {
+        val current = game ?: return false
+        if (current.isFinished || !current.place(index)) return false
+        publishGame()
+        return true
+    }
+
+    private fun publishGame() {
+        val current = game
+        _state.update {
+            it.copy(
+                game = if (current == null) {
+                    GameUi()
+                } else {
+                    GameUi(
+                        isActive = true,
+                        slots = current.slots.toList(),
+                        head = current.current,
+                        isFinished = current.isFinished,
+                    )
+                },
+            )
+        }
     }
 
     /**

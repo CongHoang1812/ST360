@@ -9,6 +9,7 @@
     <string name="title_setting">Setting</string>
     <string name="title_make_filter">Make a Filter</string>
     <string name="title_camera">Camera</string>
+    <string name="title_preview">Preview</string>
     <string name="coming_soon">Coming soon</string>
     <string name="coming_soon_filter">Filter: %1$s</string>
 
@@ -57,6 +58,7 @@
     <string name="camera_permission_settings">Open Settings</string>
     <string name="camera_open_error">Can\'t open the camera.</string>
     <string name="camera_filter_missing">This filter is no longer available.</string>
+    <string name="camera_filter_incomplete">This filter doesn\'t have enough photos to play.</string>
 
     <!-- Popup -->
     <string name="leave_title">Leave without saving?</string>
@@ -100,4 +102,6 @@
     <string name="cd_record">Record</string>
     <string name="cd_choose_filter">Choose a filter</string>
     <string name="cd_rank_slot">Rank %1$d</string>
+    <string name="cd_stop">Stop</string>
+    <string name="cd_restart">Start over</string>
 </resources>

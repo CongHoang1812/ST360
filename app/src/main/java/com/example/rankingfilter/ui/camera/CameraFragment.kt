@@ -3,12 +3,14 @@ package com.example.rankingfilter.ui.camera
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.util.TypedValue
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +22,8 @@ import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
-import androidx.camera.core.UseCaseGroup
 import androidx.camera.core.TorchState
+import androidx.camera.core.UseCaseGroup
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.core.content.ContextCompat
@@ -35,6 +37,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.withStarted
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.rankingfilter.R
@@ -44,16 +47,21 @@ import com.example.rankingfilter.databinding.ItemRankSlotBinding
 import com.example.rankingfilter.ui.camera.face.FaceAnalyzer
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.math.min
 
 /**
- * Camera (Figma 5:9).
+ * Camera (Figma 5:9, đang quay 8:102 / 8:192 / 8:235).
  * - 5a: giao diện, preview CameraX, lật camera, flash, xin quyền, tải ảnh filter.
- * - 5b: nhận diện mặt (ImageAnalysis + ML Kit) và vẽ ảnh vuông trên đầu ([FaceOverlayView]).
- * Trò chơi xếp hạng (5c) và quay video (5d) làm ở các bước sau.
+ * - 5b: nhận diện mặt (ImageAnalysis + ML Kit) và vẽ ảnh vuông trên đầu ([com.example.rankingfilter.ui.camera.face.FaceOverlayView]).
+ * - 5c: trò chơi xếp hạng. Bấm nút quay → bắt đầu ván: ảnh trên đầu đổi ngẫu nhiên, chạm ô trống để chốt.
+ *   Xếp đủ 12 ô thì chuyển sang màn Preview. Quay video thật (5d) sẽ gắn vào đúng các điểm bắt đầu / dừng này.
  */
 class CameraFragment : Fragment() {
 
@@ -71,8 +79,20 @@ class CameraFragment : Fragment() {
     private var analysisExecutor: ExecutorService? = null
     private var faceAnalyzer: FaceAnalyzer? = null
 
-    /** 12 ô hạng ở cột trái, theo thứ tự hạng 1..12. */
+    /** 12 dòng hạng ở cột trái, theo thứ tự hạng 1..12. */
     private val rankSlots = mutableListOf<ItemRankSlotBinding>()
+
+    /** Ảnh "?" hiện trên đầu khi chưa chơi (Figma 5:13). */
+    private var placeholder: Bitmap? = null
+
+    /** Camera đang hiện (đã có quyền); false = đang hiện bảng xin quyền. */
+    private var cameraVisible = false
+
+    /** Trạng thái trò chơi lần vẽ gần nhất; vòng spin và bấm ô đọc từ đây. */
+    private var game = GameUi()
+
+    /** Đang chờ một chút rồi chuyển sang màn Preview. */
+    private var finishJob: Job? = null
 
     /** Đã tự hỏi quyền một lần trong lần mở màn này (không hỏi lặp lại mỗi lần onStart). */
     private var permissionAsked = false
@@ -114,15 +134,17 @@ class CameraFragment : Fragment() {
         binding.btnFlip.setOnClickListener { flipCamera() }
         binding.btnFlash.setOnClickListener { toggleTorch() }
         binding.btnChooseFilter.setOnClickListener { openChooseFilter() }
-        // Add Sound làm ở giai đoạn 6, quay video ở bước 5d.
+        // Add Sound làm ở giai đoạn 6.
         binding.btnAddSound.setOnClickListener { toast(R.string.coming_soon) }
-        binding.btnRecord.setOnClickListener { toast(R.string.coming_soon) }
+        binding.btnRecord.setOnClickListener { onRecordClicked() }
+        binding.btnRestart.setOnClickListener { viewModel.restartGame() }
         binding.btnPermission.setOnClickListener { onPermissionButtonClicked() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch { viewModel.state.collect(::render) }
                 launch { viewModel.events.collect(::onEvent) }
+                launch { spinLoop() }
             }
         }
     }
@@ -166,13 +188,125 @@ class CameraFragment : Fragment() {
         camera = null
         cameraProvider = null
         cameraStarted = false
+        cameraVisible = false
+        finishJob = null
+        game = GameUi()
         _binding = null
+    }
+
+    // ---------------------------------------------------------------- Trò chơi
+
+    /** Bấm nút quay: chưa chơi thì bắt đầu ván mới, đang chơi thì dừng (bỏ ván). */
+    private fun onRecordClicked() {
+        if (game.isActive) {
+            viewModel.stopGame()
+            return
+        }
+        when (viewModel.startGame()) {
+            GameStart.STARTED -> Unit
+            GameStart.FILTER_NOT_READY -> Unit // ảnh filter còn đang tải
+            GameStart.NOT_ENOUGH_PHOTOS -> toast(R.string.camera_filter_incomplete)
+        }
+    }
+
+    /**
+     * Chạm ô hạng: chốt ảnh đang hiện trên đầu vào ô đó. Chỉ chốt khi đang thấy mặt, vì lúc mất mặt
+     * ảnh bị ẩn: người chơi không biết mình đang chốt ảnh nào, mà đã chốt thì không sửa được.
+     */
+    private fun onSlotClicked(index: Int) {
+        if (!game.isPlaying || !binding.faceOverlay.hasFace) return
+        if (viewModel.placePhoto(index)) {
+            binding.root.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        }
+    }
+
+    /** Đổi ảnh trên đầu mỗi [SPIN_INTERVAL_MS]; chỉ chạy khi màn đang hiện (cùng vòng đời với camera). */
+    private suspend fun spinLoop() {
+        while (currentCoroutineContext().isActive) {
+            delay(SPIN_INTERVAL_MS)
+            val overlay = _binding?.faceOverlay ?: return
+            if (game.isPlaying && overlay.hasFace) viewModel.spin()
+        }
+    }
+
+    /** Xếp đủ 12 ô: dừng ván, chờ một chút cho người chơi thấy ô cuối rồi sang màn Preview. */
+    private fun onGameFinished() {
+        if (finishJob?.isActive == true) return
+        finishJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(FINISH_DELAY_MS)
+            // Chuyển màn khi Fragment đã ở trạng thái cho phép (tránh lỗi nếu app vừa bị đưa xuống nền).
+            viewLifecycleOwner.lifecycle.withStarted {
+                // Về lại Camera từ màn Preview thì ván mới ở trạng thái chưa chơi.
+                viewModel.stopGame()
+                findNavController().navigate(R.id.action_camera_to_preview)
+            }
+        }
     }
 
     // ---------------------------------------------------------------- Giao diện
 
     private fun render(state: CameraUiState) {
         durationViews().forEach { (duration, view) -> view.isSelected = duration == state.duration }
+        game = state.game
+        renderGame(state.game)
+    }
+
+    private fun renderGame(ui: GameUi) {
+        updateControls()
+
+        // Ảnh trên đầu: ảnh chờ "?" (vuông) khi chưa chơi, ảnh của filter (bo góc) khi đang chơi.
+        binding.faceOverlay.cornerRatio = if (ui.isActive) PHOTO_CORNER_RATIO else 0f
+        binding.faceOverlay.photo = if (ui.isActive) ui.head else placeholder
+
+        // Nút quay: chấm tròn → hình vuông bo góc 32dp khi đang chơi (Figma 8:191).
+        val dotSize = resources.getDimensionPixelSize(if (ui.isActive) R.dimen.record_stop_inner else R.dimen.record_button_inner)
+        binding.recordDot.setBackgroundResource(if (ui.isActive) R.drawable.bg_record_stop else R.drawable.bg_record_dot)
+        if (binding.recordDot.layoutParams.width != dotSize) {
+            binding.recordDot.updateLayoutParams { width = dotSize; height = dotSize }
+        }
+        binding.btnRecord.contentDescription = getString(if (ui.isActive) R.string.cd_stop else R.string.cd_record)
+
+        rankSlots.forEachIndexed { index, slot -> renderSlot(index, slot, ui.slots.getOrNull(index), ui.isActive) }
+
+        if (ui.isFinished) onGameFinished()
+    }
+
+    /**
+     * Ô đã chốt: ảnh nhỏ nằm trong ô, số hạng đứng bên trái ô (Figma 8:192).
+     * Ô trống: số nằm trong ô; đang chơi thì có viền trắng (Figma 8:235).
+     */
+    private fun renderSlot(index: Int, slot: ItemRankSlotBinding, photo: Bitmap?, active: Boolean) {
+        val filled = photo != null
+        slot.ivPhoto.isVisible = filled
+        slot.tvNumber.isVisible = !filled
+        slot.tvRank.visibility = if (filled) View.VISIBLE else View.INVISIBLE
+        slot.tvRank.text = (index + 1).toString()
+        slot.box.setBackgroundResource(if (active) R.drawable.bg_rank_slot_playing else R.drawable.bg_rank_slot)
+        if (slot.ivPhoto.tag !== photo) {
+            slot.ivPhoto.tag = photo
+            slot.ivPhoto.setImageBitmap(photo)
+        }
+    }
+
+    /**
+     * Điều khiển nào hiện lúc nào:
+     * - bảng xin quyền: ẩn hết;
+     * - camera, chưa chơi: đủ bộ nút;
+     * - đang chơi (Figma 8:102): chỉ còn cột hạng, nút dừng và nút làm lại. Nút Back cũng ẩn (vẫn bấm Back hệ thống được).
+     */
+    private fun updateControls() {
+        val b = binding
+        val idle = cameraVisible && !game.isActive
+        val playing = cameraVisible && game.isActive
+        b.btnBack.isVisible = !game.isActive
+        b.btnAddSound.isVisible = idle
+        b.btnFlip.isVisible = idle
+        b.btnFlash.isVisible = idle
+        b.durationStrip.isVisible = idle
+        b.btnChooseFilter.isVisible = idle
+        b.rankColumn.isVisible = cameraVisible
+        b.btnRecord.isVisible = cameraVisible
+        b.btnRestart.isVisible = playing
     }
 
     private fun onEvent(event: CameraEvent) {
@@ -184,7 +318,7 @@ class CameraFragment : Fragment() {
         }
     }
 
-    /** Tạo 12 ô số bằng vòng lặp; kích thước lấy từ dimens và được tính lại khi biết chiều cao cột. */
+    /** Tạo 12 dòng hạng bằng vòng lặp; kích thước lấy từ dimens và được tính lại khi biết chiều cao cột. */
     private fun buildRankSlots() {
         val column = binding.rankColumn
         column.removeAllViews()
@@ -192,7 +326,9 @@ class CameraFragment : Fragment() {
         repeat(FilterDto.PHOTO_COUNT) { index ->
             val slot = ItemRankSlotBinding.inflate(layoutInflater, column, false)
             slot.tvNumber.text = (index + 1).toString()
-            slot.root.contentDescription = getString(R.string.cd_rank_slot, index + 1)
+            slot.tvRank.text = (index + 1).toString()
+            slot.box.contentDescription = getString(R.string.cd_rank_slot, index + 1)
+            slot.box.setOnClickListener { onSlotClicked(index) }
             column.addView(slot.root)
             rankSlots += slot
         }
@@ -217,13 +353,15 @@ class CameraFragment : Fragment() {
         } else {
             min(maxSize, (availableHeight - gap * (count - 1)) / count).coerceAtLeast(1)
         }
+        val textPx = maxText * size / maxSize
         rankSlots.forEachIndexed { index, slot ->
-            slot.root.updateLayoutParams<LinearLayout.LayoutParams> {
+            slot.root.updateLayoutParams<LinearLayout.LayoutParams> { topMargin = if (index == 0) 0 else gap }
+            slot.box.updateLayoutParams<LinearLayout.LayoutParams> {
                 width = size
                 height = size
-                topMargin = if (index == 0) 0 else gap
             }
-            slot.tvNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, maxText * size / maxSize)
+            slot.tvNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, textPx)
+            slot.tvRank.setTextSize(TypedValue.COMPLEX_UNIT_PX, textPx)
         }
     }
 
@@ -269,7 +407,8 @@ class CameraFragment : Fragment() {
 
     private fun showPermissionPanel() {
         binding.faceOverlay.clear()
-        binding.cameraControls.isVisible = false
+        cameraVisible = false
+        updateControls()
         binding.permissionPanel.isVisible = true
         binding.btnPermission.setText(
             if (permanentlyDenied) R.string.camera_permission_settings else R.string.camera_permission_allow
@@ -293,7 +432,8 @@ class CameraFragment : Fragment() {
 
     private fun showCamera() {
         binding.permissionPanel.isVisible = false
-        binding.cameraControls.isVisible = true
+        cameraVisible = true
+        updateControls()
         if (cameraStarted) return
         cameraStarted = true
         viewLifecycleOwner.lifecycleScope.launch {
@@ -369,9 +509,10 @@ class CameraFragment : Fragment() {
         }
     }
 
-    /** Tạo bộ nhận diện mặt và đặt ảnh chờ ("?" theo design) lên đầu; 5c sẽ thay bằng ảnh của filter. */
+    /** Tạo bộ nhận diện mặt và đặt ảnh chờ ("?" theo design) lên đầu. */
     private fun setUpFaceDetection() {
-        binding.faceOverlay.photo = BitmapFactory.decodeResource(resources, R.drawable.head_placeholder)
+        placeholder = BitmapFactory.decodeResource(resources, R.drawable.head_placeholder)
+        binding.faceOverlay.photo = placeholder
         analysisExecutor = Executors.newSingleThreadExecutor()
         faceAnalyzer = FaceAnalyzer(
             // outputTransform chỉ gọi được trên luồng chính; FaceAnalyzer chỉ gọi lambda này ở luồng chính.
@@ -424,5 +565,14 @@ class CameraFragment : Fragment() {
         private const val KEY_PERMANENTLY_DENIED = "permanently_denied"
         private const val DISABLED_ALPHA = 0.4f
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+
+        /** Ảnh trên đầu đổi mỗi ~150ms (sổ tay). */
+        private const val SPIN_INTERVAL_MS = 150L
+
+        /** Chờ sau khi chốt ô cuối để người chơi thấy cột hạng đầy, rồi mới sang màn Preview. */
+        private const val FINISH_DELAY_MS = 700L
+
+        /** Ảnh của filter trên đầu bo góc ≈ 12% cạnh (Figma 8:192). */
+        private const val PHOTO_CORNER_RATIO = 0.12f
     }
 }

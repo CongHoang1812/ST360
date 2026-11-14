@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong** (đã kiểm với mặt thật ở camera trước, test đơn vị đạt); 5c, 5d chưa làm |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong** (đã kiểm trên Xiaomi, camera trước, filter có sẵn); 5d chưa làm |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -107,12 +107,30 @@ nghiêng đúng chiều và dời theo hướng đỉnh đầu, che kín mặt t
 - Quay video (5d) cần vẽ lên cả video bằng OverlayEffect: `FaceOverlayView` chỉ vẽ lên preview, phần tính vị trí
   (`HeadPlacements`) và nhận mặt (`FaceAnalyzer`) dùng lại được.
 
+Giai đoạn 5c đã có (đã kiểm trên Xiaomi: bấm quay → ván bắt đầu, chốt ô, làm lại, chốt đủ 12 → sang Preview, Back về camera
+chưa chơi, nút dừng bỏ ván):
+- `ui/camera/game/RankingGame<T>`: lớp trong sổ tay, đổi `Bitmap` thành tham số kiểu để test bằng JUnit (9 test).
+  Ván nằm trong `CameraViewModel` (`startGame/restartGame/stopGame/spin/placePhoto`, trạng thái `GameUi`) nên xoay màn hình
+  không mất ván. `GameUi.isActive` = đã bấm quay (kể cả vừa xếp xong), `isPlaying` = đang chơi và còn ô trống.
+- `CameraFragment`: vòng `spinLoop()` 150ms (cùng vòng đời STARTED, chỉ spin khi đang chơi VÀ thấy mặt); chạm ô chỉ chốt khi
+  đang thấy mặt (mất mặt thì ảnh ẩn, người chơi không biết mình chốt ảnh nào mà chốt rồi không sửa được).
+  Xếp đủ 12 → chờ 700ms (thấy cột đầy) → `stopGame()` → `action_camera_to_preview` (màn tạm `resultPreviewFragment`).
+- Giao diện đang chơi theo Figma 8:102/8:192/8:235: ẩn Back, Add Sound, lật camera, flash, dải thời lượng, nút chọn filter;
+  nút quay thành hình vuông bo 8dp 32dp; ô trống viền trắng; ô đã chốt hiện ảnh nhỏ + số hạng đứng BÊN TRÁI ô
+  (`item_rank_slot.xml` = [số 28dp][ô 36dp], `rank_column_start` 14dp). Nút làm lại KHÔNG có trong design: tôi đặt ở chỗ nút lật
+  camera (`btnRestart`, icon `ic_restart_20`). Hiển thị điều khiển do `CameraFragment.updateControls()` quản lý (đã bỏ Group).
+- `FaceOverlayView`: vẽ bằng BitmapShader + drawRoundRect; `cornerRatio` 0 cho ảnh chờ "?", 0,12 cho ảnh của filter.
+- Chưa có: đồng hồ 00:00:10 trên đầu màn (5d), quay video thật (5d), thời lượng 15/30/60s (5d, hiện chỉ chọn được).
+
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch
   khỏi đầu (thấy 1 khung hình lệch hẳn sang trái màn). Nghi do euler Z sai khi bị che; CHƯA xác nhận bằng log.
   Nếu cần xử lý: coi |roll| > ~75° là mặt không tin cậy (ẩn ảnh) hoặc kẹp góc.
 - Khi đầu di chuyển nhanh ảnh hơi trễ phía sau đầu (làm mượt 0,5 + khung hình ~14 fps trong phòng thiếu sáng).
 - Chưa thử camera SAU với mặt thật (cùng đường code, chỉ khác ma trận lật gương).
+
+Việc còn treo (5c): chưa thử filter TỰ TẠO với trò chơi; filter thử trong assets chỉ là ảnh đơn sắc nên mắt thường không
+phân biệt được "ảnh đã chốt bị loại khỏi danh sách chờ" (đã có unit test); chưa thử gating khi che mặt; chưa thử xoay màn hình giữa ván.
 
 Việc còn treo:
 - 5a chưa kiểm: Camera với filter TỰ TẠO (Logcat `CameraViewModel` phải báo 12 ảnh; cần người dùng tạo filter vì phải

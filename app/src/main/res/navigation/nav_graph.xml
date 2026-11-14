@@ -124,6 +124,22 @@
             android:name="is_user_filter"
             android:defaultValue="false"
             app:argType="boolean" />
+        <!-- Xếp đủ 12 ô thì sang màn Preview (giai đoạn 6) -->
+        <action
+            android:id="@+id/action_camera_to_preview"
+            app:destination="@id/resultPreviewFragment" />
+    </fragment>
+
+    <!-- Giai đoạn 6: Preview video vừa quay (Figma 8:334). Tạm là màn trống. -->
+    <fragment
+        android:id="@+id/resultPreviewFragment"
+        android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
+        android:label="@string/title_preview"
+        tools:layout="@layout/fragment_coming_soon">
+        <argument
+            android:name="title"
+            android:defaultValue="@string/title_preview"
+            app:argType="reference" />
     </fragment>
 
     <!-- Giai đoạn 7: Gallery -->

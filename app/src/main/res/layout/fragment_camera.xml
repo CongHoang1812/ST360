@@ -97,6 +97,20 @@
             app:layout_constraintTop_toBottomOf="@id/btnFlip"
             app:tint="@color/camera_toggle_icon" />
 
+        <!-- Nút làm lại: chỉ hiện khi đang chơi, thay chỗ nút lật camera (đã ẩn). Design chưa vẽ nút này. -->
+        <ImageButton
+            android:id="@+id/btnRestart"
+            android:layout_width="@dimen/camera_round_button"
+            android:layout_height="@dimen/camera_round_button"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:background="@drawable/bg_camera_round_button"
+            android:contentDescription="@string/cd_restart"
+            android:scaleType="center"
+            android:src="@drawable/ic_restart_20"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
         <!-- Cột 12 ô số: các ô do CameraFragment tạo bằng vòng lặp.
              Cao 0dp (từ y=128 tới trên dải thời lượng) để code biết còn bao nhiêu chỗ. -->
         <LinearLayout
@@ -175,6 +189,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <View
+                android:id="@+id/recordDot"
                 android:layout_width="@dimen/record_button_inner"
                 android:layout_height="@dimen/record_button_inner"
                 android:layout_gravity="center"
@@ -194,13 +209,6 @@
             app:layout_constraintBottom_toBottomOf="@id/btnRecord"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnRecord" />
-
-        <!-- Ẩn cả cụm điều khiển camera khi chưa có quyền -->
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/cameraControls"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="btnAddSound,btnFlip,btnFlash,rankColumn,durationStrip,btnRecord,btnChooseFilter" />
 
         <!-- Chưa có quyền camera / micro: giải thích và nút xin lại quyền hoặc mở Settings -->
         <LinearLayout

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ô hạng khi đang chơi (Figma 8:235): nền đen 50%, viền trắng 1dp, bo 10dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/overlay_50" />
+    <stroke android:width="@dimen/stroke_1" android:color="@color/white" />
+    <corners android:radius="@dimen/rank_slot_corner" />
+</shape>
