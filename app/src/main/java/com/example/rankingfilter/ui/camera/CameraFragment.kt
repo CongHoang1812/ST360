@@ -3,6 +3,7 @@ package com.example.rankingfilter.ui.camera
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -17,12 +18,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
+import androidx.camera.core.UseCaseGroup
 import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -37,14 +41,19 @@ import com.example.rankingfilter.R
 import com.example.rankingfilter.data.FilterDto
 import com.example.rankingfilter.databinding.FragmentCameraBinding
 import com.example.rankingfilter.databinding.ItemRankSlotBinding
+import com.example.rankingfilter.ui.camera.face.FaceAnalyzer
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.math.min
 
 /**
- * Camera (Figma 5:9) — bước 5a: giao diện, preview CameraX, lật camera, flash, xin quyền, tải ảnh filter.
- * Nhận diện mặt (5b), trò chơi xếp hạng (5c) và quay video (5d) làm ở các bước sau.
+ * Camera (Figma 5:9).
+ * - 5a: giao diện, preview CameraX, lật camera, flash, xin quyền, tải ảnh filter.
+ * - 5b: nhận diện mặt (ImageAnalysis + ML Kit) và vẽ ảnh vuông trên đầu ([FaceOverlayView]).
+ * Trò chơi xếp hạng (5c) và quay video (5d) làm ở các bước sau.
  */
 class CameraFragment : Fragment() {
 
@@ -57,6 +66,10 @@ class CameraFragment : Fragment() {
     private var camera: Camera? = null
     private var torchState: LiveData<Int>? = null
     private var cameraStarted = false
+
+    // Nhận diện mặt: luồng riêng cho ImageAnalysis, tạo lại mỗi lần tạo view.
+    private var analysisExecutor: ExecutorService? = null
+    private var faceAnalyzer: FaceAnalyzer? = null
 
     /** 12 ô hạng ở cột trái, theo thứ tự hạng 1..12. */
     private val rankSlots = mutableListOf<ItemRankSlotBinding>()
@@ -95,6 +108,7 @@ class CameraFragment : Fragment() {
 
         buildRankSlots()
         setUpDurationStrip()
+        setUpFaceDetection()
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
         binding.btnFlip.setOnClickListener { flipCamera() }
@@ -130,6 +144,8 @@ class CameraFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         setLightStatusBarIcons(true)
+        // Camera đã dừng nên không còn khung hình nào về nữa; ẩn ảnh để lần sau không hiện vị trí cũ.
+        _binding?.faceOverlay?.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -141,6 +157,10 @@ class CameraFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         // Camera gắn với viewLifecycleOwner nên CameraX tự đóng khi view bị hủy.
+        faceAnalyzer?.close()
+        faceAnalyzer = null
+        analysisExecutor?.shutdown()
+        analysisExecutor = null
         rankSlots.clear()
         torchState = null
         camera = null
@@ -248,6 +268,7 @@ class CameraFragment : Fragment() {
     private fun hasAllPermissions(): Boolean = missingPermissions().isEmpty()
 
     private fun showPermissionPanel() {
+        binding.faceOverlay.clear()
         binding.cameraControls.isVisible = false
         binding.permissionPanel.isVisible = true
         binding.btnPermission.setText(
@@ -286,12 +307,14 @@ class CameraFragment : Fragment() {
                 toast(R.string.camera_open_error)
                 return@launch
             }
-            bindCamera()
+            // ViewPort chỉ có sau khi PreviewView đã đo xong.
+            _binding?.previewView?.doOnLayout { bindCamera() }
         }
     }
 
-    /** Gắn Preview với camera đang chọn; gọi lại mỗi khi lật camera. */
+    /** Gắn Preview + ImageAnalysis với camera đang chọn; gọi lại mỗi khi lật camera. */
     private fun bindCamera() {
+        val binding = _binding ?: return
         val provider = cameraProvider ?: return
         val wanted = viewModel.state.value.lensFacing
         val available = listOf(wanted, otherLens(wanted)).filter { provider.hasLens(it) }
@@ -304,9 +327,30 @@ class CameraFragment : Fragment() {
         val preview = Preview.Builder().build().also {
             it.surfaceProvider = binding.previewView.surfaceProvider
         }
+        val analysis = ImageAnalysis.Builder()
+            // Khung hình đến khi ML Kit còn bận thì bỏ, chỉ giữ khung mới nhất: ảnh trên đầu không bị trễ.
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .build()
+            .also { use ->
+                val executor = analysisExecutor
+                val analyzer = faceAnalyzer
+                if (executor != null && analyzer != null) use.setAnalyzer(executor, analyzer)
+            }
+
+        // Preview và ImageAnalysis phải dùng chung ViewPort: cùng nhìn một vùng cảm biến,
+        // nếu không khung mặt đổi sang tọa độ view sẽ bị lệch (xem FaceAnalyzer).
+        val viewPort = binding.previewView.viewPort
+        if (viewPort == null) Log.w(TAG, "PreviewView chưa có ViewPort: ảnh trên đầu có thể bị lệch")
+        val useCases = UseCaseGroup.Builder()
+            .addUseCase(preview)
+            .addUseCase(analysis)
+            .apply { viewPort?.let(::setViewPort) }
+            .build()
+
+        binding.faceOverlay.clear()
         val bound = try {
             provider.unbindAll()
-            provider.bindToLifecycle(viewLifecycleOwner, selectorFor(lensFacing), preview)
+            provider.bindToLifecycle(viewLifecycleOwner, selectorFor(lensFacing), useCases)
         } catch (e: Exception) {
             Log.e(TAG, "Không mở được camera $lensFacing", e)
             toast(R.string.camera_open_error)
@@ -323,6 +367,17 @@ class CameraFragment : Fragment() {
         torchState = bound.cameraInfo.torchState.also { live ->
             live.observe(viewLifecycleOwner) { binding.btnFlash.isSelected = it == TorchState.ON }
         }
+    }
+
+    /** Tạo bộ nhận diện mặt và đặt ảnh chờ ("?" theo design) lên đầu; 5c sẽ thay bằng ảnh của filter. */
+    private fun setUpFaceDetection() {
+        binding.faceOverlay.photo = BitmapFactory.decodeResource(resources, R.drawable.head_placeholder)
+        analysisExecutor = Executors.newSingleThreadExecutor()
+        faceAnalyzer = FaceAnalyzer(
+            // outputTransform chỉ gọi được trên luồng chính; FaceAnalyzer chỉ gọi lambda này ở luồng chính.
+            previewTransform = { _binding?.previewView?.outputTransform },
+            onFace = { face -> _binding?.faceOverlay?.onFace(face) },
+        )
     }
 
     private fun flipCamera() {

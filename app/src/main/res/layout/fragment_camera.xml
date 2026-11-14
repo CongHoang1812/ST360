@@ -19,6 +19,12 @@
         android:importantForAccessibility="no"
         app:scaleType="fillCenter" />
 
+    <!-- Ảnh vuông trên đầu: cùng kích thước và gốc tọa độ với PreviewView, nằm dưới các nút điều khiển -->
+    <com.example.rankingfilter.ui.camera.face.FaceOverlayView
+        android:id="@+id/faceOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <!-- Các nút điều khiển; padding trên/dưới = thanh hệ thống (đặt trong code) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"

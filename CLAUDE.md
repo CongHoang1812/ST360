@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi 14/11/2026); 5b, 5c, 5d chưa làm |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b code xong, build OK, test đơn vị đạt, chưa kiểm với mặt thật**; 5c, 5d chưa làm |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -90,6 +90,21 @@ bảng xin quyền khi từ chối → Open Settings → cấp quyền → quay 
 - Nút chọn filter: quay về Choose a Filter (popBackStack, không có trong back stack thì mở mới).
 - Nút quay và Add Sound hiện Toast "Coming soon" (làm ở 5d và giai đoạn 6).
 - Thanh trạng thái đổi sang icon trắng khi ở màn Camera (`onStart`), trả lại icon đen ở `onStop`.
+
+Giai đoạn 5b đã có (chưa kiểm với mặt thật trên máy):
+- `ui/camera/face/FaceAnalyzer`: ImageAnalysis + ML Kit (fast, tracking, không landmark/contour/classification, minFaceSize 0.15).
+  Đổi tọa độ bằng `CoordinateTransform(ImageProxyTransformFactory{isUsingRotationDegrees=true}, PreviewView.outputTransform)`;
+  Preview và ImageAnalysis PHẢI chung `ViewPort` (`UseCaseGroup` trong `CameraFragment.bindCamera`), không thì khung bị lệch.
+  `outputTransform` chỉ gọi được trên luồng chính (ML Kit trả Task về luồng chính nên ổn).
+- Góc nghiêng: euler Z (dương = ngược chiều kim đồng hồ) → đổi dấu → dựng vector "đỉnh đầu" → biến đổi cùng ma trận
+  → atan2. Lật gương camera trước tự đảo dấu, không if camera trước/sau. Toán nằm trong `HeadPlacements` (hàm thuần,
+  7 test JUnit ở `app/src/test/.../HeadPlacementsTest`; chạy `./gradlew :app:testDebugUnitTest`).
+- Ảnh đặt dọc theo hướng đỉnh đầu (không chỉ xoay tại chỗ): cạnh = 0,9 × bề rộng mặt (cạnh ngắn của khung),
+  khe hở 0,12 × chiều cao mặt (`SIZE_RATIO`, `GAP_RATIO` trong `HeadPlacements`, chỉnh được).
+- `FaceOverlayView`: làm mượt 0,5, ẩn sau 150ms không thấy mặt (tránh nhấp nháy), center-crop ảnh về hình vuông.
+  Ảnh chờ: `drawable-nodpi/head_placeholder.jpg` ("?" trong Figma 5:13, ảnh JPEG 640x640 thật sự, không trong suốt).
+- Quay video (5d) cần vẽ lên cả video bằng OverlayEffect: `FaceOverlayView` chỉ vẽ lên preview, phần tính vị trí
+  (`HeadPlacements`) và nhận mặt (`FaceAnalyzer`) dùng lại được.
 
 Việc còn treo:
 - 5a chưa kiểm: Camera với filter TỰ TẠO (Logcat `CameraViewModel` phải báo 12 ảnh; cần người dùng tạo filter vì phải
