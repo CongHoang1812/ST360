@@ -140,6 +140,12 @@
             android:name="title"
             android:defaultValue="@string/title_preview"
             app:argType="reference" />
+        <!-- content:// của video vừa quay (MediaStore, Movies/RankingFilter) -->
+        <argument
+            android:name="video_uri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <!-- Giai đoạn 7: Gallery -->

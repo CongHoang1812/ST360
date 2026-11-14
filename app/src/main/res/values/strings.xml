@@ -58,6 +58,11 @@
     <string name="camera_permission_settings">Open Settings</string>
     <string name="camera_open_error">Can\'t open the camera.</string>
     <string name="camera_filter_missing">This filter is no longer available.</string>
+    <string name="camera_in_use">The camera is being used by another app.</string>
+    <string name="record_error_storage">Not enough storage to record a video.</string>
+    <string name="record_error_camera">The camera was interrupted. Please try again.</string>
+    <string name="record_error_generic">Couldn\'t record the video. Please try again.</string>
+    <string name="coming_soon_video">Video: %1$s</string>
     <string name="camera_filter_incomplete">This filter doesn\'t have enough photos to play.</string>
 
     <!-- Popup -->

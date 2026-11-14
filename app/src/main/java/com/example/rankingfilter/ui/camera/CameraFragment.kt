@@ -3,10 +3,18 @@ package com.example.rankingfilter.ui.camera
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.graphics.Rect
+import android.graphics.RectF
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.util.TypedValue
@@ -20,6 +28,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.CameraState
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.core.TorchState
@@ -27,6 +36,8 @@ import androidx.camera.core.UseCaseGroup
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
@@ -45,6 +56,14 @@ import com.example.rankingfilter.data.FilterDto
 import com.example.rankingfilter.databinding.FragmentCameraBinding
 import com.example.rankingfilter.databinding.ItemRankSlotBinding
 import com.example.rankingfilter.ui.camera.face.FaceAnalyzer
+import com.example.rankingfilter.ui.camera.face.HeadPlacements
+import com.example.rankingfilter.ui.camera.face.HeadSmoother
+import com.example.rankingfilter.ui.camera.face.TrackedFace
+import com.example.rankingfilter.ui.camera.overlay.CameraOverlay
+import com.example.rankingfilter.ui.camera.overlay.OverlayRenderer
+import com.example.rankingfilter.ui.camera.overlay.OverlayScene
+import com.example.rankingfilter.ui.camera.record.VideoRecorder
+import com.example.rankingfilter.ui.common.ComingSoonFragment
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -52,6 +71,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.math.min
@@ -59,28 +79,58 @@ import kotlin.math.min
 /**
  * Camera (Figma 5:9, đang quay 8:102 / 8:192 / 8:235).
  * - 5a: giao diện, preview CameraX, lật camera, flash, xin quyền, tải ảnh filter.
- * - 5b: nhận diện mặt (ImageAnalysis + ML Kit) và vẽ ảnh vuông trên đầu ([com.example.rankingfilter.ui.camera.face.FaceOverlayView]).
- * - 5c: trò chơi xếp hạng. Bấm nút quay → bắt đầu ván: ảnh trên đầu đổi ngẫu nhiên, chạm ô trống để chốt.
- *   Xếp đủ 12 ô thì chuyển sang màn Preview. Quay video thật (5d) sẽ gắn vào đúng các điểm bắt đầu / dừng này.
+ * - 5b: nhận diện mặt (ImageAnalysis + ML Kit), tính vị trí ảnh trên đầu.
+ * - 5c: trò chơi xếp hạng: ảnh trên đầu đổi ngẫu nhiên, chạm ô trống để chốt.
+ * - 5d: quay video ([VideoRecorder]). Ảnh trên đầu và cột hạng được [CameraOverlay] vẽ thẳng lên khung hình
+ *   camera nên có trong cả preview lẫn video lưu ra. Một ván chơi = một lần quay:
+ *   bấm nút quay → video bắt đầu ghi → ván bắt đầu; dừng bằng tay, hết giờ hoặc xếp đủ 12 ô → lưu video → màn Preview.
  */
 class CameraFragment : Fragment() {
+
+    /** Vòng đời của một lần quay. Chuyển trạng thái chỉ qua [setRecPhase]. */
+    private enum class RecPhase {
+        IDLE,
+        /** Đã gọi start, chờ CameraX báo khung hình đầu tiên. */
+        STARTING,
+        RECORDING,
+        /** Đã gọi stop, chờ CameraX đóng file. */
+        STOPPING,
+    }
+
+    private class SlotGeometry(val box: RectF, val rankCenterX: Float)
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CameraViewModel by viewModels()
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     private var cameraProvider: ProcessCameraProvider? = null
     private var camera: Camera? = null
     private var torchState: LiveData<Int>? = null
+    private var cameraState: LiveData<CameraState>? = null
+    private var lastCameraError: Int? = null
     private var cameraStarted = false
 
     // Nhận diện mặt: luồng riêng cho ImageAnalysis, tạo lại mỗi lần tạo view.
     private var analysisExecutor: ExecutorService? = null
     private var faceAnalyzer: FaceAnalyzer? = null
+    private val headSmoother = HeadSmoother()
 
-    /** 12 dòng hạng ở cột trái, theo thứ tự hạng 1..12. */
+    // Vẽ lên khung hình camera và quay video; tạo lại mỗi lần tạo view.
+    private var overlay: CameraOverlay? = null
+    private var recorder: VideoRecorder? = null
+    private var recPhase = RecPhase.IDLE
+
+    /** Người dùng bấm "làm lại": khi bản ghi cũ bị bỏ xong thì quay lại từ đầu. */
+    private var restartPending = false
+
+    /** 12 dòng hạng ở cột trái, theo thứ tự hạng 1..12. Chỉ là vùng chạm; hình do [CameraOverlay] vẽ. */
     private val rankSlots = mutableListOf<ItemRankSlotBinding>()
+    private val slotNumbers = List(FilterDto.PHOTO_COUNT) { (it + 1).toString() }
+
+    /** Vị trí các ô trong tọa độ PreviewView; null = cần đo lại (layout vừa đổi). */
+    private var slotGeometry: List<SlotGeometry>? = null
 
     /** Ảnh "?" hiện trên đầu khi chưa chơi (Figma 5:13). */
     private var placeholder: Bitmap? = null
@@ -91,8 +141,10 @@ class CameraFragment : Fragment() {
     /** Trạng thái trò chơi lần vẽ gần nhất; vòng spin và bấm ô đọc từ đây. */
     private var game = GameUi()
 
-    /** Đang chờ một chút rồi chuyển sang màn Preview. */
+    /** Đang chờ một chút (cho video kịp ghi cột hạng đầy) rồi dừng quay. */
     private var finishJob: Job? = null
+
+    private var shownSecond = -1L
 
     /** Đã tự hỏi quyền một lần trong lần mở màn này (không hỏi lặp lại mỗi lần onStart). */
     private var permissionAsked = false
@@ -111,6 +163,8 @@ class CameraFragment : Fragment() {
             }
         }
 
+    private val isBusy: Boolean get() = recPhase != RecPhase.IDLE || game.isActive
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionAsked = savedInstanceState?.getBoolean(KEY_PERMISSION_ASKED) ?: false
@@ -128,6 +182,8 @@ class CameraFragment : Fragment() {
 
         buildRankSlots()
         setUpDurationStrip()
+        setUpOverlay()
+        setUpRecorder()
         setUpFaceDetection()
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
@@ -137,7 +193,7 @@ class CameraFragment : Fragment() {
         // Add Sound làm ở giai đoạn 6.
         binding.btnAddSound.setOnClickListener { toast(R.string.coming_soon) }
         binding.btnRecord.setOnClickListener { onRecordClicked() }
-        binding.btnRestart.setOnClickListener { viewModel.restartGame() }
+        binding.btnRestart.setOnClickListener { restartRecording() }
         binding.btnPermission.setOnClickListener { onPermissionButtonClicked() }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -166,8 +222,15 @@ class CameraFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         setLightStatusBarIcons(true)
-        // Camera đã dừng nên không còn khung hình nào về nữa; ẩn ảnh để lần sau không hiện vị trí cũ.
-        _binding?.faceOverlay?.clear()
+        // Rời màn giữa chừng (về Home, có cuộc gọi…): CameraX sắp đóng camera nên bản ghi không trọn vẹn → bỏ.
+        if (recPhase != RecPhase.IDLE) {
+            restartPending = false
+            finishJob?.cancel()
+            recorder?.stop(keep = false)
+        }
+        // Camera dừng thì không còn khung hình nào về nữa; ẩn ảnh để lần sau không hiện vị trí cũ.
+        headSmoother.clear()
+        publishScene()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -178,35 +241,170 @@ class CameraFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Bản ghi dở bị bỏ; callback đóng file đến sau sẽ không còn ai nghe (xem VideoRecorder.release).
+        recorder?.release()
+        recorder = null
+        recPhase = RecPhase.IDLE
+        restartPending = false
+        finishJob = null
+        // ViewModel sống qua xoay màn hình, nhưng ván gắn với bản ghi vừa bỏ nên cũng dừng.
+        viewModel.stopGame()
+        game = GameUi()
+
         // Camera gắn với viewLifecycleOwner nên CameraX tự đóng khi view bị hủy.
         faceAnalyzer?.close()
         faceAnalyzer = null
         analysisExecutor?.shutdown()
         analysisExecutor = null
+        headSmoother.clear()
+        overlay?.close()
+        overlay = null
+
         rankSlots.clear()
+        slotGeometry = null
         torchState = null
+        cameraState = null
+        lastCameraError = null
         camera = null
         cameraProvider = null
         cameraStarted = false
         cameraVisible = false
-        finishJob = null
-        game = GameUi()
+        shownSecond = -1L
         _binding = null
     }
 
-    // ---------------------------------------------------------------- Trò chơi
+    // ---------------------------------------------------------------- Quay video + trò chơi
 
-    /** Bấm nút quay: chưa chơi thì bắt đầu ván mới, đang chơi thì dừng (bỏ ván). */
+    /** Nút quay: chưa quay thì bắt đầu, đang quay thì dừng và lưu. */
     private fun onRecordClicked() {
-        if (game.isActive) {
-            viewModel.stopGame()
+        when (recPhase) {
+            RecPhase.IDLE -> beginRecording()
+            RecPhase.RECORDING -> finishRecording()
+            RecPhase.STARTING, RecPhase.STOPPING -> Unit
+        }
+    }
+
+    private fun beginRecording() {
+        val current = recorder ?: return
+        if (camera == null) return
+        // Quyền có thể bị thu hồi trong Settings khi app ở nền.
+        if (!hasAllPermissions()) {
+            showPermissionPanel()
             return
         }
-        when (viewModel.startGame()) {
+        when (viewModel.checkGameReady()) {
             GameStart.STARTED -> Unit
-            GameStart.FILTER_NOT_READY -> Unit // ảnh filter còn đang tải
-            GameStart.NOT_ENOUGH_PHOTOS -> toast(R.string.camera_filter_incomplete)
+            GameStart.FILTER_NOT_READY -> return // ảnh filter còn đang tải
+            GameStart.NOT_ENOUGH_PHOTOS -> {
+                toast(R.string.camera_filter_incomplete)
+                return
+            }
         }
+        val limitMs = viewModel.state.value.duration.seconds?.let { it * 1000L }
+        val failure = current.start(limitMs)
+        if (failure != null) {
+            showRecordFailure(failure)
+            return
+        }
+        showElapsed(0)
+        setRecPhase(RecPhase.STARTING)
+    }
+
+    /** Dừng quay và GIỮ video (bấm dừng, hoặc xếp xong). Hết giờ thì Recorder tự dừng, không qua đây. */
+    private fun finishRecording() {
+        if (recPhase != RecPhase.RECORDING && recPhase != RecPhase.STARTING) return
+        finishJob?.cancel()
+        finishJob = null
+        setRecPhase(RecPhase.STOPPING)
+        recorder?.stop(keep = true)
+    }
+
+    /** Làm lại: bỏ video đang quay, xóa các ô đã chốt, rồi quay lại từ đầu khi file cũ đóng xong. */
+    private fun restartRecording() {
+        if (recPhase != RecPhase.RECORDING) return
+        restartPending = true
+        finishJob?.cancel()
+        finishJob = null
+        viewModel.stopGame()
+        setRecPhase(RecPhase.STOPPING)
+        recorder?.stop(keep = false)
+    }
+
+    private val recorderListener = object : VideoRecorder.Listener {
+        override fun onStarted() {
+            if (_binding == null) return
+            setRecPhase(RecPhase.RECORDING)
+            // Ván bắt đầu đúng lúc video bắt đầu ghi, để video có trọn ván.
+            viewModel.startGame()
+        }
+
+        override fun onProgress(elapsedMs: Long) {
+            if (_binding != null) showElapsed(elapsedMs)
+        }
+
+        override fun onSaved(uri: Uri) {
+            if (_binding == null) return
+            resetAfterRecording()
+            // Chuyển màn khi Fragment ở trạng thái cho phép (callback có thể đến lúc app vừa xuống nền).
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.lifecycle.withStarted {
+                    findNavController().navigate(
+                        R.id.action_camera_to_preview,
+                        bundleOf(ComingSoonFragment.ARG_VIDEO_URI to uri.toString()),
+                    )
+                }
+            }
+        }
+
+        override fun onDiscarded() {
+            if (_binding == null) return
+            val restart = restartPending
+            resetAfterRecording()
+            if (restart && viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                beginRecording()
+            }
+        }
+
+        override fun onFailed(failure: VideoRecorder.Failure) {
+            if (_binding == null) return
+            resetAfterRecording()
+            showRecordFailure(failure)
+        }
+    }
+
+    /** Bản ghi đã kết thúc (lưu, bỏ hoặc lỗi): về trạng thái chưa quay, chưa chơi. */
+    private fun resetAfterRecording() {
+        restartPending = false
+        finishJob?.cancel()
+        finishJob = null
+        viewModel.stopGame()
+        setRecPhase(RecPhase.IDLE)
+    }
+
+    private fun showRecordFailure(failure: VideoRecorder.Failure) {
+        when (failure) {
+            VideoRecorder.Failure.NO_STORAGE -> toast(R.string.record_error_storage)
+            VideoRecorder.Failure.CAMERA_INTERRUPTED -> toast(R.string.record_error_camera)
+            VideoRecorder.Failure.MIC_PERMISSION -> showPermissionPanel()
+            VideoRecorder.Failure.UNKNOWN -> toast(R.string.record_error_generic)
+            // Bấm dừng ngay khi vừa bắt đầu: chưa có gì để lưu, không cần báo.
+            VideoRecorder.Failure.NO_DATA -> Unit
+        }
+    }
+
+    private fun setRecPhase(phase: RecPhase) {
+        recPhase = phase
+        updateControls()
+        publishScene()
+    }
+
+    /** Đồng hồ 00:00:10 (Figma 14:685); chỉ đổi chữ khi sang giây mới. */
+    private fun showElapsed(elapsedMs: Long) {
+        val seconds = elapsedMs / 1000
+        if (seconds == shownSecond) return
+        shownSecond = seconds
+        binding.tvTimer.text =
+            String.format(Locale.US, "%02d:%02d:%02d", seconds / 3600, seconds / 60 % 60, seconds % 60)
     }
 
     /**
@@ -214,7 +412,7 @@ class CameraFragment : Fragment() {
      * ảnh bị ẩn: người chơi không biết mình đang chốt ảnh nào, mà đã chốt thì không sửa được.
      */
     private fun onSlotClicked(index: Int) {
-        if (!game.isPlaying || !binding.faceOverlay.hasFace) return
+        if (recPhase != RecPhase.RECORDING || !game.isPlaying || !headSmoother.hasFace) return
         if (viewModel.placePhoto(index)) {
             binding.root.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         }
@@ -224,22 +422,18 @@ class CameraFragment : Fragment() {
     private suspend fun spinLoop() {
         while (currentCoroutineContext().isActive) {
             delay(SPIN_INTERVAL_MS)
-            val overlay = _binding?.faceOverlay ?: return
-            if (game.isPlaying && overlay.hasFace) viewModel.spin()
+            if (_binding == null) return
+            if (recPhase == RecPhase.RECORDING && game.isPlaying && headSmoother.hasFace) viewModel.spin()
         }
     }
 
-    /** Xếp đủ 12 ô: dừng ván, chờ một chút cho người chơi thấy ô cuối rồi sang màn Preview. */
+    /** Xếp đủ 12 ô: quay thêm một chút cho video có cảnh cột hạng đầy, rồi dừng và lưu. */
     private fun onGameFinished() {
-        if (finishJob?.isActive == true) return
+        if (recPhase != RecPhase.RECORDING || finishJob?.isActive == true) return
         finishJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(FINISH_DELAY_MS)
-            // Chuyển màn khi Fragment đã ở trạng thái cho phép (tránh lỗi nếu app vừa bị đưa xuống nền).
-            viewLifecycleOwner.lifecycle.withStarted {
-                // Về lại Camera từ màn Preview thì ván mới ở trạng thái chưa chơi.
-                viewModel.stopGame()
-                findNavController().navigate(R.id.action_camera_to_preview)
-            }
+            finishJob = null
+            finishRecording()
         }
     }
 
@@ -248,40 +442,22 @@ class CameraFragment : Fragment() {
     private fun render(state: CameraUiState) {
         durationViews().forEach { (duration, view) -> view.isSelected = duration == state.duration }
         game = state.game
-        renderGame(state.game)
-    }
-
-    private fun renderGame(ui: GameUi) {
         updateControls()
-
-        // Ảnh trên đầu: ảnh chờ "?" (vuông) khi chưa chơi, ảnh của filter (bo góc) khi đang chơi.
-        binding.faceOverlay.cornerRatio = if (ui.isActive) PHOTO_CORNER_RATIO else 0f
-        binding.faceOverlay.photo = if (ui.isActive) ui.head else placeholder
-
-        // Nút quay: chấm tròn → hình vuông bo góc 32dp khi đang chơi (Figma 8:191).
-        val dotSize = resources.getDimensionPixelSize(if (ui.isActive) R.dimen.record_stop_inner else R.dimen.record_button_inner)
-        binding.recordDot.setBackgroundResource(if (ui.isActive) R.drawable.bg_record_stop else R.drawable.bg_record_dot)
-        if (binding.recordDot.layoutParams.width != dotSize) {
-            binding.recordDot.updateLayoutParams { width = dotSize; height = dotSize }
-        }
-        binding.btnRecord.contentDescription = getString(if (ui.isActive) R.string.cd_stop else R.string.cd_record)
-
-        rankSlots.forEachIndexed { index, slot -> renderSlot(index, slot, ui.slots.getOrNull(index), ui.isActive) }
-
-        if (ui.isFinished) onGameFinished()
+        rankSlots.forEachIndexed { index, slot -> renderSlot(index, slot, state.game.slots.getOrNull(index)) }
+        publishScene()
+        if (state.game.isFinished) onGameFinished()
     }
 
     /**
-     * Ô đã chốt: ảnh nhỏ nằm trong ô, số hạng đứng bên trái ô (Figma 8:192).
-     * Ô trống: số nằm trong ô; đang chơi thì có viền trắng (Figma 8:235).
+     * Cập nhật View của ô (đang trong suốt, xem [setUpOverlay]). Vẫn giữ đúng trạng thái để trình đọc màn hình
+     * đọc được, và để hiện lại được nếu [CameraOverlay] hỏng.
      */
-    private fun renderSlot(index: Int, slot: ItemRankSlotBinding, photo: Bitmap?, active: Boolean) {
+    private fun renderSlot(index: Int, slot: ItemRankSlotBinding, photo: Bitmap?) {
         val filled = photo != null
         slot.ivPhoto.isVisible = filled
         slot.tvNumber.isVisible = !filled
         slot.tvRank.visibility = if (filled) View.VISIBLE else View.INVISIBLE
-        slot.tvRank.text = (index + 1).toString()
-        slot.box.setBackgroundResource(if (active) R.drawable.bg_rank_slot_playing else R.drawable.bg_rank_slot)
+        slot.box.setBackgroundResource(if (isBusy) R.drawable.bg_rank_slot_playing else R.drawable.bg_rank_slot)
         if (slot.ivPhoto.tag !== photo) {
             slot.ivPhoto.tag = photo
             slot.ivPhoto.setImageBitmap(photo)
@@ -291,22 +467,36 @@ class CameraFragment : Fragment() {
     /**
      * Điều khiển nào hiện lúc nào:
      * - bảng xin quyền: ẩn hết;
-     * - camera, chưa chơi: đủ bộ nút;
-     * - đang chơi (Figma 8:102): chỉ còn cột hạng, nút dừng và nút làm lại. Nút Back cũng ẩn (vẫn bấm Back hệ thống được).
+     * - camera, chưa quay: đủ bộ nút;
+     * - đang quay (Figma 8:102): chỉ còn đồng hồ, cột hạng, nút dừng và nút làm lại.
+     *   Nút Back cũng ẩn (vẫn bấm Back hệ thống được: video đang quay bị bỏ).
      */
     private fun updateControls() {
-        val b = binding
-        val idle = cameraVisible && !game.isActive
-        val playing = cameraVisible && game.isActive
-        b.btnBack.isVisible = !game.isActive
+        val b = _binding ?: return
+        val busy = isBusy
+        val idle = cameraVisible && !busy
+        val playing = cameraVisible && busy
+        b.btnBack.isVisible = !busy
         b.btnAddSound.isVisible = idle
         b.btnFlip.isVisible = idle
         b.btnFlash.isVisible = idle
         b.durationStrip.isVisible = idle
         b.btnChooseFilter.isVisible = idle
+        b.timerPill.isVisible = playing
         b.rankColumn.isVisible = cameraVisible
-        b.btnRecord.isVisible = cameraVisible
         b.btnRestart.isVisible = playing
+        b.btnRestart.isEnabled = recPhase == RecPhase.RECORDING
+        b.btnRecord.isVisible = cameraVisible
+        // Trong lúc chờ CameraX bắt đầu / đóng file thì chưa bấm được.
+        b.btnRecord.isEnabled = recPhase == RecPhase.IDLE || recPhase == RecPhase.RECORDING
+
+        // Nút quay: chấm tròn 56dp → hình vuông bo góc 32dp khi đang quay (Figma 8:191).
+        val dotSize = resources.getDimensionPixelSize(if (busy) R.dimen.record_stop_inner else R.dimen.record_button_inner)
+        b.recordDot.setBackgroundResource(if (busy) R.drawable.bg_record_stop else R.drawable.bg_record_dot)
+        if (b.recordDot.layoutParams.width != dotSize) {
+            b.recordDot.updateLayoutParams { width = dotSize; height = dotSize }
+        }
+        b.btnRecord.contentDescription = getString(if (busy) R.string.cd_stop else R.string.cd_record)
     }
 
     private fun onEvent(event: CameraEvent) {
@@ -325,8 +515,8 @@ class CameraFragment : Fragment() {
         rankSlots.clear()
         repeat(FilterDto.PHOTO_COUNT) { index ->
             val slot = ItemRankSlotBinding.inflate(layoutInflater, column, false)
-            slot.tvNumber.text = (index + 1).toString()
-            slot.tvRank.text = (index + 1).toString()
+            slot.tvNumber.text = slotNumbers[index]
+            slot.tvRank.text = slotNumbers[index]
             slot.box.contentDescription = getString(R.string.cd_rank_slot, index + 1)
             slot.box.setOnClickListener { onSlotClicked(index) }
             column.addView(slot.root)
@@ -334,6 +524,8 @@ class CameraFragment : Fragment() {
         }
         sizeRankSlots(column.height)
         column.addOnLayoutChangeListener { v, _, top, _, bottom, _, oldTop, _, oldBottom ->
+            // Vị trí các ô có thể đã đổi: lần vẽ overlay tới sẽ đo lại.
+            slotGeometry = null
             // Đổi LayoutParams trong lúc đang layout thì bị bỏ qua, nên dời sang frame sau.
             if (bottom - top != oldBottom - oldTop) v.post { if (_binding != null) sizeRankSlots(bottom - top) }
         }
@@ -363,6 +555,7 @@ class CameraFragment : Fragment() {
             slot.tvNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, textPx)
             slot.tvRank.setTextSize(TypedValue.COMPLEX_UNIT_PX, textPx)
         }
+        slotGeometry = null
     }
 
     private fun durationViews(): Map<RecordDuration, TextView> = mapOf(
@@ -397,6 +590,81 @@ class CameraFragment : Fragment() {
         }
     }
 
+    // ---------------------------------------------------------------- Overlay trên khung hình camera
+
+    /**
+     * Tạo [CameraOverlay] và làm các View của cột hạng trong suốt: từ đây ô số, ảnh đã chốt và ảnh trên đầu
+     * do overlay vẽ lên khung hình camera, để màn hình và video lưu ra giống hệt nhau.
+     * View trong suốt vẫn nhận chạm và vẫn được trình đọc màn hình đọc.
+     */
+    private fun setUpOverlay() {
+        val slotSize = resources.getDimension(R.dimen.rank_slot_size)
+        val typeface = try {
+            ResourcesCompat.getFont(requireContext(), R.font.londrina_solid_regular)
+        } catch (e: Resources.NotFoundException) {
+            null
+        }
+        val renderer = OverlayRenderer(
+            typeface = typeface,
+            slotCornerRatio = resources.getDimension(R.dimen.rank_slot_corner) / slotSize,
+            slotTextRatio = resources.getDimension(R.dimen.rank_slot_text) / slotSize,
+            slotStrokePx = resources.getDimension(R.dimen.stroke_1),
+        )
+        overlay = CameraOverlay(renderer) {
+            // Overlay hỏng (rất hiếm): hiện lại các View để ít nhất còn thấy cột hạng trên màn hình.
+            mainHandler.post { _binding?.rankColumn?.alpha = 1f }
+        }
+        binding.rankColumn.alpha = 0f
+    }
+
+    /**
+     * Gom mọi thứ cần vẽ thành một [OverlayScene] và giao cho luồng vẽ. Gọi trên luồng chính mỗi khi
+     * có kết quả nhận diện mặt mới hoặc trạng thái trò chơi / quay đổi.
+     */
+    private fun publishScene() {
+        val b = _binding ?: return
+        val target = overlay ?: return
+        // sensorToViewTransform (chỉ gọi được trên luồng chính) là null khi preview chưa chạy.
+        val sensorToView = if (cameraVisible) b.previewView.sensorToViewTransform else null
+        val viewToSensor = Matrix()
+        if (sensorToView == null || !sensorToView.invert(viewToSensor)) {
+            target.scene = null
+            return
+        }
+        val geometry = slotGeometry ?: measureSlots()?.also { slotGeometry = it }
+        val playingPhoto = game.isActive
+        target.scene = OverlayScene(
+            viewToSensor = viewToSensor,
+            head = headSmoother.current,
+            // Ảnh chờ "?" (vuông) khi chưa chơi, ảnh của filter (bo góc) khi đang chơi; xếp xong thì không còn ảnh.
+            headPhoto = if (playingPhoto) game.head else placeholder,
+            headCornerRatio = if (playingPhoto) PHOTO_CORNER_RATIO else 0f,
+            slots = geometry.orEmpty().mapIndexed { index, g ->
+                OverlayScene.Slot(g.box, slotNumbers[index], game.slots.getOrNull(index), g.rankCenterX)
+            },
+            slotsOutlined = isBusy,
+        )
+    }
+
+    /** Vị trí các ô hạng trong tọa độ của PreviewView (PreviewView phủ kín view gốc nên dùng chung gốc tọa độ). */
+    private fun measureSlots(): List<SlotGeometry>? {
+        val root = binding.root
+        val rect = Rect()
+        return rankSlots.map { slot ->
+            if (slot.box.width == 0) return null // chưa layout xong
+            slot.box.getDrawingRect(rect)
+            root.offsetDescendantRectToMyCoords(slot.box, rect)
+            val box = RectF(rect)
+            slot.tvRank.getDrawingRect(rect)
+            root.offsetDescendantRectToMyCoords(slot.tvRank, rect)
+            SlotGeometry(box, rect.exactCenterX())
+        }
+    }
+
+    private fun setUpRecorder() {
+        recorder = VideoRecorder(requireContext()).also { it.listener = recorderListener }
+    }
+
     // ---------------------------------------------------------------- Quyền
 
     private fun missingPermissions(): List<String> = REQUIRED_PERMISSIONS.filter {
@@ -406,9 +674,10 @@ class CameraFragment : Fragment() {
     private fun hasAllPermissions(): Boolean = missingPermissions().isEmpty()
 
     private fun showPermissionPanel() {
-        binding.faceOverlay.clear()
+        headSmoother.clear()
         cameraVisible = false
         updateControls()
+        publishScene()
         binding.permissionPanel.isVisible = true
         binding.btnPermission.setText(
             if (permanentlyDenied) R.string.camera_permission_settings else R.string.camera_permission_allow
@@ -452,7 +721,12 @@ class CameraFragment : Fragment() {
         }
     }
 
-    /** Gắn Preview + ImageAnalysis với camera đang chọn; gọi lại mỗi khi lật camera. */
+    /**
+     * Gắn Preview + ImageAnalysis + VideoCapture (kèm OverlayEffect) với camera đang chọn; gọi lại mỗi khi lật camera.
+     *
+     * Vì hiệu ứng nhắm vào cả Preview và VideoCapture, CameraX mở MỘT luồng hình từ camera, cho qua hiệu ứng rồi
+     * chia cho hai nơi (stream sharing). Cộng với ImageAnalysis là hai luồng, nên máy đời thấp cũng chạy được.
+     */
     private fun bindCamera() {
         val binding = _binding ?: return
         val provider = cameraProvider ?: return
@@ -477,17 +751,23 @@ class CameraFragment : Fragment() {
                 if (executor != null && analyzer != null) use.setAnalyzer(executor, analyzer)
             }
 
-        // Preview và ImageAnalysis phải dùng chung ViewPort: cùng nhìn một vùng cảm biến,
-        // nếu không khung mặt đổi sang tọa độ view sẽ bị lệch (xem FaceAnalyzer).
+        // Preview, ImageAnalysis và VideoCapture phải dùng chung ViewPort: cùng nhìn một vùng cảm biến.
+        // Thiếu nó thì (1) khung mặt đổi sang tọa độ view bị lệch, (2) video ghi vùng rộng hơn màn hình
+        // nên bố cục overlay trong video khác với lúc quay.
         val viewPort = binding.previewView.viewPort
-        if (viewPort == null) Log.w(TAG, "PreviewView chưa có ViewPort: ảnh trên đầu có thể bị lệch")
+        if (viewPort == null) Log.w(TAG, "PreviewView chưa có ViewPort: overlay có thể bị lệch")
         val useCases = UseCaseGroup.Builder()
             .addUseCase(preview)
             .addUseCase(analysis)
-            .apply { viewPort?.let(::setViewPort) }
+            .apply {
+                recorder?.let { addUseCase(it.useCase) }
+                overlay?.let { addEffect(it.effect) }
+                viewPort?.let(::setViewPort)
+            }
             .build()
 
-        binding.faceOverlay.clear()
+        headSmoother.clear()
+        publishScene()
         val bound = try {
             provider.unbindAll()
             provider.bindToLifecycle(viewLifecycleOwner, selectorFor(lensFacing), useCases)
@@ -507,21 +787,57 @@ class CameraFragment : Fragment() {
         torchState = bound.cameraInfo.torchState.also { live ->
             live.observe(viewLifecycleOwner) { binding.btnFlash.isSelected = it == TorchState.ON }
         }
+
+        cameraState?.removeObservers(viewLifecycleOwner)
+        lastCameraError = null
+        cameraState = bound.cameraInfo.cameraState.also { live ->
+            live.observe(viewLifecycleOwner, ::onCameraState)
+        }
     }
 
-    /** Tạo bộ nhận diện mặt và đặt ảnh chờ ("?" theo design) lên đầu. */
+    /**
+     * Lỗi của camera (ví dụ app khác chiếm camera). Nếu đang quay, bản ghi sẽ tự kết thúc với
+     * ERROR_SOURCE_INACTIVE và [recorderListener] lo phần còn lại; ở đây chỉ báo cho người dùng một lần.
+     */
+    private fun onCameraState(state: CameraState) {
+        val code = state.error?.code
+        if (code == lastCameraError) return
+        lastCameraError = code
+        when (code) {
+            null -> Unit
+            CameraState.ERROR_CAMERA_IN_USE, CameraState.ERROR_MAX_CAMERAS_IN_USE -> toast(R.string.camera_in_use)
+            CameraState.ERROR_CAMERA_DISABLED,
+            CameraState.ERROR_CAMERA_FATAL_ERROR,
+            CameraState.ERROR_DO_NOT_DISTURB_MODE_ENABLED,
+            -> toast(R.string.camera_open_error)
+            // Lỗi tạm thời: CameraX tự thử mở lại.
+            else -> Log.w(TAG, "Camera báo lỗi tạm thời $code")
+        }
+    }
+
+    /** Tạo bộ nhận diện mặt và nạp ảnh chờ ("?" theo design). */
     private fun setUpFaceDetection() {
         placeholder = BitmapFactory.decodeResource(resources, R.drawable.head_placeholder)
-        binding.faceOverlay.photo = placeholder
         analysisExecutor = Executors.newSingleThreadExecutor()
         faceAnalyzer = FaceAnalyzer(
             // outputTransform chỉ gọi được trên luồng chính; FaceAnalyzer chỉ gọi lambda này ở luồng chính.
             previewTransform = { _binding?.previewView?.outputTransform },
-            onFace = { face -> _binding?.faceOverlay?.onFace(face) },
+            onFace = ::onFaceResult,
         )
     }
 
+    /** Kết quả nhận diện của một khung hình (luồng chính): làm mượt vị trí rồi đưa vào overlay. */
+    private fun onFaceResult(face: TrackedFace?) {
+        if (_binding == null) return
+        val target = face?.let {
+            HeadPlacements.place(it.box.left, it.box.top, it.box.right, it.box.bottom, it.rollDegrees)
+        }
+        headSmoother.update(target, SystemClock.uptimeMillis())
+        publishScene()
+    }
+
     private fun flipCamera() {
+        if (recPhase != RecPhase.IDLE) return // đổi camera sẽ cắt ngang bản ghi
         viewModel.setLensFacing(otherLens(viewModel.state.value.lensFacing))
         bindCamera()
     }
@@ -564,12 +880,18 @@ class CameraFragment : Fragment() {
         private const val KEY_PERMISSION_ASKED = "permission_asked"
         private const val KEY_PERMANENTLY_DENIED = "permanently_denied"
         private const val DISABLED_ALPHA = 0.4f
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+
+        private val REQUIRED_PERMISSIONS: Array<String> = buildList {
+            add(Manifest.permission.CAMERA)
+            add(Manifest.permission.RECORD_AUDIO)
+            // Android 9 trở xuống: ghi video vào Movies/RankingFilter cần quyền bộ nhớ.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }.toTypedArray()
 
         /** Ảnh trên đầu đổi mỗi ~150ms (sổ tay). */
         private const val SPIN_INTERVAL_MS = 150L
 
-        /** Chờ sau khi chốt ô cuối để người chơi thấy cột hạng đầy, rồi mới sang màn Preview. */
+        /** Sau khi chốt ô cuối, quay thêm chừng này để video có cảnh cột hạng đầy rồi mới dừng. */
         private const val FINISH_DELAY_MS = 700L
 
         /** Ảnh của filter trên đầu bo góc ≈ 12% cạnh (Figma 8:192). */

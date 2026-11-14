@@ -118,25 +118,28 @@ class CameraViewModel(
     }
 
     // ---------------------------------------------------------------- Trò chơi xếp hạng
-    // Trò chơi nằm trong ViewModel nên xoay màn hình không làm mất ván đang chơi.
+    // Một ván gắn với một lần quay video: CameraFragment bắt đầu ván khi video bắt đầu ghi
+    // và dừng ván khi video dừng (kể cả khi rời màn hay xoay màn hình, vì lúc đó bản ghi bị bỏ).
 
     private var game: RankingGame<Bitmap>? = null
 
-    /** Bắt đầu một ván mới với 12 ảnh của filter (xáo trộn, ô trống hết). Gọi khi bấm nút quay. */
-    fun startGame(): GameStart {
+    /** Kiểm trước khi quay: filter đã tải xong và đủ 12 ảnh chưa. Không đổi trạng thái gì. */
+    fun checkGameReady(): GameStart {
         val filter = _state.value.filter ?: return GameStart.FILTER_NOT_READY
         if (filter.photos.size < FilterDto.PHOTO_COUNT) return GameStart.NOT_ENOUGH_PHOTOS
-        game = RankingGame(filter.photos, FilterDto.PHOTO_COUNT)
+        return GameStart.STARTED
+    }
+
+    /** Bắt đầu một ván mới với 12 ảnh của filter (xáo trộn, ô trống hết). Gọi khi video bắt đầu ghi. */
+    fun startGame(): GameStart {
+        val ready = checkGameReady()
+        if (ready != GameStart.STARTED) return ready
+        game = RankingGame(_state.value.filter!!.photos, FilterDto.PHOTO_COUNT)
         publishGame()
         return GameStart.STARTED
     }
 
-    /** Làm lại: ván mới, xáo lại ảnh, xóa hết ô đã chốt. Không làm gì nếu chưa chơi. */
-    fun restartGame() {
-        if (game != null) startGame()
-    }
-
-    /** Dừng ván hiện tại và về trạng thái chưa chơi (bấm dừng, hoặc sau khi xếp xong và đã chuyển màn). */
+    /** Dừng ván hiện tại và về trạng thái chưa chơi (video đã dừng: lưu xong, bị bỏ hoặc lỗi). */
     fun stopGame() {
         game = null
         publishGame()

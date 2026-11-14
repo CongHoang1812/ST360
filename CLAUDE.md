@@ -19,7 +19,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
-| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong** (đã kiểm trên Xiaomi, camera trước, filter có sẵn); 5d chưa làm |
+| 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d code xong, build OK, 23 test đạt, CHƯA chạy thử trên máy** (xem dưới) |
 | 6 | Add Sound, Preview, Successful | Chưa |
 | 7 | Gallery | Chưa |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
@@ -121,6 +121,23 @@ chưa chơi, nút dừng bỏ ván):
   camera (`btnRestart`, icon `ic_restart_20`). Hiển thị điều khiển do `CameraFragment.updateControls()` quản lý (đã bỏ Group).
 - `FaceOverlayView`: vẽ bằng BitmapShader + drawRoundRect; `cornerRatio` 0 cho ảnh chờ "?", 0,12 cho ảnh của filter.
 - Chưa có: đồng hồ 00:00:10 trên đầu màn (5d), quay video thật (5d), thời lượng 15/30/60s (5d, hiện chỉ chọn được).
+
+Giai đoạn 5d đã có (đã cài lên Xiaomi nhưng CHƯA kiểm gì trên máy):
+- `ui/camera/overlay/`: `CameraOverlay` (OverlayEffect nhắm PREVIEW|VIDEO_CAPTURE, luồng vẽ riêng), `OverlayRenderer`
+  (vẽ cột hạng + ảnh trên đầu bằng Canvas), `OverlayScene` (bất biến, luồng chính tạo, luồng vẽ đọc).
+  Vẽ bằng tọa độ PreviewView: canvas.setMatrix(frame.sensorToBufferTransform) rồi concat(nghịch đảo của
+  PreviewView.sensorToViewTransform). Các View trong rankColumn giờ trong suốt (alpha 0), chỉ còn là vùng chạm.
+  Đã xóa `FaceOverlayView`; làm mượt chuyển sang `HeadSmoother` (hàm thuần, 6 test).
+- `ui/camera/record/VideoRecorder`: Recorder FHD→HD→SD, có tiếng, MediaStore Movies/RankingFilter, giới hạn thời lượng bằng
+  setDurationLimitMillis, MIRROR_MODE_ON_FRONT_ONLY (video camera trước lật gương như preview, để overlay đúng chiều).
+  Phân loại lỗi: NO_STORAGE (kiểm trước 150MB + lỗi giữa chừng), CAMERA_INTERRUPTED, NO_DATA, MIC_PERMISSION, UNKNOWN.
+- `CameraFragment`: máy trạng thái RecPhase IDLE/STARTING/RECORDING/STOPPING. Ván bắt đầu khi video bắt đầu ghi. Dừng tay,
+  hết giờ hoặc xếp đủ 12 ô (chờ 700ms) → lưu → màn Preview tạm nhận `video_uri`. Làm lại = bỏ video, quay lại từ đầu.
+  Rời màn / xoay màn hình giữa chừng = bỏ video và ván. Đồng hồ `timerPill` (Figma 14:683). Theo dõi CameraState để báo camera bị chiếm.
+- Manifest thêm WRITE_EXTERNAL_STORAGE (maxSdk 28) cho Android 9 trở xuống; nhánh này không có máy để thử.
+- CẦN KIỂM TRÊN MÁY: overlay có hiện trên preview không và có đúng vị trí/chiều (camera trước lật gương) không; video lưu ra có
+  ảnh trên đầu + cột hạng không (mở bằng app Ảnh); đồng hồ; tự dừng 15s; xếp đủ 12 ô tự dừng; làm lại; có tiếng; file nằm ở
+  Movies/RankingFilter; nhận diện mặt còn khớp không khi có stream sharing.
 
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch

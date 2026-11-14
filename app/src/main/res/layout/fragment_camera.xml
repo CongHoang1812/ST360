@@ -19,11 +19,8 @@
         android:importantForAccessibility="no"
         app:scaleType="fillCenter" />
 
-    <!-- Ảnh vuông trên đầu: cùng kích thước và gốc tọa độ với PreviewView, nằm dưới các nút điều khiển -->
-    <com.example.rankingfilter.ui.camera.face.FaceOverlayView
-        android:id="@+id/faceOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!-- Ảnh trên đầu và hình cột hạng KHÔNG phải View: CameraOverlay vẽ thẳng lên khung hình camera
+         (để có trong video lưu ra). Các View trong rankColumn bên dưới chỉ là vùng chạm trong suốt. -->
 
     <!-- Các nút điều khiển; padding trên/dưới = thanh hệ thống (đặt trong code) -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,6 +93,37 @@
             app:layout_constraintEnd_toEndOf="@id/btnFlip"
             app:layout_constraintTop_toBottomOf="@id/btnFlip"
             app:tint="@color/camera_toggle_icon" />
+
+        <!-- Đồng hồ khi đang quay (Figma 14:683): thay chỗ pill Add Sound, chấm đỏ 12dp + 00:00:10 -->
+        <LinearLayout
+            android:id="@+id/timerPill"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/camera_round_button"
+            android:background="@drawable/bg_timer_pill"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack">
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@drawable/bg_record_dot" />
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_s"
+                android:fontFeatureSettings="tnum"
+                android:includeFontPadding="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                tools:text="00:00:10" />
+        </LinearLayout>
 
         <!-- Nút làm lại: chỉ hiện khi đang chơi, thay chỗ nút lật camera (đã ẩn). Design chưa vẽ nút này. -->
         <ImageButton

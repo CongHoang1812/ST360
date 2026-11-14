@@ -15,6 +15,11 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
+    <!-- Android 9 trở xuống (API <= 28): lưu video quay được vào Movies/RankingFilter qua MediaStore -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
     <!-- Android 12L and below (API <= 32) -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
