@@ -51,8 +51,8 @@ class ChooseFilterFragment : Fragment() {
         binding.tabs.isVisible = !isNewPack
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.tabDiscover.setOnClickListener { viewModel.selectTab(FilterTab.DISCOVER) }
-        binding.tabMyFilters.setOnClickListener { viewModel.selectTab(FilterTab.MY_FILTERS) }
+        binding.tabDiscover.setOnClickListener { onTabClicked(FilterTab.DISCOVER) }
+        binding.tabMyFilters.setOnClickListener { onTabClicked(FilterTab.MY_FILTERS) }
         binding.btnCreateFilter.setOnClickListener {
             findNavController().navigate(R.id.action_chooseFilter_to_makeFilter)
         }
@@ -71,10 +71,23 @@ class ChooseFilterFragment : Fragment() {
         }
     }
 
+    /**
+     * Tab là MaterialButton checkable: bấm lại tab đang chọn sẽ tự bỏ chọn, mà state không đổi
+     * nên render() không chạy lại. Đặt lại trạng thái ngay tại đây để luôn có đúng một tab được chọn.
+     */
+    private fun onTabClicked(tab: FilterTab) {
+        setTabsChecked(tab)
+        viewModel.selectTab(tab)
+    }
+
+    private fun setTabsChecked(tab: FilterTab) {
+        binding.tabDiscover.isChecked = tab == FilterTab.DISCOVER
+        binding.tabMyFilters.isChecked = tab == FilterTab.MY_FILTERS
+    }
+
     private fun render(state: ChooseFilterUiState) {
         val onMyFilters = state.mode == FilterMode.ALL && state.tab == FilterTab.MY_FILTERS
-        binding.tabDiscover.isChecked = state.tab == FilterTab.DISCOVER
-        binding.tabMyFilters.isChecked = state.tab == FilterTab.MY_FILTERS
+        setTabsChecked(state.tab)
 
         val tabChanged = lastRenderedTab != null && lastRenderedTab != state.tab
         lastRenderedTab = state.tab
