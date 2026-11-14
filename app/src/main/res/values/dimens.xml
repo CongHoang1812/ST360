@@ -65,6 +65,10 @@
     <dimen name="success_filter_cell">124dp</dimen>
     <dimen name="success_filter_gap">12dp</dimen>
 
+    <!-- Gallery: tab không chọn thấp hơn 8dp (Figma 21:435); bottom nav nổi trên khung nội dung -->
+    <dimen name="gallery_tab_drop">8dp</dimen>
+    <dimen name="gallery_nav_z">2dp</dimen>
+
     <!-- Badge số trong ô trống -->
     <dimen name="badge_size">24dp</dimen>
 </resources>

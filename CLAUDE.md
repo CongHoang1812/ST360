@@ -21,7 +21,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
 | 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
 | 6 | Add Sound, Preview, Successful | **Xong phần không cần nhạc** (đã kiểm trên Xiaomi); nhạc chưa kiểm vì server 404 |
-| 7 | Gallery | **Code xong, build OK, CHƯA chạy thử trên máy** |
+| 7 | Gallery | **Xong phần My Videos + xem video** (đã kiểm trên Xiaomi 15/11/2026); lưới My Filters có filter chưa kiểm |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
 | 9 | Hoàn thiện, release | Chưa |
 
@@ -178,7 +178,15 @@ Download mới chép ra thư viện ảnh; (3) Successful làm theo design (Down
   app nếu đã cài (FileProvider `files/videos`), không có thì bảng chia sẻ; Try More Filters (10 filter ngẫu nhiên) → Camera.
 - Nền Preview/Successful dùng lại `bg_home` (ảnh nền trong Figma giống hệt). Icon mạng xã hội: `drawable-nodpi/ic_share_*.png` 64px.
 
-Giai đoạn 7 đã có (CHƯA chạy thử trên máy):
+Giai đoạn 7 đã kiểm trên Xiaomi (15/11/2026): Gallery mở từ bottom nav, tab dạng thẻ đúng design, lưới video có ảnh thu nhỏ
+(thấy cột hạng), chạm mở màn xem video, chạm để dừng → nút phát + `00:04/00:08` + SeekBar, Download thêm 1 file vào
+Movies/RankingFilter, xóa hỏi trước rồi về Gallery "No records yet" (bản đã Download vẫn còn), My Filters trống đúng design,
+Create Filter → Make a Filter → Back giữ tab My Filters. CHƯA kiểm: lưới My Filters khi CÓ filter (ô Create Filter, menu
+Edit/Delete, chạm mở Camera) vì phải tạo filter qua Photo Picker; Share; kéo SeekBar.
+Lỗi đã gặp: thuộc tính trên thẻ `<include>` (translationZ) bị bỏ → bottom nav nằm dưới khung nội dung, không thấy;
+đặt `translationZ` trong code. Ô video: `clickable` đặt trên card nên phải gắn click vào `binding.card`, không phải root.
+
+Giai đoạn 7 đã có:
 - `ui/gallery/GalleryFragment` (21:281): header như Home, 2 tab dạng thẻ (`Text.GalleryTab`, tab không chọn thấp 8dp, khung
   `panel` che đáy), bottom nav `BottomTab.GALLERY`. My Videos đọc `VideoLibrary.listSaved` (filesDir/videos), KHÔNG đọc MediaStore
   (prompt yêu cầu MediaStore; đổi vì màn xem video có nút Download → video trong Gallery chưa ở thư viện ảnh) → không cần quyền đọc media.

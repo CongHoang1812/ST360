@@ -57,6 +57,9 @@ class GalleryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.header.applySystemBarsPadding(top = true)
         binding.bottomNav.root.applySystemBarsPadding(bottom = true)
+        // Thuộc tính đặt trên thẻ <include> (trừ layout_* và id) bị bỏ qua: đặt độ nổi ở đây để bottom nav
+        // nằm trên khung nội dung và lưới (cùng có translationZ trong layout).
+        binding.bottomNav.root.translationZ = resources.getDimension(R.dimen.gallery_nav_z)
 
         val nav = findNavController()
         binding.bottomNav.setup(
@@ -110,8 +113,11 @@ class GalleryFragment : Fragment() {
         // Tab đang chọn nền xanh nhạt liền với khung, nằm trên; tab kia xám, thấp hơn 8dp (Figma 21:435/21:437).
         binding.tabVideos.isSelected = onVideos
         binding.tabFilters.isSelected = !onVideos
+        val unselectedDrop = resources.getDimension(R.dimen.gallery_tab_drop)
         binding.tabVideos.translationZ = if (onVideos) 1f else 0f
         binding.tabFilters.translationZ = if (onVideos) 0f else 1f
+        binding.tabVideos.translationY = if (onVideos) 0f else unselectedDrop
+        binding.tabFilters.translationY = if (onVideos) unselectedDrop else 0f
 
         val videos = ui.videos
         binding.rvVideos.isVisible = onVideos && !videos.isNullOrEmpty()

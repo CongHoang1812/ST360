@@ -40,7 +40,8 @@ class GalleryVideoAdapter(
                 placeholder(R.drawable.bg_image_placeholder)
                 error(R.drawable.bg_image_placeholder)
             }
-            binding.root.setOnClickListener { onOpen(file) }
+            // Card là View nhận chạm (clickable trong layout), không phải root.
+            binding.card.setOnClickListener { onOpen(file) }
             binding.btnDelete.setOnClickListener { onDelete(file) }
         }
     }
