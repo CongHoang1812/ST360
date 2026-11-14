@@ -22,13 +22,13 @@ data class HomeUiState(
     val newPack: List<FilterDto> = emptyList(),
     val trending: List<TrendingVideo> = emptyList(),
     val isLoading: Boolean = true,
-    /** true khi tải config.json lỗi; lưới đang hiện dữ liệu dự phòng. */
+    /** true khi tải folders.json lỗi; lưới đang hiện dữ liệu dự phòng. */
     val networkError: Boolean = false,
 )
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = TrendingRepository(AppConfig.CONFIG_URL)
+    private val repository = TrendingRepository(AppConfig.TRENDING_FOLDERS_URL)
 
     private val _state = MutableStateFlow(HomeUiState())
     val state: StateFlow<HomeUiState> = _state.asStateFlow()
@@ -50,18 +50,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             val fallback = TrendingRepository.fallbackFrom(all)
 
             var networkError = false
-            val trending = if (!repository.isConfigured) {
+            val trending = try {
+                repository.fetchTrending(all).ifEmpty { fallback }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.w(TAG, "Không tải được folders.json", e)
+                networkError = true
                 fallback
-            } else {
-                try {
-                    repository.fetchTrending().ifEmpty { fallback }
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    Log.w(TAG, "Không tải được config.json", e)
-                    networkError = true
-                    fallback
-                }
             }
 
             _state.value = HomeUiState(

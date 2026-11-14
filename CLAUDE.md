@@ -16,7 +16,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 |---|---|---|
 | 0 | Khởi tạo project, dependency, Navigation | Xong (build OK, chưa thử trên máy thật) |
 | 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
-| 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16); còn nối API Trending thật (prompt 2b, xem dưới) |
+| 2 | Home + Preview video | **Xong** (đã chạy trên máy thật Xiaomi Android 16); prompt 2b (API Trending thật) code xong, build OK, chưa kiểm trên máy |
 | 3 | Choose a Filter + New filter | **Code xong, build OK, chưa kiểm trên máy** |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | Chưa |
 | 5 | Camera (5a → 5d) | Chưa |
@@ -45,8 +45,9 @@ Giai đoạn 2 đã có:
   `view_new_filter_banner.xml` (đặt theo % khung 328:114), `item_trending_video.xml` (tỉ lệ 156:240).
 - `ui/common/BottomNav.kt` + `view_bottom_nav.xml`: bottom nav tự vẽ, dùng lại ở Gallery (giai đoạn 7) với `BottomTab.GALLERY`.
 - `ui/preview/PreviewVideoFragment`: ExoPlayer lặp video, cache đĩa 200 MB (`video/VideoCache.kt`), nút Try now → chooseFilter (truyền `filter_id`).
-- `data/trending/`: đọc `config.json` (HttpURLConnection + kotlinx.serialization). Thêm 2 trường tùy chọn
-  cho mỗi video: `title`, `filter_id`. Lỗi mạng hoặc `CONFIG_URL` rỗng → dùng avatar filter làm dữ liệu dự phòng.
+- `data/trending/`: `TrendingApi` (BASE, ghép URL, đổi `'`→`’` và `...`→`…` rồi `Uri.encode`, `matchFilterId`),
+  `TrendingRepository` đọc `folders.json` (mảng chuỗi, HttpURLConnection + kotlinx.serialization), `TrendingVideo`
+  (id = nguyên tên thư mục). URL lấy từ `AppConfig.TRENDING_FOLDERS_URL`. Lỗi mạng → dùng avatar filter làm dữ liệu dự phòng.
 - `ui/common/ComingSoonFragment`: màn tạm cho newFilter, chooseFilter, gallery, setting (arg `title` kiểu reference).
 - Insets: MainActivity KHÔNG còn padding chung; mỗi Fragment tự gọi `applySystemBarsPadding()` (ui/common/Insets.kt).
 - Asset Figma: `drawable-nodpi/` (nền Home, logo, banner) và vector `ic_crown_gold/silver/bronze`, icon nav, settings.
@@ -59,9 +60,8 @@ newFilter, ChooseFilterViewModel, FilterAdapter, FilterCardItem), `data/Selected
 `export_figma_topics.py` rồi mới kiểm mục "Discover hiện đủ 30 filter".
 
 Việc còn treo:
-- Prompt 2b trong sổ tay (mục "API server"): đổi `TrendingRepository` sang đọc `folders.json`
-  (BASE `https://lvtglobal.site/public/app/ST316_RankingFilterFunChallenge_0783/VideosTrending/`), thêm `TrendingApi.kt`.
-  Tên trong folders.json dùng `'` và `...`, thư mục thật dùng `’` và `…` → phải đổi trước khi ghép URL, không thì 10/30 thư mục 404.
+- Kiểm prompt 2b trên máy: Home hiện 30 ô theo thứ tự folders.json; ô 5 (Who’s), 9 (I Wish I Had…), 12 (McDonald’s menu)
+  có ảnh và phát được video; Try now ở Sleep Positions mở đúng filter (cần dữ liệu 30 filter thật để khớp filter_id).
 - Kiểm 4 mục "Xong khi" của giai đoạn 3 trên máy, rồi sang giai đoạn 4.
 
 Kiểm thử trên máy thật: dùng emulator nếu được. Nếu dùng điện thoại của người dùng qua adb, kiểm tra app đang
@@ -80,7 +80,7 @@ Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 - Mọi chữ hiển thị nằm trong `strings.xml` (6 ngôn ngữ: en, es, fr, hi, pt, in). Tên 30 chủ đề giữ tiếng Anh.
 - Mọi filter có đúng 12 ảnh → Camera luôn 12 ô.
 - Không có quảng cáo (bỏ AdMob, bỏ dòng "This action can contain ads").
-- Video Trending trên server, đọc qua `config.json`; nhạc 74 bài trong `assets/music/`.
+- Video Trending trên server, đọc qua `folders.json` (không có config.json); nhạc 74 bài trong `assets/music/`.
 
 ## Build
 

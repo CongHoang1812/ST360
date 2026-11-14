@@ -1,10 +1,11 @@
 package com.example.rankingfilter
 
+import com.example.rankingfilter.data.trending.TrendingApi
+
 object AppConfig {
     /**
-     * Link tới config.json trên server, ví dụ "https://example.com/ranking/config.json".
-     * Để rỗng thì Home dùng ảnh avatar của các filter làm dữ liệu Trending dự phòng.
-     * Server phải dùng HTTPS (Android chặn HTTP thường theo mặc định).
+     * Danh sách thư mục video Trending trên server (mảng chuỗi JSON).
+     * Lỗi mạng thì Home dùng ảnh avatar của các filter làm dữ liệu dự phòng.
      */
-    const val CONFIG_URL = ""
+    const val TRENDING_FOLDERS_URL = TrendingApi.FOLDERS_URL
 }

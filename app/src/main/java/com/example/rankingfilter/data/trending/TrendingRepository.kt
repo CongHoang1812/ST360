@@ -7,33 +7,27 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.IOException
 import java.net.HttpURLConnection
-import java.net.URI
 import java.net.URL
 
-class TrendingRepository(private val configUrl: String) {
+class TrendingRepository(private val foldersUrl: String) {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    val isConfigured: Boolean get() = configUrl.isNotBlank()
-
     /**
-     * Tải config.json và trả về danh sách video với URL đầy đủ.
+     * Tải folders.json và trả về danh sách video, giữ đúng thứ tự và giữ cả chủ đề lặp lại.
+     * [filters] dùng để tìm filterId cho nút "Try now".
      * Ném IOException khi lỗi mạng hoặc server trả mã khác 200,
      * SerializationException khi file JSON sai cấu trúc.
      */
-    suspend fun fetchTrending(): List<TrendingVideo> = withContext(Dispatchers.IO) {
-        val text = download(configUrl)
-        val config = json.decodeFromString<TrendingConfig>(text)
-        val base = config.mediaBaseUrl.ifBlank { configUrl.substringBeforeLast('/') + "/" }
-            .let { if (it.endsWith("/")) it else "$it/" }
-        val baseUri = URI(base)
-        config.trending.map { entry ->
+    suspend fun fetchTrending(filters: List<FilterDto>): List<TrendingVideo> = withContext(Dispatchers.IO) {
+        val folders = json.decodeFromString<List<String>>(download(foldersUrl))
+        folders.filter { it.isNotBlank() }.map { folder ->
             TrendingVideo(
-                id = entry.id,
-                thumbUrl = baseUri.resolve(entry.thumb).toString(),
-                videoUrl = baseUri.resolve(entry.video).toString(),
-                title = entry.title,
-                filterId = entry.filterId,
+                id = folder,
+                thumbUrl = TrendingApi.thumbUrl(folder),
+                videoUrl = TrendingApi.videoUrl(folder),
+                title = TrendingApi.displayTitle(folder),
+                filterId = TrendingApi.matchFilterId(folder, filters),
             )
         }
     }
