@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tab của Gallery: chọn = nền xanh nhạt liền khung; không chọn = xám (Figma 21:437 / 21:435) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_gallery_tab_selected" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_gallery_tab_unselected" />
+</selector>

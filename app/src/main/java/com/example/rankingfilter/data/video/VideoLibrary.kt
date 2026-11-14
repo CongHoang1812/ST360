@@ -146,6 +146,15 @@ object VideoLibrary {
         }
     }
 
+    /** Video đã lưu trong thư viện của app, mới nhất trước. Đọc đĩa: gọi ngoài luồng chính. */
+    fun listSaved(context: Context): List<File> =
+        videosDir(context).listFiles { f -> f.isFile && f.extension.equals("mp4", ignoreCase = true) && f.length() > 0 }
+            ?.sortedByDescending { it.lastModified() }
+            .orEmpty()
+
+    /** Xóa một video trong thư viện của app (không đụng tới bản đã Download ra thư viện ảnh). */
+    fun deleteSaved(file: File): Boolean = file.parentFile?.name == VIDEOS && file.delete()
+
     /** Chép video ra thư viện ảnh của máy (Movies/RankingFilter). Trả về content:// của bản chép. */
     suspend fun exportToGallery(context: Context, file: File): Uri = withContext(Dispatchers.IO) {
         val resolver = context.applicationContext.contentResolver

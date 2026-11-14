@@ -215,4 +215,47 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_weight">1</item>
     </style>
+
+    <!-- ===== Gallery ===== -->
+    <!-- Tab dạng thẻ 172 x 40, bo 2 góc trên 8dp, chữ 20sp (Figma 21:435 / 21:437) -->
+    <style name="Text.GalleryTab" parent="">
+        <item name="android:layout_width">172dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_gallery_tab</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/gallery_tab_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    <!-- Lưới 2 cột trong khung nội dung: lề 16dp, cách đỉnh khung 20dp, chừa chỗ cho bottom nav -->
+    <style name="Recycler.GalleryGrid" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingStart">@dimen/screen_padding</item>
+        <item name="android:paddingEnd">@dimen/screen_padding</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">112dp</item>
+        <item name="android:translationZ">1dp</item>
+    </style>
+    <!-- Nút Share / Download ở màn xem video: chia đôi chiều ngang, padding 8dp -->
+    <style name="Frame.ViewerButton" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/space_s</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+    <style name="Text.ViewerButton" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

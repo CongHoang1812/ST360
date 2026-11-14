@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Xem video trong Gallery (Figma 8:278 / 21:368) -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    tools:context=".ui.gallery.VideoViewerFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_home" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            style="@style/Button.Back"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="@dimen/back_button_size"
+            android:layout_height="@dimen/back_button_size"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_delete_video"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_delete_circle_36"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <!-- Khung video 328 x 568, bo 8dp, viền trắng 2dp -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/videoFrame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="@dimen/corner_8"
+            app:cardElevation="0dp"
+            app:contentPadding="0dp"
+            app:layout_constraintBottom_toTopOf="@id/buttons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp">
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/playerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                app:resize_mode="zoom"
+                app:surface_type="texture_view"
+                app:use_controller="false" />
+
+            <!-- Chạm để dừng / phát -->
+            <View
+                android:id="@+id/touchLayer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:contentDescription="@string/cd_video_preview"
+                android:focusable="true" />
+
+            <ImageView
+                android:id="@+id/ivPlay"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_play_overlay_60"
+                android:visibility="gone" />
+
+            <!-- Thanh thời gian (Figma 57:214): 312 x 56, đen 50%, bo 4dp, cách đáy khung 8dp -->
+            <LinearLayout
+                android:id="@+id/timeBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/space_s"
+                android:background="@drawable/bg_video_time"
+                android:orientation="vertical"
+                android:paddingTop="6dp"
+                android:paddingBottom="4dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFeatureSettings="tnum"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:text="00:12/00:50" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:contentDescription="@string/cd_video_position"
+                    android:progressBackgroundTint="#66FFFFFF"
+                    android:progressTint="@color/white"
+                    android:thumbTint="@color/white" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Share (xanh lá) và Download (xanh dương), mỗi nút 156dp, cách đáy như Preview -->
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginBottom="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <FrameLayout
+                android:id="@+id/btnShare"
+                style="@style/Frame.ViewerButton"
+                android:background="@drawable/bg_green_gradient_button">
+
+                <TextView
+                    style="@style/Text.ViewerButton"
+                    android:text="@string/viewer_share"
+                    app:drawableStartCompat="@drawable/ic_share_24" />
+            </FrameLayout>
+
+            <Space
+                android:layout_width="@dimen/space_m"
+                android:layout_height="1dp" />
+
+            <FrameLayout
+                android:id="@+id/btnDownload"
+                style="@style/Frame.ViewerButton"
+                android:background="@drawable/bg_blue_gradient_button">
+
+                <TextView
+                    style="@style/Text.ViewerButton"
+                    android:text="@string/success_download"
+                    app:drawableStartCompat="@drawable/ic_download_24" />
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

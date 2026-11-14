@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.coil)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.video)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)

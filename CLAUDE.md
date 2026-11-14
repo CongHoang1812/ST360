@@ -21,7 +21,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
 | 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
 | 6 | Add Sound, Preview, Successful | **Xong phần không cần nhạc** (đã kiểm trên Xiaomi); nhạc chưa kiểm vì server 404 |
-| 7 | Gallery | Chưa |
+| 7 | Gallery | **Code xong, build OK, CHƯA chạy thử trên máy** |
 | 8 | Splash, Language, Intro, Permission, Setting | Chưa |
 | 9 | Hoàn thiện, release | Chưa |
 
@@ -177,6 +177,17 @@ Download mới chép ra thư viện ảnh; (3) Successful làm theo design (Down
 - `ui/result/SuccessFragment` (14:451): ảnh thu nhỏ (giây 1), Download (Android 9- xin WRITE_EXTERNAL_STORAGE), Share tới đúng
   app nếu đã cài (FileProvider `files/videos`), không có thì bảng chia sẻ; Try More Filters (10 filter ngẫu nhiên) → Camera.
 - Nền Preview/Successful dùng lại `bg_home` (ảnh nền trong Figma giống hệt). Icon mạng xã hội: `drawable-nodpi/ic_share_*.png` 64px.
+
+Giai đoạn 7 đã có (CHƯA chạy thử trên máy):
+- `ui/gallery/GalleryFragment` (21:281): header như Home, 2 tab dạng thẻ (`Text.GalleryTab`, tab không chọn thấp 8dp, khung
+  `panel` che đáy), bottom nav `BottomTab.GALLERY`. My Videos đọc `VideoLibrary.listSaved` (filesDir/videos), KHÔNG đọc MediaStore
+  (prompt yêu cầu MediaStore; đổi vì màn xem video có nút Download → video trong Gallery chưa ở thư viện ảnh) → không cần quyền đọc media.
+  Ảnh thu nhỏ bằng `coil-video` (`decoderFactory(VideoFrameDecoder.Factory())`, `videoFrameMillis(1000)`).
+  My Filters: ô "Create Filter" vàng đầu lưới (ConcatAdapter) + FilterAdapter có nút "…" (FilterMenuPopup Edit/Delete);
+  chạm filter → Camera với filter đó. Trạng thái trống: "No records yet" / "Make Your Own Filter" + nút Create Filter.
+  Design KHÔNG có chọn nhiều để xóa → không làm. Xóa video hỏi "Delete Video? / This can't be undone." (28:1565).
+- `ui/gallery/VideoViewerFragment` (8:278 / 21:368): ExoPlayer lặp, chạm để dừng/phát; khi dừng hiện nút phát + thanh
+  thời gian `00:12/00:50` có SeekBar; Share (bảng chia sẻ), Download (Movies/RankingFilter), xóa (hỏi trước).
 
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch

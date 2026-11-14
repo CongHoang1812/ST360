@@ -97,6 +97,15 @@
     <string name="share_line" translatable="false">LINE</string>
     <string name="share_tiktok" translatable="false">TikTok</string>
 
+    <!-- Gallery -->
+    <string name="gallery_tab_videos">My Videos</string>
+    <string name="gallery_empty_videos">No records yet</string>
+    <string name="gallery_empty_filters_title">Make Your Own Filter</string>
+    <string name="viewer_share">Share</string>
+    <string name="viewer_time">%1$s/%2$s</string>
+    <string name="delete_video_title">Delete Video?</string>
+    <string name="delete_video_message">This can\'t be undone.</string>
+
     <!-- Popup -->
     <string name="leave_title">Leave without saving?</string>
     <string name="leave_message">Your changes will be lost.</string>
@@ -149,4 +158,6 @@
     <string name="cd_video_preview">Video preview</string>
     <string name="cd_video_thumbnail">Saved video</string>
     <string name="cd_share_more">More apps</string>
+    <string name="cd_delete_video">Delete video</string>
+    <string name="cd_video_position">Video position</string>
 </resources>

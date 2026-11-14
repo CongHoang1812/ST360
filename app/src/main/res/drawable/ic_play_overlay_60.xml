@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nút phát giữa video khi đang dừng (Figma 21:398): tam giác đen 50% -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp" android:height="60dp"
+    android:viewportWidth="60" android:viewportHeight="60">
+    <path android:fillColor="#80000000" android:pathData="M7 3.73703C7 2.13964 8.78029 1.18686 10.1094 2.07293L49.5038 28.3359C50.6913 29.1275 50.6913 30.8724 49.5039 31.6641L10.1094 57.9271C8.78029 58.8131 7 57.8604 7 56.263V3.73703Z" />
+</vector>

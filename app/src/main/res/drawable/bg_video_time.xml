@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thanh thời gian trên video (Figma 57:214): đen 50%, bo 4dp -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/overlay_50" />
+    <corners android:radius="@dimen/corner_4" />
+</shape>

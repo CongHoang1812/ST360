@@ -183,16 +183,38 @@
             app:argType="integer" />
     </fragment>
 
-    <!-- Giai đoạn 7: Gallery -->
+    <!-- Giai đoạn 7: Gallery (Figma 21:281): My Videos + My Filters -->
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.example.rankingfilter.ui.common.ComingSoonFragment"
+        android:name="com.example.rankingfilter.ui.gallery.GalleryFragment"
         android:label="@string/title_gallery"
-        tools:layout="@layout/fragment_coming_soon">
+        tools:layout="@layout/fragment_gallery">
+        <action
+            android:id="@+id/action_gallery_to_viewer"
+            app:destination="@id/videoViewerFragment" />
+        <action
+            android:id="@+id/action_gallery_to_chooseFilter"
+            app:destination="@id/chooseFilterFragment" />
+        <action
+            android:id="@+id/action_gallery_to_camera"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_gallery_to_makeFilter"
+            app:destination="@id/makeFilterFragment" />
+        <action
+            android:id="@+id/action_gallery_to_setting"
+            app:destination="@id/settingFragment" />
+    </fragment>
+
+    <!-- Giai đoạn 7: xem một video đã lưu (Figma 8:278 / 21:368) -->
+    <fragment
+        android:id="@+id/videoViewerFragment"
+        android:name="com.example.rankingfilter.ui.gallery.VideoViewerFragment"
+        android:label="@string/title_gallery"
+        tools:layout="@layout/fragment_video_viewer">
         <argument
-            android:name="title"
-            android:defaultValue="@string/title_gallery"
-            app:argType="reference" />
+            android:name="video_path"
+            app:argType="string" />
     </fragment>
 
     <!-- Giai đoạn 8: Setting -->
