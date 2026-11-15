@@ -15,7 +15,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | Giai đoạn | Nội dung | Trạng thái |
 |---|---|---|
 | 0 | Khởi tạo project, dependency, Navigation | Xong (build OK, chưa thử trên máy thật) |
-| 1 | Theme, font, dữ liệu 30 chủ đề | **Code xong, còn thiếu dữ liệu** (xem dưới) |
+| 1 | Theme, font, dữ liệu 30 chủ đề | **Xong**: dữ liệu 30 chủ đề đã có (16/11/2026), còn nhìn lại font/nút trên máy |
 | 2 | Home + Preview video | **Xong**; prompt 2b (API Trending thật) code xong nhưng server đang 404 (xem dưới) |
 | 3 | Choose a Filter + New filter | **Xong** (đã kiểm trên Xiaomi; còn kiểm lại "đủ 30 filter" khi có dữ liệu thật) |
 | 4 | Make a Filter + Room (thêm Room + KSP ở đây) | **Xong** (đã kiểm trên Xiaomi 14/11/2026) |
@@ -30,7 +30,15 @@ colors/dimens/themes/type/styles, drawable dùng chung, `data/FilterDto.kt`, `da
 (`loadBuiltInFilters()`), thư mục `values-es/fr/hi/pt/in`. Màn tạm `PlaceholderFragment` hiển thị mẫu
 các style và log số filter (tag `Phase1`).
 
-Còn thiếu để đóng giai đoạn 1:
+Dữ liệu 30 chủ đề (đã làm, CHƯA chạy thử trên máy): lấy từ trang "data" của Figma (node 31:2751): 24 section + 6 section trong
+"New Filter" (pack `New Filter`: Rank Your Favorite Players, Funny Cat Memes, Dessert Ranking, Christmas Decor, Favorite Vietnamese
+Foods, Vacation Vibes; 24 còn lại pack `Discover`). Mỗi section có khung `avatar` + 12 khung ảnh 500x500. Không có export_figma_topics.py
+trong repo, nên tôi tự xuất: `download_assets` mỗi section (PNG, bị giới hạn 4096px rộng → mỗi ảnh ~275px), cắt theo cột khác màu nền #444
+(script `build_filters.py` ở scratchpad, Pillow), lưu `assets/filters/<slug>/avatar.webp` + `01..12.webp` (tổng ~13 MB) và `assets/filters.json`
+(id = slug tiêu đề). Thứ tự ảnh = thứ tự x trong Figma (khung tên "13", "25", "37" là ảnh số 1). Ảnh 275px hơi mềm khi hiện lớn
+(muốn nét hơn: xuất từng khung ở scale 1, 390 lần gọi).
+
+Từng là mục "còn thiếu để đóng giai đoạn 1" (đã xong phần dữ liệu):
 - Chạy `export_figma_topics.py` (người dùng giữ file này, không có trong repo) rồi chép `out/assets/*`
   vào `app/src/main/assets/`. Khi đó Logcat tag `Phase1` phải báo 30 filter.
 - Chạy app trên máy thật, nhìn màn tạm để xác nhận font Londrina, nút Back, tab pill, nút xám khi disabled.
