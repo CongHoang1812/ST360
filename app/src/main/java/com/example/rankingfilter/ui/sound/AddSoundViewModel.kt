@@ -67,6 +67,15 @@ class AddSoundViewModel(
 
     init {
         publish()
+        // Thời lượng đã lưu trong Room: nạp rồi hiện luôn, không chờ mạng.
+        viewModelScope.launch {
+            MusicRepository.ensureLoaded(getApplication())
+            val saved = tracks.mapNotNull { t -> MusicRepository.knownDuration(t.id)?.let { t.id to it } }.toMap()
+            if (saved.isNotEmpty()) {
+                durations.update { saved + it }
+                publish()
+            }
+        }
     }
 
     fun select(id: Int) {

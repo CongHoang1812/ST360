@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.rankingfilter.R
 import com.example.rankingfilter.data.AppPrefs
+import com.example.rankingfilter.data.music.MusicRepository
 import com.example.rankingfilter.databinding.FragmentSplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,6 +32,8 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Nạp nhạc từ Room và đọc nền thời lượng các bài còn thiếu, để màn Add Sound mở ra là có đủ.
+        MusicRepository.warmUp(requireContext())
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 delay(SPLASH_MS)
