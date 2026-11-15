@@ -178,9 +178,9 @@ Download mới chép ra thư viện ảnh; (3) Successful làm theo design (Down
   → Download → MediaStore `Movies/RankingFilter`. Trộn nhạc bằng Media3 Transformer (`media3-transformer` 1.11.1): chuỗi 1 = video
   bỏ tiếng, chuỗi 2 = nhạc lặp (`setIsLooping`), thử `setTransmuxVideo(true)` trước, lỗi thì mã hóa lại.
 - `VideoRecorder` giờ ghi `FileOutputOptions` vào bản nháp (không còn MediaStore); Camera không còn xin quyền bộ nhớ.
-- Thời lượng nhạc lưu vào Room (16/11/2026, CHƯA chạy thử trên máy): bảng `music_meta(id, duration_ms)` (AppDatabase v2, `MIGRATION_1_2` chỉ thêm bảng, không đụng filter
+- Thời lượng nhạc lưu vào Room (16/11/2026, đã kiểm trên Xiaomi: sau Splash cả 74 bài có thời lượng, tắt hẳn app mở lại Add Sound hiện đủ ngay; SERVER NHẠC ĐÃ CHẠY LẠI): bảng `music_meta(id, duration_ms)` (AppDatabase v2, `MIGRATION_1_2` chỉ thêm bảng, không đụng filter
   người dùng; schema `app/schemas/.../2.json`). `MusicRepository.warmUp()` gọi ở Splash: nạp Room vào bộ nhớ rồi đọc nền các bài còn thiếu (2 bài cùng lúc) và ghi
-  lại; `ensureLoaded()` để AddSoundViewModel hiện số liệu đã lưu ngay khi mở màn. Server nhạc đang 404 nên chưa có thời lượng nào để lưu thử.
+  lại; `ensureLoaded()` để AddSoundViewModel hiện số liệu đã lưu ngay khi mở màn. Chưa kiểm: nâng cấp v1→v2 trên dữ liệu thật (lần kiểm dữ liệu app đã bị xóa từ trước, DB tạo mới v2), nghe thử/tải bài/phát nhạc lúc quay/trộn nhạc khi Save.
 - `ui/sound/` AddSound (Figma 14:620/22:738): chạm dòng = chọn + nghe thử (ExoPlayer qua `VideoCache`), chạm lại = tạm dừng;
   tick xám tới khi chọn; bấm tick = tải bài về máy rồi trả `RESULT_MUSIC_ID` qua savedStateHandle cho Camera.
   Pill trên Camera hiện tên bài đã chọn. CHƯA có cách bỏ nhạc đã chọn (phải thoát Camera).
