@@ -164,8 +164,10 @@ OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (View
 Giai đoạn 6 đã kiểm trên Xiaomi (15/11/2026): Add Sound đúng design; nghe thử báo lỗi êm khi server 404 (không crash);
 quay → Preview phát video có overlay → Save → bản nháp chuyển sang files/videos → Successful đúng design → Download chép ra
 Movies/RankingFilter, nút thành "Downloaded" → "…" mở bảng chia sẻ → Try More Filters mở Camera đúng filter → Back về Home.
-SERVER NHẠC TRẢ 404 (`.../ST314_FunnyFaceFilters/music/music_1.mp3`), cùng tình trạng với server Trending: chưa kiểm được
-nghe thử, thời lượng, tick tải bài, phát nhạc lúc quay, trộn nhạc khi Save. Cần hỏi người quản lý server.
+SERVER NHẠC ĐÃ CHẠY LẠI (16/11/2026) và luồng nhạc đã kiểm trên Xiaomi: nghe thử (dòng được chọn + nút Pause, hệ thống thấy app phát âm thanh),
+tick → tải `cache/music/music_1.mp3` (~964 KB) → Camera hiện pill "Music 1", quay → nhạc phát ra loa, Preview phát video + nhạc, Save → trộn xong →
+Successful; file `files/videos/*.mp4` (9,9 MB) có track `vide` 15,50s + `soun` 15,55s. CHƯA kiểm: nghe nội dung file đã trộn có đúng là nhạc (không phải tiếng mic),
+bài ngắn hơn video (lặp lại), bỏ nhạc đã chọn (chưa có chức năng). Server Trending vẫn 404 (xem dưới).
 Lỗi đã gặp: theme đặt `materialCardViewStyle` = Card.Blue (contentPadding 16dp) cho MỌI MaterialCardView → khung video
 có viền đen dày; đã thêm `app:contentPadding="0dp"` (chưa nhìn lại trên máy vì mất kết nối).
 Trên điện thoại người dùng có app TurboVPN tự bật quảng cáo toàn màn hình: tap.sh đã chặn chạm nhầm, nhờ người dùng tắt.
