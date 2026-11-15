@@ -8,4 +8,7 @@ object AppConfig {
      * Lỗi mạng thì Home dùng ảnh avatar của các filter làm dữ liệu dự phòng.
      */
     const val TRENDING_FOLDERS_URL = TrendingApi.FOLDERS_URL
+
+    /** Trang chính sách bảo mật (mục Privacy & Policy trong Setting). TODO: điền link thật. */
+    const val PRIVACY_POLICY_URL = ""
 }

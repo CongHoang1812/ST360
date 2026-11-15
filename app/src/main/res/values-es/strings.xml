@@ -1,4 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Bản dịch được thêm ở giai đoạn 8. Thêm chuỗi ở đây cùng tên với values/strings.xml. -->
 <resources>
+    <!-- Tiêu đề màn -->
+    <string name="title_new_filter">Nuevo filtro</string>
+    <string name="title_choose_filter">Elige un filtro</string>
+    <string name="title_gallery">Galería</string>
+    <string name="title_setting">Ajustes</string>
+    <string name="title_make_filter">Crear un filtro</string>
+    <string name="title_camera">Cámara</string>
+    <string name="title_preview">Vista previa</string>
+    <string name="title_success">¡Listo!</string>
+    <string name="coming_soon">Próximamente</string>
+    <string name="coming_soon_filter">Filtro: %1$s</string>
+
+    <!-- Choose a Filter -->
+    <string name="tab_discover">Descubrir</string>
+    <string name="tab_my_filters">Mis filtros</string>
+    <string name="my_filters_empty_title">Aún no hay filtros</string>
+    <string name="my_filters_empty_desc">¡Crea un filtro y empieza tu reto!</string>
+    <string name="create_filter">Crear filtro</string>
+    <string name="filters_empty">No hay filtros disponibles.</string>
+
+    <string name="filter_menu_edit">Editar</string>
+    <string name="filter_menu_delete">Eliminar</string>
+
+    <!-- Make a Filter -->
+    <string name="make_filter_name_label">Nombre del filtro</string>
+    <string name="make_filter_name_hint">Escribe el nombre del filtro</string>
+    <string name="make_filter_photos_count">Fotos %1$d/%2$d</string>
+    <string name="make_filter_need_photos">Faltan %1$d fotos</string>
+    <string name="make_filter_add">Añadir</string>
+    <string name="make_filter_add_photos">Añadir fotos</string>
+    <string name="make_filter_cover_label">Foto de portada</string>
+    <string name="make_filter_cover_hint">Omite este paso y usa tu primera foto como portada.</string>
+    <string name="make_filter_choose_photos">Elegir fotos</string>
+    <string name="make_filter_save">Guardar filtro</string>
+    <string name="make_filter_saved">Filtro guardado</string>
+    <string name="make_filter_save_error">No se pudo guardar el filtro. Inténtalo de nuevo.</string>
+    <string name="make_filter_load_error">No se pudo abrir este filtro.</string>
+    <plurals name="make_filter_too_many">
+        <item quantity="one">Solo se añadió %1$d foto más (un filtro tiene %2$d fotos).</item>
+        <item quantity="many">Solo se añadieron %1$d fotos más (un filtro tiene %2$d fotos).</item>
+        <item quantity="other">Solo se añadieron %1$d fotos más (un filtro tiene %2$d fotos).</item>
+    </plurals>
+    <string name="add_photo_title">Añadir foto</string>
+    <string name="add_photo_take">Hacer una foto</string>
+    <string name="add_photo_upload">Subir una foto</string>
+    <string name="camera_permission_denied">Se necesita permiso de la cámara para hacer una foto.</string>
+    <string name="no_camera_app">No se encontró ninguna app de cámara.</string>
+
+    <!-- Camera -->
+    <string name="camera_add_sound">Añadir sonido</string>
+    <string name="camera_duration_free">Libre</string>
+    <string name="camera_permission_title">Permitir cámara y micrófono</string>
+    <string name="camera_permission_message">Ranking Filter necesita tu cámara y tu micrófono para grabar vídeos de ránking.</string>
+    <string name="camera_permission_allow">Permitir</string>
+    <string name="camera_permission_settings">Abrir ajustes</string>
+    <string name="camera_open_error">No se puede abrir la cámara.</string>
+    <string name="camera_filter_missing">Este filtro ya no está disponible.</string>
+    <string name="camera_in_use">Otra app está usando la cámara.</string>
+    <string name="record_error_storage">No hay espacio suficiente para grabar un vídeo.</string>
+    <string name="record_error_camera">La cámara se interrumpió. Inténtalo de nuevo.</string>
+    <string name="record_error_generic">No se pudo grabar el vídeo. Inténtalo de nuevo.</string>
+    <string name="camera_filter_incomplete">Este filtro no tiene fotos suficientes para jugar.</string>
+
+    <!-- Add Sound -->
+    <string name="add_sound_play_error">No se puede reproducir este sonido. Revisa tu conexión.</string>
+    <string name="add_sound_download_error">No se pudo cargar este sonido. Revisa tu conexión.</string>
+
+    <!-- Preview -->
+    <string name="preview_save">Guardar</string>
+    <string name="preview_saving">Guardando…</string>
+    <string name="preview_saving_progress">Guardando… %1$d%%</string>
+    <string name="preview_save_error">No se pudo guardar el vídeo. Inténtalo de nuevo.</string>
+    <string name="preview_music_missing">No se pudo cargar el sonido. El vídeo conserva su audio original.</string>
+    <string name="preview_leave_message">Este vídeo se eliminará.</string>
+    <string name="preview_draft_missing">Este vídeo ya no está disponible.</string>
+
+    <!-- Successful -->
+    <string name="success_saved">Tu vídeo se ha guardado correctamente.</string>
+    <string name="success_download">Descargar</string>
+    <string name="success_downloaded_button">Descargado</string>
+    <string name="success_downloaded">Guardado en Movies/RankingFilter</string>
+    <string name="success_download_error">No se pudo descargar el vídeo. Inténtalo de nuevo.</string>
+    <string name="success_storage_denied">Se necesita permiso de almacenamiento para descargar el vídeo.</string>
+    <string name="success_share_to">Compartir en</string>
+    <string name="success_share_title">Compartir vídeo</string>
+    <string name="success_try_more">Probar más filtros</string>
+    <string name="success_no_player">Ninguna app puede reproducir este vídeo.</string>
+
+    <!-- Gallery -->
+    <string name="gallery_tab_videos">Mis vídeos</string>
+    <string name="gallery_empty_videos">Aún no hay grabaciones</string>
+    <string name="gallery_empty_filters_title">Crea tu propio filtro</string>
+    <string name="viewer_share">Compartir</string>
+    <string name="delete_video_title">¿Eliminar vídeo?</string>
+    <string name="delete_video_message">Esta acción no se puede deshacer.</string>
+
+    <!-- Popup -->
+    <string name="leave_title">¿Salir sin guardar?</string>
+    <string name="leave_message">Se perderán tus cambios.</string>
+    <string name="leave_keep_editing">Seguir editando</string>
+    <string name="leave_confirm">Salir</string>
+    <string name="delete_filter_title">¿Eliminar filtro?</string>
+    <string name="delete_filter_message">¿Seguro que quieres eliminar este filtro?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+
+    <!-- Home -->
+    <string name="home_new_filter">Nuevo filtro</string>
+    <string name="home_trending_videos">Vídeos populares</string>
+    <string name="home_explore_pack">Explorar pack</string>
+    <string name="home_trending_error">No se pudieron cargar los vídeos populares. Revisa tu conexión.</string>
+    <string name="home_trending_empty">Aún no hay vídeos.</string>
+    <string name="retry">Reintentar</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_gallery">Galería</string>
+
+    <!-- Preview video -->
+    <string name="preview_try_now">Probar ahora</string>
+    <string name="preview_play_error">No se puede reproducir este vídeo.</string>
+
+    <!-- Accesibilidad -->
+    <string name="cd_back">Atrás</string>
+    <string name="cd_settings">Ajustes</string>
+    <string name="cd_camera">Abrir cámara</string>
+    <string name="cd_trending_video">Vídeo popular</string>
+    <string name="cd_filter_more">Opciones del filtro</string>
+    <string name="cd_photo">Foto %1$d</string>
+    <string name="cd_photo_empty">Espacio vacío %1$d</string>
+    <string name="cd_remove_photo">Quitar foto</string>
+    <string name="cd_cover_photo">Foto de portada</string>
+    <string name="cd_close">Cerrar</string>
+    <string name="cd_flip_camera">Cambiar de cámara</string>
+    <string name="cd_flash">Flash</string>
+    <string name="cd_record">Grabar</string>
+    <string name="cd_choose_filter">Elegir un filtro</string>
+    <string name="cd_rank_slot">Puesto %1$d</string>
+    <string name="cd_stop">Detener</string>
+    <string name="cd_restart">Empezar de nuevo</string>
+    <string name="cd_play_music">Reproducir %1$s</string>
+    <string name="cd_pause_music">Pausar %1$s</string>
+    <string name="cd_confirm_music">Usar este sonido</string>
+    <string name="cd_retake">Grabar de nuevo</string>
+    <string name="cd_home">Inicio</string>
+    <string name="cd_video_preview">Vista previa del vídeo</string>
+    <string name="cd_video_thumbnail">Vídeo guardado</string>
+    <string name="cd_share_more">Más apps</string>
+    <string name="cd_delete_video">Eliminar vídeo</string>
+    <string name="cd_video_position">Posición del vídeo</string>
+
+    <!-- Fase 8 -->
+    <string name="title_permission">Permisos</string>
+    <string name="language_title">Idioma</string>
+    <string name="lang_english">Inglés</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_french">Francés</string>
+    <string name="lang_hindi">Hindi</string>
+    <string name="lang_portuguese">Portugués</string>
+    <string name="lang_indonesian">Indonesio</string>
+    <string name="cd_confirm_language">Confirmar idioma</string>
+    <string name="intro_1">Toca para clasificarlos del n.º 1 al n.º 12.</string>
+    <string name="intro_2">Crea tu propio filtro de ránking.</string>
+    <string name="intro_3">Crea y comparte tu vídeo.</string>
+    <string name="intro_next">Siguiente</string>
+    <string name="intro_skip">Omitir</string>
+    <string name="permission_desc">Permite el acceso a tu cámara, fotos y micrófono para crear y compartir divertidos vídeos de ránking.</string>
+    <string name="permission_camera">Cámara</string>
+    <string name="permission_photos">Fotos</string>
+    <string name="permission_microphone">Micrófono</string>
+    <string name="permission_continue">Continuar</string>
+    <string name="setting_language">Idioma</string>
+    <string name="setting_rate">Valóranos</string>
+    <string name="setting_share">Compartir la app</string>
+    <string name="setting_privacy">Política de privacidad</string>
+    <string name="share_app_text">¡Prueba Ranking Filter! %1$s</string>
+    <string name="setting_link_unavailable">No se puede abrir este enlace.</string>
 </resources>

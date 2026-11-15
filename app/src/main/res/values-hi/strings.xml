@@ -1,4 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Bản dịch được thêm ở giai đoạn 8. Thêm chuỗi ở đây cùng tên với values/strings.xml. -->
 <resources>
+    <string name="title_new_filter">नया फ़िल्टर</string>
+    <string name="title_choose_filter">फ़िल्टर चुनें</string>
+    <string name="title_gallery">गैलरी</string>
+    <string name="title_setting">सेटिंग</string>
+    <string name="title_make_filter">फ़िल्टर बनाएँ</string>
+    <string name="title_camera">कैमरा</string>
+    <string name="title_preview">प्रीव्यू</string>
+    <string name="title_success">सफल</string>
+    <string name="coming_soon">जल्द आ रहा है</string>
+    <string name="coming_soon_filter">फ़िल्टर: %1$s</string>
+
+    <string name="tab_discover">खोजें</string>
+    <string name="tab_my_filters">मेरे फ़िल्टर</string>
+    <string name="my_filters_empty_title">अभी कोई फ़िल्टर नहीं</string>
+    <string name="my_filters_empty_desc">एक फ़िल्टर बनाएँ और अपनी चुनौती शुरू करें!</string>
+    <string name="create_filter">फ़िल्टर बनाएँ</string>
+    <string name="filters_empty">कोई फ़िल्टर उपलब्ध नहीं है।</string>
+
+    <string name="filter_menu_edit">बदलें</string>
+    <string name="filter_menu_delete">हटाएँ</string>
+
+    <string name="make_filter_name_label">फ़िल्टर का नाम</string>
+    <string name="make_filter_name_hint">फ़िल्टर का नाम लिखें</string>
+    <string name="make_filter_photos_count">फ़ोटो %1$d/%2$d</string>
+    <string name="make_filter_need_photos">%1$d फ़ोटो चाहिए</string>
+    <string name="make_filter_add">जोड़ें</string>
+    <string name="make_filter_add_photos">फ़ोटो जोड़ें</string>
+    <string name="make_filter_cover_label">कवर फ़ोटो</string>
+    <string name="make_filter_cover_hint">छोड़ दें और अपनी पहली फ़ोटो को कवर बनाएँ।</string>
+    <string name="make_filter_choose_photos">फ़ोटो चुनें</string>
+    <string name="make_filter_save">फ़िल्टर सहेजें</string>
+    <string name="make_filter_saved">फ़िल्टर सहेजा गया</string>
+    <string name="make_filter_save_error">फ़िल्टर सहेजा नहीं जा सका। कृपया फिर कोशिश करें।</string>
+    <string name="make_filter_load_error">यह फ़िल्टर खोला नहीं जा सका।</string>
+    <plurals name="make_filter_too_many">
+        <item quantity="one">सिर्फ़ %1$d और फ़ोटो जोड़ी गई (एक फ़िल्टर में %2$d फ़ोटो होती हैं)।</item>
+        <item quantity="other">सिर्फ़ %1$d और फ़ोटो जोड़ी गईं (एक फ़िल्टर में %2$d फ़ोटो होती हैं)।</item>
+    </plurals>
+    <string name="add_photo_title">फ़ोटो जोड़ें</string>
+    <string name="add_photo_take">फ़ोटो खींचें</string>
+    <string name="add_photo_upload">फ़ोटो अपलोड करें</string>
+    <string name="camera_permission_denied">फ़ोटो खींचने के लिए कैमरे की अनुमति चाहिए।</string>
+    <string name="no_camera_app">कोई कैमरा ऐप नहीं मिला।</string>
+
+    <string name="camera_add_sound">साउंड जोड़ें</string>
+    <string name="camera_duration_free">फ़्री</string>
+    <string name="camera_permission_title">कैमरा और माइक्रोफ़ोन की अनुमति दें</string>
+    <string name="camera_permission_message">रैंकिंग वीडियो रिकॉर्ड करने के लिए Ranking Filter को आपके कैमरे और माइक्रोफ़ोन की ज़रूरत है।</string>
+    <string name="camera_permission_allow">अनुमति दें</string>
+    <string name="camera_permission_settings">सेटिंग खोलें</string>
+    <string name="camera_open_error">कैमरा नहीं खुल रहा।</string>
+    <string name="camera_filter_missing">यह फ़िल्टर अब उपलब्ध नहीं है।</string>
+    <string name="camera_in_use">कैमरा किसी दूसरे ऐप में इस्तेमाल हो रहा है।</string>
+    <string name="record_error_storage">वीडियो रिकॉर्ड करने के लिए पर्याप्त स्टोरेज नहीं है।</string>
+    <string name="record_error_camera">कैमरा बीच में रुक गया। कृपया फिर कोशिश करें।</string>
+    <string name="record_error_generic">वीडियो रिकॉर्ड नहीं हो सका। कृपया फिर कोशिश करें।</string>
+    <string name="camera_filter_incomplete">इस फ़िल्टर में खेलने के लिए पर्याप्त फ़ोटो नहीं हैं।</string>
+
+    <string name="add_sound_play_error">यह साउंड नहीं चल सकता। अपना कनेक्शन जाँचें।</string>
+    <string name="add_sound_download_error">यह साउंड लोड नहीं हो सका। अपना कनेक्शन जाँचें।</string>
+
+    <string name="preview_save">सहेजें</string>
+    <string name="preview_saving">सहेजा जा रहा है…</string>
+    <string name="preview_saving_progress">सहेजा जा रहा है… %1$d%%</string>
+    <string name="preview_save_error">वीडियो सहेजा नहीं जा सका। कृपया फिर कोशिश करें।</string>
+    <string name="preview_music_missing">साउंड लोड नहीं हो सका। वीडियो में उसकी मूल आवाज़ ही रहेगी।</string>
+    <string name="preview_leave_message">यह वीडियो हटा दिया जाएगा।</string>
+    <string name="preview_draft_missing">यह वीडियो अब उपलब्ध नहीं है।</string>
+
+    <string name="success_saved">आपका वीडियो सफलतापूर्वक सहेज लिया गया।</string>
+    <string name="success_download">डाउनलोड</string>
+    <string name="success_downloaded_button">डाउनलोड हो गया</string>
+    <string name="success_downloaded">Movies/RankingFilter में सहेजा गया</string>
+    <string name="success_download_error">वीडियो डाउनलोड नहीं हो सका। कृपया फिर कोशिश करें।</string>
+    <string name="success_storage_denied">वीडियो डाउनलोड करने के लिए स्टोरेज की अनुमति चाहिए।</string>
+    <string name="success_share_to">यहाँ शेयर करें</string>
+    <string name="success_share_title">वीडियो शेयर करें</string>
+    <string name="success_try_more">और फ़िल्टर आज़माएँ</string>
+    <string name="success_no_player">कोई ऐप इस वीडियो को नहीं चला सकता।</string>
+
+    <string name="gallery_tab_videos">मेरे वीडियो</string>
+    <string name="gallery_empty_videos">अभी कोई रिकॉर्ड नहीं</string>
+    <string name="gallery_empty_filters_title">अपना फ़िल्टर बनाएँ</string>
+    <string name="viewer_share">शेयर करें</string>
+    <string name="delete_video_title">वीडियो हटाएँ?</string>
+    <string name="delete_video_message">इसे वापस नहीं किया जा सकता।</string>
+
+    <string name="leave_title">बिना सहेजे बाहर जाएँ?</string>
+    <string name="leave_message">आपके बदलाव खो जाएँगे।</string>
+    <string name="leave_keep_editing">बदलते रहें</string>
+    <string name="leave_confirm">बाहर जाएँ</string>
+    <string name="delete_filter_title">फ़िल्टर हटाएँ?</string>
+    <string name="delete_filter_message">क्या आप सच में इस फ़िल्टर को हटाना चाहते हैं?</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete">हटाएँ</string>
+
+    <string name="home_new_filter">नया फ़िल्टर</string>
+    <string name="home_trending_videos">ट्रेंडिंग वीडियो</string>
+    <string name="home_explore_pack">पैक देखें</string>
+    <string name="home_trending_error">ट्रेंडिंग वीडियो लोड नहीं हुए। अपना कनेक्शन जाँचें।</string>
+    <string name="home_trending_empty">अभी कोई वीडियो नहीं।</string>
+    <string name="retry">फिर कोशिश करें</string>
+
+    <string name="nav_home">होम</string>
+    <string name="nav_gallery">गैलरी</string>
+
+    <string name="preview_try_now">अभी आज़माएँ</string>
+    <string name="preview_play_error">यह वीडियो नहीं चल सकता।</string>
+
+    <string name="cd_back">वापस</string>
+    <string name="cd_settings">सेटिंग</string>
+    <string name="cd_camera">कैमरा खोलें</string>
+    <string name="cd_trending_video">ट्रेंडिंग वीडियो</string>
+    <string name="cd_filter_more">फ़िल्टर विकल्प</string>
+    <string name="cd_photo">फ़ोटो %1$d</string>
+    <string name="cd_photo_empty">खाली स्थान %1$d</string>
+    <string name="cd_remove_photo">फ़ोटो हटाएँ</string>
+    <string name="cd_cover_photo">कवर फ़ोटो</string>
+    <string name="cd_close">बंद करें</string>
+    <string name="cd_flip_camera">कैमरा बदलें</string>
+    <string name="cd_flash">फ़्लैश</string>
+    <string name="cd_record">रिकॉर्ड</string>
+    <string name="cd_choose_filter">फ़िल्टर चुनें</string>
+    <string name="cd_rank_slot">रैंक %1$d</string>
+    <string name="cd_stop">रोकें</string>
+    <string name="cd_restart">फिर से शुरू करें</string>
+    <string name="cd_play_music">%1$s चलाएँ</string>
+    <string name="cd_pause_music">%1$s रोकें</string>
+    <string name="cd_confirm_music">यह साउंड इस्तेमाल करें</string>
+    <string name="cd_retake">फिर से रिकॉर्ड करें</string>
+    <string name="cd_home">होम</string>
+    <string name="cd_video_preview">वीडियो प्रीव्यू</string>
+    <string name="cd_video_thumbnail">सहेजा गया वीडियो</string>
+    <string name="cd_share_more">और ऐप</string>
+    <string name="cd_delete_video">वीडियो हटाएँ</string>
+    <string name="cd_video_position">वीडियो की स्थिति</string>
+
+    <string name="title_permission">अनुमतियाँ</string>
+    <string name="language_title">भाषा</string>
+    <string name="lang_english">अंग्रेज़ी</string>
+    <string name="lang_spanish">स्पेनिश</string>
+    <string name="lang_french">फ़्रेंच</string>
+    <string name="lang_hindi">हिन्दी</string>
+    <string name="lang_portuguese">पुर्तगाली</string>
+    <string name="lang_indonesian">इंडोनेशियाई</string>
+    <string name="cd_confirm_language">भाषा की पुष्टि करें</string>
+    <string name="intro_1">उन्हें #1 से #12 तक रैंक करने के लिए टैप करें।</string>
+    <string name="intro_2">अपना खुद का रैंकिंग फ़िल्टर बनाएँ।</string>
+    <string name="intro_3">अपना वीडियो बनाएँ और शेयर करें।</string>
+    <string name="intro_next">आगे</string>
+    <string name="intro_skip">छोड़ें</string>
+    <string name="permission_desc">मज़ेदार रैंकिंग वीडियो बनाने और शेयर करने के लिए कैमरा, फ़ोटो और माइक्रोफ़ोन की अनुमति दें।</string>
+    <string name="permission_camera">कैमरा</string>
+    <string name="permission_photos">फ़ोटो</string>
+    <string name="permission_microphone">माइक्रोफ़ोन</string>
+    <string name="permission_continue">जारी रखें</string>
+    <string name="setting_language">भाषा</string>
+    <string name="setting_rate">हमें रेट करें</string>
+    <string name="setting_share">ऐप शेयर करें</string>
+    <string name="setting_privacy">गोपनीयता नीति</string>
+    <string name="share_app_text">Ranking Filter आज़माएँ! %1$s</string>
+    <string name="setting_link_unavailable">यह लिंक नहीं खुल सका।</string>
 </resources>

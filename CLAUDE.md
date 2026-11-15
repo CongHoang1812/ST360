@@ -22,7 +22,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
 | 6 | Add Sound, Preview, Successful | **Xong phần không cần nhạc** (đã kiểm trên Xiaomi); nhạc chưa kiểm vì server 404 |
 | 7 | Gallery | **Xong** (đã kiểm trên Xiaomi 15/11/2026) |
-| 8 | Splash, Language, Intro, Permission, Setting | Chưa |
+| 8 | Splash, Language, Intro, Permission, Setting | **Code xong, build OK, CHƯA chạy thử trên máy** |
 | 9 | Hoàn thiện, release | Chưa |
 
 Giai đoạn 1 đã có: font (Londrina Solid Regular/Light, Roboto Regular/Medium, tải từ Google Fonts),
@@ -197,6 +197,19 @@ Giai đoạn 7 đã có:
   Design KHÔNG có chọn nhiều để xóa → không làm. Xóa video hỏi "Delete Video? / This can't be undone." (28:1565).
 - `ui/gallery/VideoViewerFragment` (8:278 / 21:368): ExoPlayer lặp, chạm để dừng/phát; khi dừng hiện nút phát + thanh
   thời gian `00:12/00:50` có SeekBar; Share (bảng chia sẻ), Download (Movies/RankingFilter), xóa (hỏi trước).
+
+Giai đoạn 8 đã có (CHƯA chạy thử trên máy):
+- Luồng: Splash (2s) → Language → Intro → Permission → Home; đã xem intro (`AppPrefs.isIntroSeen`, SharedPreferences) thì Splash → Home.
+  Nav start = `splashFragment`; mỗi màn onboarding popUpTo chính nó (inclusive). `ComingSoonFragment` không còn dùng trong nav.
+- `ui/splash`: `splash_full.webp` là ảnh khung Figma 3:2 đã vá (thanh trạng thái + dòng quảng cáo thay bằng nền `bg_home`) + vòng tròn tải native.
+- `ui/language/LanguageFragment` (arg `from_settings`): 6 dòng (`APP_LANGUAGES`: en es fr hi pt id), tick lưu bằng `AppCompatDelegate.setApplicationLocales`,
+  `res/xml/locales_config.xml` + `android:localeConfig` + `AppLocalesMetadataHolderService` (manifest). Điều hướng TRƯỚC rồi mới đổi ngôn ngữ (đổi làm tạo lại Activity).
+- `ui/intro`: ViewPager2 3 trang (`intro_art_1..3.webp` = ảnh khung Figma cắt 360x550 đã vá thanh trạng thái), chấm, Next, Skip (Skip KHÔNG có trong design, thêm theo prompt).
+  Câu trang 1 đổi thành "Tap to rank them from #1 to #12." (design ghi "Drag, drop … #10" không đúng app).
+- `ui/permission`: 3 MaterialSwitch (Camera, Photos, Microphone); chạm = xin quyền, đã cấp/bị từ chối hẳn = mở cài đặt app. Continue luôn đi tiếp.
+- `ui/setting`: Language / Rate us (market:// → web) / Share app (ACTION_SEND) / Privacy & Policy (`AppConfig.PRIVACY_POLICY_URL` đang RỖNG, điền sau; rỗng thì báo Toast).
+- Đã dịch toàn bộ `strings.xml` sang es, fr, hi, pt, in (bản dịch do tôi viết, nên nhờ người bản ngữ rà lại trước khi phát hành).
+- Ảnh Figma export bị dính nền #444: ảnh Splash/Intro lấy từ ảnh KHUNG đầy đủ (có nền thật) rồi cắt; Pillow cài ở scratchpad, không có trong repo.
 
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch

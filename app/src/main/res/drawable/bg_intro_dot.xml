@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chấm chỉ trang: đang chọn navy #00417B, còn lại xám #BFBFBF (Figma 26:583) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/intro_text" />
+            <corners android:radius="90dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/intro_dot_off" />
+            <corners android:radius="90dp" />
+        </shape>
+    </item>
+</selector>

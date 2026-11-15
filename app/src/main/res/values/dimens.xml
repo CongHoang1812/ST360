@@ -71,4 +71,10 @@
 
     <!-- Badge số trong ô trống -->
     <dimen name="badge_size">24dp</dimen>
+
+    <!-- Phase 8: Intro, Language -->
+    <dimen name="intro_dot_width">24dp</dimen>
+    <dimen name="intro_dot_height">6dp</dimen>
+    <dimen name="intro_dot_gap">12dp</dimen>
+    <dimen name="language_title_inset">60dp</dimen>
 </resources>

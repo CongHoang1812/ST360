@@ -57,6 +57,7 @@ dependencies {
 
     // UI
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.viewpager2)
     implementation(libs.coil)
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.video)

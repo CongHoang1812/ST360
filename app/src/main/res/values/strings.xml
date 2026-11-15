@@ -160,4 +160,31 @@
     <string name="cd_share_more">More apps</string>
     <string name="cd_delete_video">Delete video</string>
     <string name="cd_video_position">Video position</string>
+
+    <!-- Phase 8: Language / Intro / Permission / Setting -->
+    <string name="title_permission">Permission</string>
+    <string name="language_title">Language</string>
+    <string name="lang_english">English</string>
+    <string name="lang_spanish">Spanish</string>
+    <string name="lang_french">French</string>
+    <string name="lang_hindi">Hindi</string>
+    <string name="lang_portuguese">Portuguese</string>
+    <string name="lang_indonesian">Indonesian</string>
+    <string name="cd_confirm_language">Confirm language</string>
+    <string name="intro_1">Tap to rank them from #1 to #12.</string>
+    <string name="intro_2">Create your own ranking filter.</string>
+    <string name="intro_3">Create and share your video.</string>
+    <string name="intro_next">Next</string>
+    <string name="intro_skip">Skip</string>
+    <string name="permission_desc">Allow access to your camera, photos, and microphone to create and share fun ranking videos.</string>
+    <string name="permission_camera">Camera</string>
+    <string name="permission_photos">Photos</string>
+    <string name="permission_microphone">Microphone</string>
+    <string name="permission_continue">Continue</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_rate">Rate us</string>
+    <string name="setting_share">Share app</string>
+    <string name="setting_privacy">Privacy &amp; Policy</string>
+    <string name="share_app_text">Try Ranking Filter! %1$s</string>
+    <string name="setting_link_unavailable">Can\'t open this link.</string>
 </resources>

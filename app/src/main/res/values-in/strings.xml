@@ -1,4 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Bản dịch được thêm ở giai đoạn 8. Thêm chuỗi ở đây cùng tên với values/strings.xml. -->
 <resources>
+    <string name="title_new_filter">Filter baru</string>
+    <string name="title_choose_filter">Pilih Filter</string>
+    <string name="title_gallery">Galeri</string>
+    <string name="title_setting">Pengaturan</string>
+    <string name="title_make_filter">Buat Filter</string>
+    <string name="title_camera">Kamera</string>
+    <string name="title_preview">Pratinjau</string>
+    <string name="title_success">Berhasil</string>
+    <string name="coming_soon">Segera hadir</string>
+    <string name="coming_soon_filter">Filter: %1$s</string>
+
+    <string name="tab_discover">Jelajahi</string>
+    <string name="tab_my_filters">Filter Saya</string>
+    <string name="my_filters_empty_title">Belum Ada Filter</string>
+    <string name="my_filters_empty_desc">Buat filter dan mulai tantanganmu!</string>
+    <string name="create_filter">Buat Filter</string>
+    <string name="filters_empty">Tidak ada filter.</string>
+
+    <string name="filter_menu_edit">Edit</string>
+    <string name="filter_menu_delete">Hapus</string>
+
+    <string name="make_filter_name_label">Nama Filter</string>
+    <string name="make_filter_name_hint">Masukkan nama filter</string>
+    <string name="make_filter_photos_count">Foto %1$d/%2$d</string>
+    <string name="make_filter_need_photos">Butuh %1$d foto</string>
+    <string name="make_filter_add">Tambah</string>
+    <string name="make_filter_add_photos">Tambah Foto</string>
+    <string name="make_filter_cover_label">Foto sampul</string>
+    <string name="make_filter_cover_hint">Lewati dan gunakan foto pertamamu sebagai sampul.</string>
+    <string name="make_filter_choose_photos">Pilih Foto</string>
+    <string name="make_filter_save">Simpan Filter</string>
+    <string name="make_filter_saved">Filter disimpan</string>
+    <string name="make_filter_save_error">Filter tidak dapat disimpan. Silakan coba lagi.</string>
+    <string name="make_filter_load_error">Filter ini tidak dapat dibuka.</string>
+    <plurals name="make_filter_too_many">
+        <item quantity="other">Hanya %1$d foto lagi yang ditambahkan (satu filter berisi %2$d foto).</item>
+    </plurals>
+    <string name="add_photo_title">Tambah Foto</string>
+    <string name="add_photo_take">Ambil Foto</string>
+    <string name="add_photo_upload">Unggah Foto</string>
+    <string name="camera_permission_denied">Izin kamera diperlukan untuk mengambil foto.</string>
+    <string name="no_camera_app">Aplikasi kamera tidak ditemukan.</string>
+
+    <string name="camera_add_sound">Tambah Suara</string>
+    <string name="camera_duration_free">Bebas</string>
+    <string name="camera_permission_title">Izinkan kamera dan mikrofon</string>
+    <string name="camera_permission_message">Ranking Filter memerlukan kamera dan mikrofonmu untuk merekam video peringkat.</string>
+    <string name="camera_permission_allow">Izinkan</string>
+    <string name="camera_permission_settings">Buka Pengaturan</string>
+    <string name="camera_open_error">Kamera tidak dapat dibuka.</string>
+    <string name="camera_filter_missing">Filter ini sudah tidak tersedia.</string>
+    <string name="camera_in_use">Kamera sedang digunakan aplikasi lain.</string>
+    <string name="record_error_storage">Penyimpanan tidak cukup untuk merekam video.</string>
+    <string name="record_error_camera">Kamera terhenti. Silakan coba lagi.</string>
+    <string name="record_error_generic">Video tidak dapat direkam. Silakan coba lagi.</string>
+    <string name="camera_filter_incomplete">Filter ini tidak memiliki cukup foto untuk dimainkan.</string>
+
+    <string name="add_sound_play_error">Suara ini tidak dapat diputar. Periksa koneksimu.</string>
+    <string name="add_sound_download_error">Suara ini tidak dapat dimuat. Periksa koneksimu.</string>
+
+    <string name="preview_save">Simpan</string>
+    <string name="preview_saving">Menyimpan…</string>
+    <string name="preview_saving_progress">Menyimpan… %1$d%%</string>
+    <string name="preview_save_error">Video tidak dapat disimpan. Silakan coba lagi.</string>
+    <string name="preview_music_missing">Suara tidak dapat dimuat. Video tetap memakai audio aslinya.</string>
+    <string name="preview_leave_message">Video ini akan dihapus.</string>
+    <string name="preview_draft_missing">Video ini sudah tidak tersedia.</string>
+
+    <string name="success_saved">Videomu berhasil disimpan.</string>
+    <string name="success_download">Unduh</string>
+    <string name="success_downloaded_button">Terunduh</string>
+    <string name="success_downloaded">Disimpan di Movies/RankingFilter</string>
+    <string name="success_download_error">Video tidak dapat diunduh. Silakan coba lagi.</string>
+    <string name="success_storage_denied">Izin penyimpanan diperlukan untuk mengunduh video.</string>
+    <string name="success_share_to">Bagikan ke</string>
+    <string name="success_share_title">Bagikan video</string>
+    <string name="success_try_more">Coba Filter Lain</string>
+    <string name="success_no_player">Tidak ada aplikasi yang dapat memutar video ini.</string>
+
+    <string name="gallery_tab_videos">Video Saya</string>
+    <string name="gallery_empty_videos">Belum ada rekaman</string>
+    <string name="gallery_empty_filters_title">Buat Filter Sendiri</string>
+    <string name="viewer_share">Bagikan</string>
+    <string name="delete_video_title">Hapus Video?</string>
+    <string name="delete_video_message">Tindakan ini tidak dapat dibatalkan.</string>
+
+    <string name="leave_title">Keluar tanpa menyimpan?</string>
+    <string name="leave_message">Perubahanmu akan hilang.</string>
+    <string name="leave_keep_editing">Lanjut Mengedit</string>
+    <string name="leave_confirm">Keluar</string>
+    <string name="delete_filter_title">Hapus Filter?</string>
+    <string name="delete_filter_message">Yakin ingin menghapus filter ini?</string>
+    <string name="cancel">Batal</string>
+    <string name="delete">Hapus</string>
+
+    <string name="home_new_filter">Filter baru</string>
+    <string name="home_trending_videos">Video Tren</string>
+    <string name="home_explore_pack">Jelajahi paket</string>
+    <string name="home_trending_error">Video tren tidak dapat dimuat. Periksa koneksimu.</string>
+    <string name="home_trending_empty">Belum ada video.</string>
+    <string name="retry">Coba lagi</string>
+
+    <string name="nav_home">Beranda</string>
+    <string name="nav_gallery">Galeri</string>
+
+    <string name="preview_try_now">Coba sekarang</string>
+    <string name="preview_play_error">Video ini tidak dapat diputar.</string>
+
+    <string name="cd_back">Kembali</string>
+    <string name="cd_settings">Pengaturan</string>
+    <string name="cd_camera">Buka kamera</string>
+    <string name="cd_trending_video">Video tren</string>
+    <string name="cd_filter_more">Opsi filter</string>
+    <string name="cd_photo">Foto %1$d</string>
+    <string name="cd_photo_empty">Slot kosong %1$d</string>
+    <string name="cd_remove_photo">Hapus foto</string>
+    <string name="cd_cover_photo">Foto sampul</string>
+    <string name="cd_close">Tutup</string>
+    <string name="cd_flip_camera">Ganti kamera</string>
+    <string name="cd_flash">Lampu kilat</string>
+    <string name="cd_record">Rekam</string>
+    <string name="cd_choose_filter">Pilih filter</string>
+    <string name="cd_rank_slot">Peringkat %1$d</string>
+    <string name="cd_stop">Berhenti</string>
+    <string name="cd_restart">Mulai ulang</string>
+    <string name="cd_play_music">Putar %1$s</string>
+    <string name="cd_pause_music">Jeda %1$s</string>
+    <string name="cd_confirm_music">Gunakan suara ini</string>
+    <string name="cd_retake">Rekam ulang</string>
+    <string name="cd_home">Beranda</string>
+    <string name="cd_video_preview">Pratinjau video</string>
+    <string name="cd_video_thumbnail">Video tersimpan</string>
+    <string name="cd_share_more">Aplikasi lain</string>
+    <string name="cd_delete_video">Hapus video</string>
+    <string name="cd_video_position">Posisi video</string>
+
+    <string name="title_permission">Izin</string>
+    <string name="language_title">Bahasa</string>
+    <string name="lang_english">Inggris</string>
+    <string name="lang_spanish">Spanyol</string>
+    <string name="lang_french">Prancis</string>
+    <string name="lang_hindi">Hindi</string>
+    <string name="lang_portuguese">Portugis</string>
+    <string name="lang_indonesian">Indonesia</string>
+    <string name="cd_confirm_language">Konfirmasi bahasa</string>
+    <string name="intro_1">Ketuk untuk memeringkatkannya dari #1 sampai #12.</string>
+    <string name="intro_2">Buat filter peringkatmu sendiri.</string>
+    <string name="intro_3">Buat dan bagikan videomu.</string>
+    <string name="intro_next">Lanjut</string>
+    <string name="intro_skip">Lewati</string>
+    <string name="permission_desc">Izinkan akses ke kamera, foto, dan mikrofon untuk membuat dan membagikan video peringkat yang seru.</string>
+    <string name="permission_camera">Kamera</string>
+    <string name="permission_photos">Foto</string>
+    <string name="permission_microphone">Mikrofon</string>
+    <string name="permission_continue">Lanjutkan</string>
+    <string name="setting_language">Bahasa</string>
+    <string name="setting_rate">Beri kami nilai</string>
+    <string name="setting_share">Bagikan aplikasi</string>
+    <string name="setting_privacy">Kebijakan Privasi</string>
+    <string name="share_app_text">Coba Ranking Filter! %1$s</string>
+    <string name="setting_link_unavailable">Tautan ini tidak dapat dibuka.</string>
 </resources>

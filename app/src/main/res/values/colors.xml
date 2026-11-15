@@ -32,4 +32,11 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Phase 8 -->
+    <color name="intro_text">#00417B</color>
+    <color name="intro_dot_off">#BFBFBF</color>
+    <color name="language_selected">#B9E8FF</color>
+    <color name="switch_track_off">#EAEAEA</color>
+    <color name="switch_thumb_off">#D4D4D4</color>
 </resources>

@@ -258,4 +258,31 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <!-- ===== Phase 8: hàng menu (Language, Setting, Permission) cao 56dp, bo 16dp, viền navy ===== -->
+    <style name="Row.Menu" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/screen_padding</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:background">@drawable/bg_menu_row</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingHorizontal">24dp</item>
+        <item name="android:paddingVertical">4dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    <style name="Text.MenuLabel" parent="">
+        <item name="android:textColor">@color/navy</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Text.IntroAction" parent="">
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/intro_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
 </resources>
