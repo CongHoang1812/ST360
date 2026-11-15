@@ -228,9 +228,11 @@ Giai đoạn 8 đã có:
 - Đã dịch toàn bộ `strings.xml` sang es, fr, hi, pt, in (bản dịch do tôi viết, nên nhờ người bản ngữ rà lại trước khi phát hành).
 - Ảnh Figma export bị dính nền #444: ảnh Splash/Intro lấy từ ảnh KHUNG đầy đủ (có nền thật) rồi cắt; Pillow cài ở scratchpad, không có trong repo.
 
-Cách chơi (16/11/2026, theo yêu cầu người dùng): ảnh trên đầu đổi mỗi 100ms (`SPIN_INTERVAL_MS`), sau 1,5–3,5s ngẫu nhiên thì DỪNG ở một hình
+Cách chơi (16/11/2026, theo yêu cầu người dùng): lúc CHƯA quay, ảnh filter nháy đổi liên tục trên đầu mỗi 100ms (`PREVIEW_INTERVAL_MS`, bo góc, không còn "?"
+nếu filter có ảnh; đã kiểm trên máy). Lúc QUAY ảnh đổi mỗi 50ms (`SPIN_INTERVAL_MS`), sau 0,6–1,5s ngẫu nhiên (`SPIN_MIN_MS`/`SPIN_MAX_MS`) thì DỪNG ở một hình
 (`spinStopped`), người chơi chạm ô số để chốt hình đó (chạm khi ảnh đang chạy không có tác dụng), chốt xong ảnh chạy tiếp. Thời gian chỉ đếm
-khi thấy mặt. Đã kiểm trên Xiaomi: ảnh dừng, chạm ô 1 → hình vào ô 1 có số bên trái, ảnh trên đầu chạy tiếp.
+khi thấy mặt. Đã kiểm trên Xiaomi (bản 1,5–3,5s/100ms): ảnh dừng, chạm ô 1 → hình vào ô 1 có số bên trái, ảnh trên đầu chạy tiếp.
+Bản 50ms + 0,6–1,5s CHƯA kiểm lúc quay (TurboVPN bật quảng cáo đè lên giữa chừng).
 
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch

@@ -452,6 +452,22 @@ class CameraFragment : Fragment() {
         }
     }
 
+    /** Ảnh filter đang nháy trên đầu lúc chưa quay (xem trước); null = chưa có ảnh nào. */
+    private var previewPhoto: Bitmap? = null
+    private var previewElapsedMs = 0L
+
+    /** Lúc chưa quay: mỗi [PREVIEW_INTERVAL_MS] đổi ngẫu nhiên một ảnh của filter trên đầu. */
+    private fun previewTick() {
+        previewElapsedMs += SPIN_INTERVAL_MS
+        if (previewElapsedMs < PREVIEW_INTERVAL_MS) return
+        previewElapsedMs = 0L
+        if (!headSmoother.hasFace) return
+        val photos = viewModel.state.value.filter?.photos.orEmpty()
+        if (photos.isEmpty()) return
+        previewPhoto = photos.random()
+        publishScene()
+    }
+
     /** Ảnh đang dừng (chờ người chơi chọn ô số). Chỉ đọc/ghi trên luồng chính. */
     private var spinStopped = false
     private var spinElapsedMs = 0L
@@ -477,6 +493,7 @@ class CameraFragment : Fragment() {
             if (recPhase != RecPhase.RECORDING || !game.isPlaying) {
                 // Chưa quay hoặc hết ván: lần quay sau bắt đầu lại từ đầu.
                 if (spinStopped || spinElapsedMs != 0L) resetSpinCycle()
+                if (!game.isActive) previewTick()
                 continue
             }
             if (!headSmoother.hasFace || spinStopped) continue
@@ -739,12 +756,14 @@ class CameraFragment : Fragment() {
         }
         val geometry = slotGeometry ?: measureSlots()?.also { slotGeometry = it }
         val playingPhoto = game.isActive
+        // Chưa chơi: ảnh của filter nháy đổi liên tục trên đầu (xem trước); chưa có ảnh filter thì dùng "?".
+        val idlePhoto = if (playingPhoto) null else previewPhoto
         target.scene = OverlayScene(
             viewToSensor = viewToSensor,
             head = headSmoother.current,
-            // Ảnh chờ "?" (vuông) khi chưa chơi, ảnh của filter (bo góc) khi đang chơi; xếp xong thì không còn ảnh.
-            headPhoto = if (playingPhoto) game.head else placeholder,
-            headCornerRatio = if (playingPhoto) PHOTO_CORNER_RATIO else 0f,
+            // Đang chơi: ảnh của filter; chưa chơi: ảnh filter nháy đổi (xem trước), chưa có thì "?" vuông.
+            headPhoto = if (playingPhoto) game.head else idlePhoto ?: placeholder,
+            headCornerRatio = if (playingPhoto || idlePhoto != null) PHOTO_CORNER_RATIO else 0f,
             slots = geometry.orEmpty().mapIndexed { index, g ->
                 OverlayScene.Slot(g.box, slotNumbers[index], game.slots.getOrNull(index), g.rankCenterX)
             },
@@ -991,12 +1010,15 @@ class CameraFragment : Fragment() {
         // Video quay vào bộ nhớ riêng của app nên không cần quyền bộ nhớ (chỉ xin khi Download, xem SuccessFragment).
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
 
-        /** Ảnh trên đầu đổi mỗi 100ms (sổ tay ghi 150ms, người dùng yêu cầu nhanh hơn). */
-        private const val SPIN_INTERVAL_MS = 100L
+        /** Lúc quay ảnh đổi mỗi 50ms (sổ tay ghi 150ms, người dùng yêu cầu nhanh hơn). */
+        private const val SPIN_INTERVAL_MS = 50L
+
+        /** Lúc chưa quay (xem trước), ảnh trên đầu nháy đổi mỗi 100ms. */
+        private const val PREVIEW_INTERVAL_MS = 100L
 
         /** Ảnh chạy một khoảng ngẫu nhiên trong đoạn này rồi dừng để người chơi chọn ô số. */
-        private const val SPIN_MIN_MS = 1_500L
-        private const val SPIN_MAX_MS = 3_500L
+        private const val SPIN_MIN_MS = 600L
+        private const val SPIN_MAX_MS = 1_500L
 
         /** Sau khi chốt ô cuối, quay thêm chừng này để video có cảnh cột hạng đầy rồi mới dừng. */
         private const val FINISH_DELAY_MS = 700L
