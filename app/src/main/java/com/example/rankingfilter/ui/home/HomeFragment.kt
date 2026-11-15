@@ -25,6 +25,7 @@ import com.example.rankingfilter.ui.common.BottomTab
 import com.example.rankingfilter.ui.common.GridSpacingDecoration
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import com.example.rankingfilter.ui.common.setup
+import com.example.rankingfilter.ui.preview.PreviewPagerFragment
 import com.example.rankingfilter.ui.preview.PreviewVideoFragment
 import kotlinx.coroutines.launch
 
@@ -118,7 +119,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun openPreview(item: TrendingVideo) {
-        findNavController().navigate(R.id.action_home_to_preview, PreviewVideoFragment.args(item))
+        val list = viewModel.state.value.trending
+        val index = list.indexOfFirst { it.id == item.id }
+        val args = if (index >= 0) PreviewPagerFragment.args(list, index) else PreviewVideoFragment.args(item)
+        findNavController().navigate(R.id.action_home_to_preview, args)
     }
 
     override fun onDestroyView() {

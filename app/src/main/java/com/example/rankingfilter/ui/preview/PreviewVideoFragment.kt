@@ -83,6 +83,8 @@ class PreviewVideoFragment : Fragment() {
         }
     }
 
+    // Trong ViewPager2, trang bên cạnh ở STARTED còn trang đang hiện ở RESUMED. Nên player được tạo và
+    // prepare() ngay ở STARTED (đã có khung hình đầu, chưa phát) → vuốt tới chỉ cần bấm play.
     override fun onStart() {
         super.onStart()
         val url = videoUrl ?: return // Dữ liệu dự phòng: chỉ có ảnh, không có video.
@@ -92,10 +94,23 @@ class PreviewVideoFragment : Fragment() {
             it.repeatMode = Player.REPEAT_MODE_ONE
             it.setMediaItem(MediaItem.fromUri(url))
             it.seekTo(resumePositionMs)
-            it.playWhenReady = true
+            it.playWhenReady = false
             it.prepare()
         }
         binding.playerView.player = player
+    }
+
+    override fun onResume() {
+        super.onResume()
+        player?.let {
+            if (it.playbackState == Player.STATE_ENDED) it.seekTo(0)
+            it.playWhenReady = true
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        player?.playWhenReady = false
     }
 
     override fun onStop() {

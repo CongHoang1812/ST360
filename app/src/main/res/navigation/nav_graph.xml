@@ -16,6 +16,11 @@
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
+            android:id="@+id/action_splash_to_intro"
+            app:destination="@id/introFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_splash_to_language"
             app:destination="@id/languageFragment"
             app:popUpTo="@id/splashFragment"
@@ -45,6 +50,11 @@
         <action
             android:id="@+id/action_intro_to_permission"
             app:destination="@id/permissionFragment"
+            app:popUpTo="@id/introFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_intro_to_home"
+            app:destination="@id/homeFragment"
             app:popUpTo="@id/introFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -86,9 +96,9 @@
 
     <fragment
         android:id="@+id/previewVideoFragment"
-        android:name="com.example.rankingfilter.ui.preview.PreviewVideoFragment"
+        android:name="com.example.rankingfilter.ui.preview.PreviewPagerFragment"
         android:label="@string/home_trending_videos"
-        tools:layout="@layout/fragment_preview_video">
+        tools:layout="@layout/fragment_preview_pager">
         <argument
             android:name="thumb_url"
             app:argType="string" />
