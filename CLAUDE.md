@@ -22,7 +22,7 @@ App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu 
 | 5 | Camera (5a → 5d) | **5a xong** (đã kiểm trên Xiaomi); **5b xong**; **5c xong**; **5d xong** (đã kiểm trên Xiaomi 15/11/2026, camera trước) |
 | 6 | Add Sound, Preview, Successful | **Xong phần không cần nhạc** (đã kiểm trên Xiaomi); nhạc chưa kiểm vì server 404 |
 | 7 | Gallery | **Xong** (đã kiểm trên Xiaomi 15/11/2026) |
-| 8 | Splash, Language, Intro, Permission, Setting | **Code xong, build OK, CHƯA chạy thử trên máy** |
+| 8 | Splash, Language, Intro, Permission, Setting | **Xong** (đã kiểm trên Xiaomi 15/11/2026; còn Share app, Rate us, Android < 13) |
 | 9 | Hoàn thiện, release | Chưa |
 
 Giai đoạn 1 đã có: font (Londrina Solid Regular/Light, Roboto Regular/Medium, tải từ Google Fonts),
@@ -198,7 +198,15 @@ Giai đoạn 7 đã có:
 - `ui/gallery/VideoViewerFragment` (8:278 / 21:368): ExoPlayer lặp, chạm để dừng/phát; khi dừng hiện nút phát + thanh
   thời gian `00:12/00:50` có SeekBar; Share (bảng chia sẻ), Download (Movies/RankingFilter), xóa (hỏi trước).
 
-Giai đoạn 8 đã có (CHƯA chạy thử trên máy):
+Giai đoạn 8 đã kiểm trên Xiaomi (15/11/2026): Splash đúng design (không còn dòng quảng cáo) → Language (chọn French: giao diện đổi sang
+tiếng Pháp ngay) → Intro 3 trang (chấm đúng, Passer ẩn ở trang cuối) → Permission (công tắc phản ánh quyền thật) → Home → Setting →
+Language trong Setting (có Back, tiêu đề giữa, đúng dòng đang chọn) → đổi lại English → Setting đã tiếng Anh; tắt rồi mở lại app vào
+thẳng Home. CHƯA kiểm: Rate us, Share app, Privacy (URL rỗng → Toast), bật quyền Photos, Android dưới 13 (lưu ngôn ngữ qua
+AppLocalesMetadataHolderService), 4 ngôn ngữ còn lại (es, hi, pt, in) trên máy. Máy Redmi 21061119AG (1080x2400) không chạm được qua adb
+(thiếu INJECT_EVENTS, cần bật "USB debugging (Security settings)"); dùng Xiaomi 24069RA21C.
+Không dùng `pm clear` khi kiểm (xóa filter/video của người dùng).
+
+Giai đoạn 8 đã có:
 - Luồng: Splash (2s) → Language → Intro → Permission → Home; đã xem intro (`AppPrefs.isIntroSeen`, SharedPreferences) thì Splash → Home.
   Nav start = `splashFragment`; mỗi màn onboarding popUpTo chính nó (inclusive). `ComingSoonFragment` không còn dùng trong nav.
 - `ui/splash`: `splash_full.webp` là ảnh khung Figma 3:2 đã vá (thanh trạng thái + dòng quảng cáo thay bằng nền `bg_home`) + vòng tròn tải native.
