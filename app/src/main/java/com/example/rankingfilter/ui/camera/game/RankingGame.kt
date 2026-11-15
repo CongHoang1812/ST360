@@ -29,7 +29,7 @@ class RankingGame<T : Any>(photos: List<T>, val slotCount: Int = 12) {
     var current: T? = pool.firstOrNull()
         private set
 
-    /** Gọi bằng Handler/coroutine mỗi ~150ms để ảnh trên đầu đổi ngẫu nhiên. */
+    /** Gọi bằng Handler/coroutine mỗi ~100ms để ảnh trên đầu đổi ngẫu nhiên. */
     fun spin() {
         if (pool.isNotEmpty()) current = pool.random()
     }

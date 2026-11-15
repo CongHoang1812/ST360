@@ -70,6 +70,7 @@ import com.example.rankingfilter.ui.result.PreviewViewModel
 import com.example.rankingfilter.ui.sound.AddSoundFragment
 import com.example.rankingfilter.ui.sound.AddSoundViewModel
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
+import kotlin.random.Random
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
@@ -442,17 +443,46 @@ class CameraFragment : Fragment() {
      */
     private fun onSlotClicked(index: Int) {
         if (recPhase != RecPhase.RECORDING || !game.isPlaying || !headSmoother.hasFace) return
+        // Chỉ chốt được khi ảnh đã dừng; đang chạy thì chạm ô số không có tác dụng.
+        if (!spinStopped) return
         if (viewModel.placePhoto(index)) {
             binding.root.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            // Đã chốt: ảnh chạy tiếp, lần dừng sau cách một khoảng ngẫu nhiên khác.
+            resetSpinCycle()
         }
     }
 
-    /** Đổi ảnh trên đầu mỗi [SPIN_INTERVAL_MS]; chỉ chạy khi màn đang hiện (cùng vòng đời với camera). */
+    /** Ảnh đang dừng (chờ người chơi chọn ô số). Chỉ đọc/ghi trên luồng chính. */
+    private var spinStopped = false
+    private var spinElapsedMs = 0L
+    private var spinTargetMs = nextSpinTarget()
+
+    private fun nextSpinTarget() = Random.nextLong(SPIN_MIN_MS, SPIN_MAX_MS + 1)
+
+    private fun resetSpinCycle() {
+        spinStopped = false
+        spinElapsedMs = 0L
+        spinTargetMs = nextSpinTarget()
+    }
+
+    /**
+     * Ảnh trên đầu đổi mỗi [SPIN_INTERVAL_MS]; sau một khoảng ngẫu nhiên ([SPIN_MIN_MS]..[SPIN_MAX_MS]) thì dừng ở
+     * ảnh đang hiện cho người chơi chạm ô số chốt, chốt xong lại chạy tiếp. Chỉ chạy khi màn đang hiện
+     * (cùng vòng đời với camera); thời gian chỉ đếm khi thấy mặt.
+     */
     private suspend fun spinLoop() {
         while (currentCoroutineContext().isActive) {
             delay(SPIN_INTERVAL_MS)
             if (_binding == null) return
-            if (recPhase == RecPhase.RECORDING && game.isPlaying && headSmoother.hasFace) viewModel.spin()
+            if (recPhase != RecPhase.RECORDING || !game.isPlaying) {
+                // Chưa quay hoặc hết ván: lần quay sau bắt đầu lại từ đầu.
+                if (spinStopped || spinElapsedMs != 0L) resetSpinCycle()
+                continue
+            }
+            if (!headSmoother.hasFace || spinStopped) continue
+            viewModel.spin()
+            spinElapsedMs += SPIN_INTERVAL_MS
+            if (spinElapsedMs >= spinTargetMs) spinStopped = true
         }
     }
 
@@ -961,8 +991,12 @@ class CameraFragment : Fragment() {
         // Video quay vào bộ nhớ riêng của app nên không cần quyền bộ nhớ (chỉ xin khi Download, xem SuccessFragment).
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
 
-        /** Ảnh trên đầu đổi mỗi ~150ms (sổ tay). */
-        private const val SPIN_INTERVAL_MS = 150L
+        /** Ảnh trên đầu đổi mỗi 100ms (sổ tay ghi 150ms, người dùng yêu cầu nhanh hơn). */
+        private const val SPIN_INTERVAL_MS = 100L
+
+        /** Ảnh chạy một khoảng ngẫu nhiên trong đoạn này rồi dừng để người chơi chọn ô số. */
+        private const val SPIN_MIN_MS = 1_500L
+        private const val SPIN_MAX_MS = 3_500L
 
         /** Sau khi chốt ô cuối, quay thêm chừng này để video có cảnh cột hạng đầy rồi mới dừng. */
         private const val FINISH_DELAY_MS = 700L

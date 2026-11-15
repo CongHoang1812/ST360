@@ -157,7 +157,7 @@ class CameraViewModel(
         publishGame()
     }
 
-    /** Đổi ảnh trên đầu ngẫu nhiên. Gọi mỗi ~150ms khi đang chơi và thấy mặt. */
+    /** Đổi ảnh trên đầu ngẫu nhiên. Gọi mỗi ~100ms khi đang chơi và thấy mặt. */
     fun spin() {
         val current = game ?: return
         if (current.isFinished) return

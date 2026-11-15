@@ -228,6 +228,10 @@ Giai đoạn 8 đã có:
 - Đã dịch toàn bộ `strings.xml` sang es, fr, hi, pt, in (bản dịch do tôi viết, nên nhờ người bản ngữ rà lại trước khi phát hành).
 - Ảnh Figma export bị dính nền #444: ảnh Splash/Intro lấy từ ảnh KHUNG đầy đủ (có nền thật) rồi cắt; Pillow cài ở scratchpad, không có trong repo.
 
+Cách chơi (16/11/2026, theo yêu cầu người dùng): ảnh trên đầu đổi mỗi 100ms (`SPIN_INTERVAL_MS`), sau 1,5–3,5s ngẫu nhiên thì DỪNG ở một hình
+(`spinStopped`), người chơi chạm ô số để chốt hình đó (chạm khi ảnh đang chạy không có tác dụng), chốt xong ảnh chạy tiếp. Thời gian chỉ đếm
+khi thấy mặt. Đã kiểm trên Xiaomi: ảnh dừng, chạm ô 1 → hình vào ô 1 có số bên trái, ảnh trên đầu chạy tiếp.
+
 Hạn chế đã biết của 5b:
 - Mặt bị che MỘT PHẦN (tay đè lên trán/mắt): ML Kit vẫn báo có mặt, đôi khi với góc nghiêng sai nhiều → ảnh bay lệch
   khỏi đầu (thấy 1 khung hình lệch hẳn sang trái màn). Nghi do euler Z sai khi bị che; CHƯA xác nhận bằng log.
