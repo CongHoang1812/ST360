@@ -27,7 +27,7 @@ data class HeadPlacement(
 object HeadPlacements {
 
     /** Cạnh ảnh = 0,9 × chiều rộng khuôn mặt. */
-    const val SIZE_RATIO = 0.9f
+    const val SIZE_RATIO = 0.65f
 
     /**
      * Khe hở giữa mép trên khung mặt và mép dưới ảnh, tính theo chiều cao khuôn mặt.
