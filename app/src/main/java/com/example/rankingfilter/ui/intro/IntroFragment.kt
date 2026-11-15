@@ -76,8 +76,9 @@ class IntroFragment : Fragment() {
     }
 
     private fun finish() {
+        val firstTime = !AppPrefs.isIntroSeen(requireContext())
         AppPrefs.setIntroSeen(requireContext())
-        findNavController().navigate(R.id.action_intro_to_permission)
+        findNavController().navigate(if (firstTime) R.id.action_intro_to_permission else R.id.action_intro_to_home)
     }
 
     private class IntroPage(val imageRes: Int, val textRes: Int)

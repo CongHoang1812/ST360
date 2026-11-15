@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Splash (Figma 3:2): ảnh nền đầy đủ + vòng tròn tải, khoảng 2 giây rồi sang màn tiếp.
- * Lần đầu: Language → Intro → Permission → Home. Các lần sau (đã xem intro): thẳng Home.
+ * Lần đầu: Language → Intro → Permission → Home. Các lần sau: Intro → Home (luôn có intro).
  */
 class SplashFragment : Fragment() {
 
@@ -38,7 +38,7 @@ class SplashFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 delay(SPLASH_MS)
                 val seen = AppPrefs.isIntroSeen(requireContext())
-                findNavController().navigate(if (seen) R.id.action_splash_to_home else R.id.action_splash_to_language)
+                findNavController().navigate(if (seen) R.id.action_splash_to_intro else R.id.action_splash_to_language)
             }
         }
     }
