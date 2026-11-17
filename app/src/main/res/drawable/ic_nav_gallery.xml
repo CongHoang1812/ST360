@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Icon tab Gallery 20dp. Màu đặt bằng app:tint. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="20dp"
-    android:height="20dp"
+    android:width="@dimen/nav_gallery_vector_width"
+    android:height="@dimen/nav_gallery_vector_height"
     android:viewportWidth="20"
     android:viewportHeight="20">
     <path

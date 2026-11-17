@@ -3,8 +3,8 @@
      Dùng vector vì <shape> chỉ hỗ trợ 3 màu. Đặt làm background (tự giãn theo view). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="156dp"
-    android:height="36dp"
+    android:width="@dimen/filter_name_gradient_vector_width"
+    android:height="@dimen/filter_name_gradient_vector_height"
     android:viewportWidth="156"
     android:viewportHeight="36">
     <path android:pathData="M0,0h156v36h-156z">

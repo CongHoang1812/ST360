@@ -22,10 +22,11 @@
     <!-- ===== Nút chính: nền #00AAFF, chữ trắng, bo 12dp, Londrina 16sp =====
          Khi setEnabled(false) nền tự chuyển sang #CDCDCD (Save Filter chưa đủ ảnh). -->
     <style name="Button.Primary" parent="Widget.Material3.Button">
+        <item name="rippleColor">@android:color/transparent</item>
         <item name="backgroundTint">@color/button_primary_bg</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/TextAppearance.RankingFilter.LabelLarge</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">@dimen/button_primary_min_height</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="shapeAppearance">@style/Shape.Rounded12</item>
@@ -34,7 +35,7 @@
     <!-- ===== Card xanh nhạt: nền #EBF8FF, bo 12dp, đổ bóng nhẹ ===== -->
     <style name="Card.Blue" parent="Widget.Material3.CardView.Elevated">
         <item name="cardBackgroundColor">@color/card_blue</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardElevation">@dimen/card_blue_card_elevation</item>
         <item name="shapeAppearance">@style/Shape.Rounded12</item>
         <item name="contentPadding">@dimen/space_m</item>
     </style>
@@ -74,8 +75,8 @@
         <item name="strokeWidth">@dimen/stroke_1</item>
         <item name="shapeAppearance">@style/Shape.Pill</item>
         <item name="android:textAppearance">@style/TextAppearance.RankingFilter.LabelLarge</item>
-        <item name="android:textSize">18sp</item>
-        <item name="rippleColor">@color/overlay_20</item>
+        <item name="android:textSize">@dimen/text_section</item>
+        <item name="rippleColor">@android:color/transparent</item>
     </style>
 
     <!-- ===== Ô filter trong lưới (Figma "Frame filter"): viền navy 1dp, bo 4dp, không đổ bóng ===== -->
@@ -107,10 +108,10 @@
     <!-- ===== Nhãn card trong Make a Filter ("Filter Name", "Photos n/12", "Cover photo"): 16sp navy, cao 24dp ===== -->
     <style name="Text.CardLabel" parent="">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_height">@dimen/text_card_label_height</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/navy</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_button</item>
     </style>
 
     <!-- ===== Nút trong popup xác nhận: chia đôi chiều ngang, padding 12dp, chữ 16sp ===== -->
@@ -119,10 +120,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:minHeight">46dp</item>
-        <item name="android:paddingHorizontal">10dp</item>
-        <item name="android:paddingVertical">12dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">@dimen/text_dialog_button_min_height</item>
+        <item name="android:paddingHorizontal">@dimen/text_dialog_button_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/text_dialog_button_padding_vertical</item>
+        <item name="android:textSize">@dimen/text_button</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
@@ -136,29 +137,29 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="android:paddingHorizontal">10dp</item>
-        <item name="android:paddingVertical">12dp</item>
+        <item name="android:paddingHorizontal">@dimen/frame_add_photo_option_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/frame_add_photo_option_padding_vertical</item>
     </style>
     <style name="Text.AddPhotoOption" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:drawablePadding">12dp</item>
+        <item name="android:drawablePadding">@dimen/text_add_photo_option_drawable_padding</item>
         <item name="android:textColor">@color/primary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_section</item>
     </style>
 
     <!-- ===== Dòng trong menu Edit / Delete: icon 24dp + chữ 16sp trắng ===== -->
     <style name="Text.FilterMenuItem" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">24dp</item>
+        <item name="android:minHeight">@dimen/text_filter_menu_item_min_height</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">@dimen/space_s</item>
         <item name="android:paddingEnd">@dimen/space_s</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_button</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:background">?attr/selectableItemBackground</item>
@@ -189,7 +190,7 @@
         <item name="android:fontFamily">@font/londrina_solid_light</item>
         <item name="fontFamily">@font/londrina_solid_light</item>
         <item name="android:textColor">@color/duration_text</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_button</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
@@ -200,31 +201,31 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/screen_padding</item>
-        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginTop">@dimen/text_success_section_margin_top</item>
         <item name="android:textColor">@color/navy</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_section</item>
     </style>
     <style name="Image.ShareIcon" parent="">
-        <item name="android:layout_width">32dp</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">@dimen/image_share_icon_width</item>
+        <item name="android:layout_height">@dimen/image_share_icon_height</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
     <style name="Space.ShareGap" parent="">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">@dimen/space_share_gap_height</item>
         <item name="android:layout_weight">1</item>
     </style>
 
     <!-- ===== Gallery ===== -->
     <!-- Tab dạng thẻ 172 x 40, bo 2 góc trên 8dp, chữ 20sp (Figma 21:435 / 21:437) -->
     <style name="Text.GalleryTab" parent="">
-        <item name="android:layout_width">172dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">@dimen/text_gallery_tab_width</item>
+        <item name="android:layout_height">@dimen/text_gallery_tab_height</item>
         <item name="android:background">@drawable/bg_gallery_tab</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/gallery_tab_text</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_gallery_tab_text_size</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
@@ -235,9 +236,9 @@
         <item name="android:clipToPadding">false</item>
         <item name="android:paddingStart">@dimen/screen_padding</item>
         <item name="android:paddingEnd">@dimen/screen_padding</item>
-        <item name="android:paddingTop">20dp</item>
-        <item name="android:paddingBottom">112dp</item>
-        <item name="android:translationZ">1dp</item>
+        <item name="android:paddingTop">@dimen/recycler_gallery_grid_padding_top</item>
+        <item name="android:paddingBottom">@dimen/recycler_gallery_grid_padding_bottom</item>
+        <item name="android:translationZ">@dimen/recycler_gallery_grid_translation_z</item>
     </style>
     <!-- Nút Share / Download ở màn xem video: chia đôi chiều ngang, padding 8dp -->
     <style name="Frame.ViewerButton" parent="">
@@ -253,34 +254,34 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:drawablePadding">12dp</item>
+        <item name="android:drawablePadding">@dimen/text_viewer_button_drawable_padding</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_viewer_button_text_size</item>
     </style>
 
     <!-- ===== Phase 8: hàng menu (Language, Setting, Permission) cao 56dp, bo 16dp, viền navy ===== -->
     <style name="Row.Menu" parent="">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_height">@dimen/row_menu_height</item>
         <item name="android:layout_marginHorizontal">@dimen/screen_padding</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginBottom">@dimen/row_menu_margin_bottom</item>
         <item name="android:background">@drawable/bg_menu_row</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingHorizontal">24dp</item>
-        <item name="android:paddingVertical">4dp</item>
+        <item name="android:paddingHorizontal">@dimen/row_menu_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/row_menu_padding_vertical</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
     <style name="Text.MenuLabel" parent="">
         <item name="android:textColor">@color/navy</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_section</item>
     </style>
     <style name="Text.IntroAction" parent="">
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">@dimen/text_intro_action_padding</item>
         <item name="android:textColor">@color/intro_text</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_section</item>
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>

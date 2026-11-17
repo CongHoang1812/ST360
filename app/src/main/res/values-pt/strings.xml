@@ -8,8 +8,6 @@
     <string name="title_camera">Câmera</string>
     <string name="title_preview">Pré-visualização</string>
     <string name="title_success">Pronto!</string>
-    <string name="coming_soon">Em breve</string>
-    <string name="coming_soon_filter">Filtro: %1$s</string>
 
     <string name="tab_discover">Descobrir</string>
     <string name="tab_my_filters">Meus filtros</string>
@@ -152,9 +150,9 @@
     <string name="intro_3">Crie e compartilhe seu vídeo.</string>
     <string name="intro_next">Avançar</string>
     <string name="intro_skip">Pular</string>
-    <string name="permission_desc">Permita o acesso à câmera, às fotos e ao microfone para criar e compartilhar vídeos de ranking divertidos.</string>
+    <string name="permission_desc">Permita o acesso à câmera e ao microfone para criar e compartilhar vídeos de ranking divertidos.</string>
     <string name="permission_camera">Câmera</string>
-    <string name="permission_photos">Fotos</string>
+    <string name="permission_storage">Armazenamento</string>
     <string name="permission_microphone">Microfone</string>
     <string name="permission_continue">Continuar</string>
     <string name="setting_language">Idioma</string>
@@ -163,4 +161,13 @@
     <string name="setting_privacy">Política de privacidade</string>
     <string name="share_app_text">Experimente o Ranking Filter! %1$s</string>
     <string name="setting_link_unavailable">Não foi possível abrir este link.</string>
+    <string name="rate_title_initial">Você gosta do app?</string>
+    <string name="rate_subtitle_initial">Conte-nos sua experiência</string>
+    <string name="rate_title_low">Ah, não!</string>
+    <string name="rate_subtitle_low">Dê-nos seu feedback, por favor</string>
+    <string name="rate_title_high">Nós também amamos você!</string>
+    <string name="rate_subtitle_high">Obrigado pelo seu feedback</string>
+    <string name="rate_button">Avaliar</string>
+    <string name="rate_exit">Sair</string>
+    <string name="rate_thanks">Obrigado pelo seu feedback!</string>
 </resources>

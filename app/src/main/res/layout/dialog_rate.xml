@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Popup Rate us (Figma 4034:33): thẻ 266dp, emoji 72dp, 5 sao 30dp cách 8dp, nút Rate 40dp, chữ Exit. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="@dimen/rate_linearlayout1_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rate_dialog"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/rate_linearlayout1_padding_horizontal"
+        android:paddingVertical="@dimen/rate_linearlayout1_padding_vertical">
+
+        <ImageView
+            android:id="@+id/ivEmoji"
+            android:layout_width="@dimen/rate_iv_emoji_width"
+            android:layout_height="@dimen/rate_iv_emoji_height"
+            android:importantForAccessibility="no"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/rate_emoji_0" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/rate_tv_title_margin_top"
+            android:fontFamily="@font/roboto_medium"
+            app:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:lineHeight="@dimen/rate_tv_title_line_height"
+            android:textColor="@color/navy"
+            android:textSize="@dimen/text_section"
+            tools:text="@string/rate_title_initial" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/rate_tv_subtitle_margin_top"
+            android:fontFamily="@font/roboto_regular"
+            app:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:lineHeight="@dimen/rate_tv_subtitle_line_height"
+            android:textColor="#99242424"
+            android:textSize="@dimen/text_body"
+            tools:text="@string/rate_subtitle_initial" />
+
+        <LinearLayout
+            android:id="@+id/starRow"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/rate_star_row_height"
+            android:layout_marginTop="@dimen/rate_star_row_margin_top"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/btnRate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rate_btn_rate_height"
+            android:layout_marginTop="@dimen/rate_btn_rate_margin_top"
+            android:background="@drawable/bg_rate_button"
+            android:fontFamily="@font/roboto_medium"
+            app:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="@string/rate_button"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_button" />
+
+        <TextView
+            android:id="@+id/btnExit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rate_btn_exit_height"
+            android:fontFamily="@font/roboto_medium"
+            app:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="@string/rate_exit"
+            android:textColor="@color/navy"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+</FrameLayout>

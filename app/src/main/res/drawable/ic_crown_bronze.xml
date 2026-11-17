@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Vương miện xếp hạng (Figma node 31:2620), sinh từ SVG Figma. Màu: bronze -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="29dp"
-    android:height="22.5dp"
+    android:width="@dimen/crown_bronze_vector_width"
+    android:height="@dimen/crown_bronze_vector_height"
     android:viewportWidth="29.047"
     android:viewportHeight="22.488">
     <path android:fillColor="#FFE6B4" android:pathData="M14.263 19.4238C10.401 19.4238 7.18915 19.1982 5.32851 19.0302C4.46686 18.9524 3.77465 19.7311 3.94861 20.5814L3.94876 20.5821C4.06265 21.1388 4.52461 21.5572 5.08844 21.6113C7.87694 21.8793 10.9854 22.029 14.263 22.029C17.5406 22.029 20.649 21.8793 23.4375 21.6113C24.0014 21.5571 24.4633 21.1388 24.5772 20.5821C24.7511 19.7316 24.0588 18.9528 23.197 19.0309C21.3417 19.1989 18.1394 19.4238 14.263 19.4238Z" />

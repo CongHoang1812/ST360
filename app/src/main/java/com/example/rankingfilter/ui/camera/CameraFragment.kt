@@ -90,7 +90,7 @@ import kotlin.math.min
  * - 5c: trò chơi xếp hạng: ảnh trên đầu đổi ngẫu nhiên, chạm ô trống để chốt.
  * - 5d: quay video ([VideoRecorder]). Ảnh trên đầu và cột hạng được [CameraOverlay] vẽ thẳng lên khung hình
  *   camera nên có trong cả preview lẫn video lưu ra. Một ván chơi = một lần quay:
- *   bấm nút quay → video bắt đầu ghi → ván bắt đầu; dừng bằng tay, hết giờ hoặc xếp đủ 12 ô → lưu video → màn Preview.
+ *   bấm nút quay → video bắt đầu ghi → ván bắt đầu; dừng bằng tay hoặc hết giờ (xếp đủ 12 ô thì video vẫn quay tiếp) → lưu video → màn Preview.
  */
 class CameraFragment : Fragment() {
 
@@ -503,16 +503,6 @@ class CameraFragment : Fragment() {
         }
     }
 
-    /** Xếp đủ 12 ô: quay thêm một chút cho video có cảnh cột hạng đầy, rồi dừng và lưu. */
-    private fun onGameFinished() {
-        if (recPhase != RecPhase.RECORDING || finishJob?.isActive == true) return
-        finishJob = viewLifecycleOwner.lifecycleScope.launch {
-            delay(FINISH_DELAY_MS)
-            finishJob = null
-            finishRecording()
-        }
-    }
-
     // ---------------------------------------------------------------- Giao diện
 
     private fun render(state: CameraUiState) {
@@ -523,7 +513,6 @@ class CameraFragment : Fragment() {
         updateControls()
         rankSlots.forEachIndexed { index, slot -> renderSlot(index, slot, state.game.slots.getOrNull(index)) }
         publishScene()
-        if (state.game.isFinished) onGameFinished()
     }
 
     /**
@@ -762,7 +751,8 @@ class CameraFragment : Fragment() {
             viewToSensor = viewToSensor,
             head = headSmoother.current,
             // Đang chơi: ảnh của filter; chưa chơi: ảnh filter nháy đổi (xem trước), chưa có thì "?" vuông.
-            headPhoto = if (playingPhoto) game.head else idlePhoto ?: placeholder,
+            // Xếp đủ 12 ô: ẩn ảnh trên đầu, video vẫn quay tiếp tới khi người dùng bấm dừng hoặc hết giờ.
+            headPhoto = if (playingPhoto) (if (game.isFinished) null else game.head) else idlePhoto ?: placeholder,
             headCornerRatio = if (playingPhoto || idlePhoto != null) PHOTO_CORNER_RATIO else 0f,
             slots = geometry.orEmpty().mapIndexed { index, g ->
                 OverlayScene.Slot(g.box, slotNumbers[index], game.slots.getOrNull(index), g.rankCenterX)
@@ -1021,7 +1011,6 @@ class CameraFragment : Fragment() {
         private const val SPIN_MAX_MS = 1_500L
 
         /** Sau khi chốt ô cuối, quay thêm chừng này để video có cảnh cột hạng đầy rồi mới dừng. */
-        private const val FINISH_DELAY_MS = 700L
 
         /** Ảnh của filter trên đầu bo góc ≈ 12% cạnh (Figma 8:192). */
         private const val PHOTO_CORNER_RATIO = 0.12f

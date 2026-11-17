@@ -26,14 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:paddingBottom="@dimen/success_linearlayout1_padding_bottom">
 
             <ImageButton
                 android:id="@+id/btnHome"
                 android:layout_width="@dimen/back_button_size"
                 android:layout_height="@dimen/back_button_size"
                 android:layout_gravity="end"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/success_btn_home_margin_top"
                 android:layout_marginEnd="@dimen/screen_padding"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/cd_home"
@@ -42,16 +42,16 @@
 
             <!-- Ảnh thu nhỏ video 180 x 312 tại y=108, bo 8dp, viền trắng 2dp; bấm để mở video -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="180dp"
-                android:layout_height="312dp"
+                android:layout_width="@dimen/success_materialcardview1_width"
+                android:layout_height="@dimen/success_materialcardview1_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/success_materialcardview1_margin_top"
                 app:cardBackgroundColor="@color/black"
                 app:cardCornerRadius="@dimen/corner_8"
                 app:cardElevation="0dp"
                 app:contentPadding="0dp"
                 app:strokeColor="@color/white"
-                app:strokeWidth="2dp">
+                app:strokeWidth="@dimen/success_materialcardview1_stroke_width">
 
                 <ImageView
                     android:id="@+id/ivThumbnail"
@@ -66,11 +66,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/screen_padding"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/success_textview1_margin_top"
                 android:gravity="center"
                 android:text="@string/success_saved"
                 android:textColor="@color/navy"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_button" />
 
             <!-- Download: chép video ra thư viện ảnh của máy -->
             <FrameLayout
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/screen_padding"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/success_btn_download_margin_top"
                 android:background="@drawable/bg_blue_gradient_button"
                 android:clickable="true"
                 android:focusable="true"
@@ -93,8 +93,8 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/success_imageview1_width"
+                        android:layout_height="@dimen/success_imageview1_height"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_download_24" />
 
@@ -102,16 +102,16 @@
                         android:id="@+id/tvDownload"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="@dimen/success_tv_download_margin_start"
                         android:text="@string/success_download"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/success_tv_download_text_size" />
 
                     <ProgressBar
                         android:id="@+id/downloadProgress"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="12dp"
+                        android:layout_width="@dimen/success_download_progress_width"
+                        android:layout_height="@dimen/success_download_progress_height"
+                        android:layout_marginStart="@dimen/success_download_progress_margin_start"
                         android:indeterminateTint="@color/white"
                         android:visibility="gone" />
                 </LinearLayout>

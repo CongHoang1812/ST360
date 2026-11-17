@@ -26,7 +26,7 @@
             android:layout_width="@dimen/back_button_size"
             android:layout_height="@dimen/back_button_size"
             android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/preview_btn_retake_margin_top"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_retake"
             android:scaleType="fitCenter"
@@ -52,8 +52,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="@dimen/preview_video_frame_margin_top"
+            android:layout_marginBottom="@dimen/preview_video_frame_margin_bottom"
             app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="@dimen/corner_8"
             app:cardElevation="0dp"
@@ -63,7 +63,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnRetake"
             app:strokeColor="@color/white"
-            app:strokeWidth="2dp">
+            app:strokeWidth="@dimen/preview_video_frame_stroke_width">
 
             <!-- TextureView để video bị cắt theo góc bo của khung (SurfaceView không cắt được) -->
             <androidx.media3.ui.PlayerView
@@ -81,12 +81,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="@dimen/preview_btn_save_margin_bottom"
             android:background="@drawable/bg_blue_gradient_button"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:paddingVertical="12dp"
+            android:paddingVertical="@dimen/preview_btn_save_padding_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -95,11 +95,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawablePadding="12dp"
+                android:drawablePadding="@dimen/preview_textview1_drawable_padding"
                 android:gravity="center"
                 android:text="@string/preview_save"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="@dimen/preview_textview1_text_size"
                 app:drawableStartCompat="@drawable/ic_save_24" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -117,17 +117,17 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/preview_progressbar1_width"
+            android:layout_height="@dimen/preview_progressbar1_height"
             android:indeterminateTint="@color/white" />
 
         <TextView
             android:id="@+id/tvSaving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/preview_tv_saving_margin_top"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_section"
             tools:text="Saving… 40%" />
     </LinearLayout>
 </FrameLayout>

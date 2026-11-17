@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Icon ảnh xám trong ô Cover photo trống (Figma 57:318) -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="36dp" android:height="36dp"
+    android:width="@dimen/image_placeholder_36_vector_width" android:height="@dimen/image_placeholder_36_vector_height"
     android:viewportWidth="36" android:viewportHeight="36">
     <group android:translateX="2" android:translateY="2">
         <path android:fillColor="#33000000" android:pathData="M26.3531 28.3463V28.5714C26.3531 30.4651 24.8183 32 22.9246 32H3.42857C1.53486 32 0 30.4651 0 28.5714V25.0651C0 18.1314 8.26743 14.4011 13.3669 19.0994C14.352 20.0069 15.3383 21.0697 16.3577 22.2869C17.016 22.0629 17.7977 21.8789 18.6411 21.7326C22.6834 21.0331 26.3531 24.2434 26.3531 28.3463ZM28.5714 0H9.07429C7.17714 0 5.64571 1.53143 5.64571 3.42857V3.59086H22.9246C25.9486 3.59086 28.4103 6.05143 28.4103 9.07657V26.3543H28.5714C30.4686 26.3543 32 24.8229 32 22.9257V3.42857C32 1.53143 30.4686 0 28.5714 0Z" />

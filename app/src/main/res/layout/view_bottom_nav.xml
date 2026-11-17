@@ -13,10 +13,10 @@
         android:id="@+id/navBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/bottom_nav_nav_bar_margin_top"
         android:background="@drawable/bg_bottom_nav"
-        android:elevation="8dp"
-        android:minHeight="56dp"
+        android:elevation="@dimen/bottom_nav_nav_bar_elevation"
+        android:minHeight="@dimen/bottom_nav_nav_bar_min_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +25,8 @@
         <!-- Tâm tab Home ở x=96/360, tab Gallery ở x=264/360 -->
         <LinearLayout
             android:id="@+id/tabHome"
-            android:layout_width="72dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/bottom_nav_tab_home_width"
+            android:layout_height="@dimen/bottom_nav_tab_home_height"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:gravity="center"
             android:orientation="vertical"
@@ -37,8 +37,8 @@
 
             <ImageView
                 android:id="@+id/iconHome"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/bottom_nav_icon_home_width"
+                android:layout_height="@dimen/bottom_nav_icon_home_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_nav_home"
                 app:tint="@color/primary" />
@@ -46,17 +46,17 @@
             <TextView
                 android:id="@+id/labelHome"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="@dimen/bottom_nav_label_home_height"
                 android:gravity="center"
                 android:text="@string/nav_home"
                 android:textColor="@color/primary"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_body" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/tabGallery"
-            android:layout_width="72dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/bottom_nav_tab_gallery_width"
+            android:layout_height="@dimen/bottom_nav_tab_gallery_height"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:gravity="center"
             android:orientation="vertical"
@@ -67,8 +67,8 @@
 
             <ImageView
                 android:id="@+id/iconGallery"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/bottom_nav_icon_gallery_width"
+                android:layout_height="@dimen/bottom_nav_icon_gallery_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_nav_gallery"
                 app:tint="@color/nav_inactive" />
@@ -76,11 +76,11 @@
             <TextView
                 android:id="@+id/labelGallery"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="@dimen/bottom_nav_label_gallery_height"
                 android:gravity="center"
                 android:text="@string/nav_gallery"
                 android:textColor="@color/nav_inactive"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_body"
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,7 +92,7 @@
         android:background="@drawable/bg_nav_camera_button"
         android:clickable="true"
         android:contentDescription="@string/cd_camera"
-        android:elevation="10dp"
+        android:elevation="@dimen/bottom_nav_btn_camera_elevation"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,8 +100,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="28.3dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/bottom_nav_imageview1_width"
+            android:layout_height="@dimen/bottom_nav_imageview1_height"
             android:layout_gravity="center"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_nav_camera" />

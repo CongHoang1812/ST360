@@ -76,7 +76,8 @@ class CreateFilterTileAdapter(
         Holder(ItemCreateFilterTileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.binding.root.setOnClickListener { onClick() }
+        // Ô vuông bên trong là view clickable nên nó nhận chạm; gắn vào root thì không bao giờ được gọi.
+        holder.binding.tile.setOnClickListener { onClick() }
     }
 
     class Holder(val binding: ItemCreateFilterTileBinding) : RecyclerView.ViewHolder(binding.root)

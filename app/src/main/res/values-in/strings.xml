@@ -8,8 +8,6 @@
     <string name="title_camera">Kamera</string>
     <string name="title_preview">Pratinjau</string>
     <string name="title_success">Berhasil</string>
-    <string name="coming_soon">Segera hadir</string>
-    <string name="coming_soon_filter">Filter: %1$s</string>
 
     <string name="tab_discover">Jelajahi</string>
     <string name="tab_my_filters">Filter Saya</string>
@@ -150,9 +148,9 @@
     <string name="intro_3">Buat dan bagikan videomu.</string>
     <string name="intro_next">Lanjut</string>
     <string name="intro_skip">Lewati</string>
-    <string name="permission_desc">Izinkan akses ke kamera, foto, dan mikrofon untuk membuat dan membagikan video peringkat yang seru.</string>
+    <string name="permission_desc">Izinkan akses ke kamera dan mikrofon untuk membuat dan membagikan video peringkat yang seru.</string>
     <string name="permission_camera">Kamera</string>
-    <string name="permission_photos">Foto</string>
+    <string name="permission_storage">Penyimpanan</string>
     <string name="permission_microphone">Mikrofon</string>
     <string name="permission_continue">Lanjutkan</string>
     <string name="setting_language">Bahasa</string>
@@ -161,4 +159,13 @@
     <string name="setting_privacy">Kebijakan Privasi</string>
     <string name="share_app_text">Coba Ranking Filter! %1$s</string>
     <string name="setting_link_unavailable">Tautan ini tidak dapat dibuka.</string>
+    <string name="rate_title_initial">Suka aplikasinya?</string>
+    <string name="rate_subtitle_initial">Ceritakan pengalamanmu</string>
+    <string name="rate_title_low">Oh, tidak!</string>
+    <string name="rate_subtitle_low">Tolong beri kami masukan</string>
+    <string name="rate_title_high">Kami juga sayang kamu!</string>
+    <string name="rate_subtitle_high">Terima kasih atas masukanmu</string>
+    <string name="rate_button">Beri nilai</string>
+    <string name="rate_exit">Keluar</string>
+    <string name="rate_thanks">Terima kasih atas masukanmu!</string>
 </resources>

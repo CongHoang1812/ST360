@@ -15,7 +15,7 @@
         android:id="@+id/btnBack"
         style="@style/Button.Back"
         android:layout_marginStart="@dimen/screen_padding"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/make_filter_btn_back_margin_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,7 @@
         style="@style/Text.ScreenTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="60dp"
+        android:layout_marginHorizontal="@dimen/make_filter_title_margin_horizontal"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/title_make_filter"
@@ -39,8 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
+        android:paddingTop="@dimen/make_filter_scroll_padding_top"
+        android:paddingBottom="@dimen/make_filter_scroll_padding_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,13 +83,13 @@
                         android:importantForAutofill="no"
                         android:inputType="textCapSentences"
                         android:maxLength="40"
-                        android:minHeight="40dp"
+                        android:minHeight="@dimen/make_filter_et_name_min_height"
                         android:paddingHorizontal="@dimen/space_m"
-                        android:paddingVertical="12dp"
+                        android:paddingVertical="@dimen/make_filter_et_name_padding_vertical"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="#4D000000"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_caption" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -98,7 +98,7 @@
                 style="@style/Card.Blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/make_filter_materialcardview1_margin_top"
                 app:contentPadding="@dimen/space_s">
 
                 <LinearLayout
@@ -130,7 +130,7 @@
                             android:paddingHorizontal="@dimen/space_s"
                             android:paddingVertical="@dimen/space_xs"
                             android:textColor="@color/white"
-                            android:textSize="10sp"
+                            android:textSize="@dimen/make_filter_tv_photos_hint_text_size"
                             tools:backgroundTint="#8000AAFF"
                             tools:text="Need 12 photos" />
                     </LinearLayout>
@@ -154,7 +154,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_s"
-                        android:minHeight="40dp"
+                        android:minHeight="@dimen/make_filter_btn_add_photos_min_height"
                         android:text="@string/make_filter_add_photos" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -164,7 +164,7 @@
                 style="@style/Card.Blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/make_filter_materialcardview2_margin_top"
                 app:contentPadding="@dimen/space_s">
 
                 <LinearLayout
@@ -193,8 +193,8 @@
 
                             <ImageView
                                 android:id="@+id/ivCoverPlaceholder"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="@dimen/make_filter_iv_cover_placeholder_width"
+                                android:layout_height="@dimen/make_filter_iv_cover_placeholder_height"
                                 android:layout_gravity="center"
                                 android:importantForAccessibility="no"
                                 android:src="@drawable/ic_image_placeholder_36" />
@@ -224,7 +224,7 @@
                                 android:gravity="center"
                                 android:text="@string/make_filter_cover_hint"
                                 android:textColor="@color/navy"
-                                android:textSize="12sp" />
+                                android:textSize="@dimen/text_caption" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnChooseCover"
@@ -232,7 +232,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/space_s"
-                                android:minHeight="40dp"
+                                android:minHeight="@dimen/make_filter_btn_choose_cover_min_height"
                                 android:text="@string/make_filter_choose_photos" />
                         </LinearLayout>
                     </LinearLayout>
@@ -244,24 +244,24 @@
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/make_filter_btn_save_margin_top"
                 android:background="@drawable/bg_save_filter_button"
                 android:clickable="true"
                 android:enabled="false"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:paddingHorizontal="@dimen/space_s"
-                android:paddingVertical="12dp">
+                android:paddingVertical="@dimen/make_filter_btn_save_padding_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawablePadding="12dp"
+                    android:drawablePadding="@dimen/make_filter_textview2_drawable_padding"
                     android:gravity="center"
                     android:text="@string/make_filter_save"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/make_filter_textview2_text_size"
                     app:drawableStartCompat="@drawable/ic_save_24" />
             </FrameLayout>
         </LinearLayout>
@@ -282,8 +282,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/make_filter_progressbar1_width"
+            android:layout_height="@dimen/make_filter_progressbar1_height"
             android:layout_gravity="center"
             android:indeterminateTint="@color/primary" />
     </FrameLayout>

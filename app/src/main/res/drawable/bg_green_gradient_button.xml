@@ -2,6 +2,6 @@
 <!-- Nút Share ở màn xem video (Figma 28:1556): gradient #A4FFA4 → #19B719, viền trắng 1dp, bo 12dp -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <gradient android:angle="270" android:startColor="#A4FFA4" android:endColor="#19B719" />
-    <stroke android:width="1dp" android:color="@color/white" />
+    <stroke android:width="@dimen/green_gradient_button_stroke_width" android:color="@color/white" />
     <corners android:radius="@dimen/corner_12" />
 </shape>

@@ -58,6 +58,7 @@ class PhotoSlotAdapter(
                 else -> null
             }
 
+            cell.isClickable = true
             when (slot) {
                 is PhotoSlot.Photo -> {
                     ivPhoto.load(slot.uri.toString()) { crossfade(true) }
@@ -74,7 +75,10 @@ class PhotoSlotAdapter(
                     ivPhoto.setImageDrawable(null)
                     tvBadge.text = (slot.index + 1).toString()
                     cell.contentDescription = context.getString(R.string.cd_photo_empty, slot.index + 1)
-                    cell.setOnClickListener { onAddClick() }
+                    // Ô trống có số: không phản hồi chạm (chỉ ô "Add" và nút Add Photos mới mở dialog).
+                    // Gỡ listener và tắt clickable vì ViewHolder được tái sử dụng giữa các loại ô.
+                    cell.setOnClickListener(null)
+                    cell.isClickable = false
                 }
             }
         }

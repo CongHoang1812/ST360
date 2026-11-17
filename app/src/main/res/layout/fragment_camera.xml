@@ -33,7 +33,7 @@
             android:id="@+id/btnBack"
             style="@style/Button.Back"
             android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/camera_btn_back_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,14 +47,14 @@
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="@dimen/camera_btn_add_sound_padding_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnBack">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/camera_imageview1_width"
+                android:layout_height="@dimen/camera_imageview1_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_music_20" />
 
@@ -66,11 +66,11 @@
                 android:layout_marginStart="@dimen/space_s"
                 android:ellipsize="end"
                 android:includeFontPadding="false"
-                android:maxWidth="160dp"
+                android:maxWidth="@dimen/camera_tv_add_sound_max_width"
                 android:maxLines="1"
                 android:text="@string/camera_add_sound"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_button" />
         </LinearLayout>
 
         <!-- Nút lật camera tại (308, 52) và flash tại (308, 96): tròn 36dp, đen 20%, viền trắng -->
@@ -107,15 +107,15 @@
             android:background="@drawable/bg_timer_pill"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="@dimen/camera_timer_pill_padding_horizontal"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnBack">
 
             <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="@dimen/camera_view1_width"
+                android:layout_height="@dimen/camera_view1_height"
                 android:background="@drawable/bg_record_dot" />
 
             <TextView
@@ -126,7 +126,7 @@
                 android:fontFeatureSettings="tnum"
                 android:includeFontPadding="false"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_button"
                 tools:text="00:00:10" />
         </LinearLayout>
 
@@ -152,7 +152,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/rank_column_start"
             android:layout_marginTop="@dimen/rank_column_top"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/camera_rank_column_margin_bottom"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/durationStrip"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +164,7 @@
             android:id="@+id/durationStrip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/camera_duration_strip_margin_bottom"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/btnRecord"
             app:layout_constraintEnd_toEndOf="parent"
@@ -212,7 +212,7 @@
             android:id="@+id/btnRecord"
             android:layout_width="@dimen/record_button_outer"
             android:layout_height="@dimen/record_button_outer"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="@dimen/camera_btn_record_margin_bottom"
             android:background="@drawable/bg_record_ring"
             android:clickable="true"
             android:contentDescription="@string/cd_record"
@@ -234,7 +234,7 @@
             android:id="@+id/btnChooseFilter"
             android:layout_width="@dimen/choose_filter_button"
             android:layout_height="@dimen/choose_filter_button"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="@dimen/camera_btn_choose_filter_margin_end"
             android:background="@drawable/bg_choose_filter_button"
             android:contentDescription="@string/cd_choose_filter"
             android:scaleType="center"
@@ -250,7 +250,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingHorizontal="32dp"
+            android:paddingHorizontal="@dimen/camera_permission_panel_padding_horizontal"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -264,7 +264,7 @@
                 android:gravity="center"
                 android:text="@string/camera_permission_title"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/camera_textview1_text_size" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -274,7 +274,7 @@
                 android:gravity="center"
                 android:text="@string/camera_permission_message"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_button"
                 app:fontFamily="@font/londrina_solid_light" />
 
             <com.google.android.material.button.MaterialButton
@@ -283,7 +283,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_l"
-                android:minWidth="180dp"
+                android:minWidth="@dimen/camera_btn_permission_min_width"
                 tools:text="@string/camera_permission_settings" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

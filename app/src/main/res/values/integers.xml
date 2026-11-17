@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Số cột lưới; máy rộng hơn (values-sw600dp, values-sw800dp) có nhiều cột hơn -->
+    <integer name="span_filters">2</integer>
+    <integer name="span_make_filter_photos">3</integer>
+</resources>

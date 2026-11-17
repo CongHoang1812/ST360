@@ -11,8 +11,6 @@
     <string name="title_camera">Camera</string>
     <string name="title_preview">Preview</string>
     <string name="title_success">Successful</string>
-    <string name="coming_soon">Coming soon</string>
-    <string name="coming_soon_filter">Filter: %1$s</string>
 
     <!-- Choose a Filter -->
     <string name="tab_discover">Discover</string>
@@ -176,9 +174,9 @@
     <string name="intro_3">Create and share your video.</string>
     <string name="intro_next">Next</string>
     <string name="intro_skip">Skip</string>
-    <string name="permission_desc">Allow access to your camera, photos, and microphone to create and share fun ranking videos.</string>
+    <string name="permission_desc">Allow access to your camera and microphone to create and share fun ranking videos.</string>
     <string name="permission_camera">Camera</string>
-    <string name="permission_photos">Photos</string>
+    <string name="permission_storage">Storage</string>
     <string name="permission_microphone">Microphone</string>
     <string name="permission_continue">Continue</string>
     <string name="setting_language">Language</string>
@@ -187,4 +185,13 @@
     <string name="setting_privacy">Privacy &amp; Policy</string>
     <string name="share_app_text">Try Ranking Filter! %1$s</string>
     <string name="setting_link_unavailable">Can\'t open this link.</string>
+    <string name="rate_title_initial">Do you like the app?</string>
+    <string name="rate_subtitle_initial">Let us know your experience</string>
+    <string name="rate_title_low">Oh, no!</string>
+    <string name="rate_subtitle_low">Please give us some feedback</string>
+    <string name="rate_title_high">We love you too!</string>
+    <string name="rate_subtitle_high">Thanks for your feedback</string>
+    <string name="rate_button">Rate</string>
+    <string name="rate_exit">Exit</string>
+    <string name="rate_thanks">Thanks for your feedback!</string>
 </resources>

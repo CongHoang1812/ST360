@@ -2,5 +2,5 @@
 <!-- Tab chưa chọn của Gallery (Figma 21:435): nền xám #CDCDCD, bo 2 góc trên 8dp -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="@color/disabled" />
-    <corners android:topLeftRadius="8dp" android:topRightRadius="8dp" />
+    <corners android:topLeftRadius="@dimen/gallery_tab_unselected_corners_top_left_radius" android:topRightRadius="@dimen/gallery_tab_unselected_corners_top_right_radius" />
 </shape>

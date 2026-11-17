@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sao popup Rate us (Figma 4034:84): khung 30dp, hình sao 26,24 x 25,05 đặt cách trái 1,88 / trên 1,26 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/star_filled_vector_width" android:height="@dimen/star_filled_vector_height" android:viewportWidth="30" android:viewportHeight="30">
+    <group android:translateX="1.88" android:translateY="1.26">
+        <path android:fillColor="#FFDC4E" android:pathData="M12.2212,0.5574C12.5881,-0.1858 13.6479,-0.1858 14.0147,0.5574L17.2937,7.2014C17.4394,7.4965 17.7209,7.7011 18.0466,7.7484L25.3787,8.8138C26.1989,8.933 26.5264,9.941 25.9329,10.5195L20.6274,15.6911C20.3917,15.9208 20.2841,16.2518 20.3398,16.5762L21.5922,23.8786C21.7323,24.6955 20.8749,25.3185 20.1413,24.9328L13.5833,21.4851C13.292,21.3319 12.944,21.3319 12.6526,21.4851L6.0947,24.9328C5.3611,25.3185 4.5036,24.6955 4.6437,23.8786L5.8962,16.5762C5.9518,16.2518 5.8443,15.9208 5.6086,15.6911L0.3031,10.5195C-0.2904,9.941 0.0371,8.933 0.8573,8.8138L8.1893,7.7484C8.515,7.7011 8.7966,7.4965 8.9423,7.2014L12.2212,0.5574z" />
+    </group>
+</vector>

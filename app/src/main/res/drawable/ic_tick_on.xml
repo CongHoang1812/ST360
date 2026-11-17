@@ -2,7 +2,7 @@
 <!-- Nút tick Add Sound khi đã chọn bài (Figma 18:124): tròn xanh nhạt, dấu tick xanh -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="36dp" android:height="36dp"
+    android:width="@dimen/tick_on_vector_width" android:height="@dimen/tick_on_vector_height"
     android:viewportWidth="36" android:viewportHeight="36">
     <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
         <aapt:attr name="android:fillColor">

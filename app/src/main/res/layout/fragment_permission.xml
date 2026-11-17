@@ -29,16 +29,16 @@
             <TextView
                 style="@style/Text.ScreenTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="@dimen/permission_textview1_height"
+                android:layout_marginStart="@dimen/permission_textview1_margin_start"
+                android:layout_marginTop="@dimen/permission_textview1_margin_top"
                 android:text="@string/title_permission" />
 
             <ImageView
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="@dimen/permission_imageview1_width"
+                android:layout_height="@dimen/permission_imageview1_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/permission_imageview1_margin_top"
                 android:importantForAccessibility="no"
                 android:src="@drawable/permission_girl" />
 
@@ -50,28 +50,30 @@
                 android:gravity="center"
                 android:text="@string/permission_desc"
                 android:textColor="@color/intro_text"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_button"
                 app:fontFamily="@font/londrina_solid_light" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/permission_linearlayout1_margin_top"
                 android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/rowCamera"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/permission_row_camera_height"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/permission_row_camera_margin_top"
             android:background="@drawable/bg_permission_row"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="4dp">
+            android:paddingHorizontal="@dimen/permission_row_camera_padding_horizontal"
+            android:paddingVertical="@dimen/permission_row_camera_padding_vertical">
 
             <TextView
                 style="@style/Text.MenuLabel"
@@ -84,54 +86,62 @@
                 android:id="@+id/switchCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleX="@dimen/switch_scale"
+                android:scaleY="@dimen/switch_scale"
                 android:contentDescription="@string/permission_camera"
                 app:thumbTint="@color/switch_thumb"
                 app:trackDecorationTint="@android:color/transparent"
                 app:trackTint="@color/switch_track" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/rowPhotos"
+            android:id="@+id/rowStorage"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/permission_row_storage_height"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/permission_row_storage_margin_top"
             android:background="@drawable/bg_permission_row"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="4dp">
+            android:paddingHorizontal="@dimen/permission_row_storage_padding_horizontal"
+            android:paddingVertical="@dimen/permission_row_storage_padding_vertical">
 
             <TextView
                 style="@style/Text.MenuLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/permission_photos" />
+                android:text="@string/permission_storage" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchPhotos"
+                android:id="@+id/switchStorage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/permission_photos"
+                android:scaleX="@dimen/switch_scale"
+                android:scaleY="@dimen/switch_scale"
+                android:contentDescription="@string/permission_storage"
                 app:thumbTint="@color/switch_thumb"
                 app:trackDecorationTint="@android:color/transparent"
                 app:trackTint="@color/switch_track" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rowMicrophone"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/permission_row_microphone_height"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/permission_row_microphone_margin_top"
             android:background="@drawable/bg_permission_row"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="4dp">
+            android:paddingHorizontal="@dimen/permission_row_microphone_padding_horizontal"
+            android:paddingVertical="@dimen/permission_row_microphone_padding_vertical">
 
             <TextView
                 style="@style/Text.MenuLabel"
@@ -144,6 +154,8 @@
                 android:id="@+id/switchMicrophone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleX="@dimen/switch_scale"
+                android:scaleY="@dimen/switch_scale"
                 android:contentDescription="@string/permission_microphone"
                 app:thumbTint="@color/switch_thumb"
                 app:trackDecorationTint="@android:color/transparent"
@@ -157,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="@dimen/permission_btn_continue_margin_top"
                 android:text="@string/permission_continue" />
         </LinearLayout>
     </ScrollView>

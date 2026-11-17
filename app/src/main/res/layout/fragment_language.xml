@@ -24,7 +24,7 @@
             android:id="@+id/btnBack"
             style="@style/Button.Back"
             android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/language_btn_back_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +33,7 @@
             style="@style/Text.ScreenTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="@dimen/language_title_margin_start"
             android:text="@string/language_title"
             app:layout_constraintBottom_toBottomOf="@id/btnConfirm"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,9 +43,9 @@
 
         <ImageButton
             android:id="@+id/btnConfirm"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="12dp"
+            android:layout_width="@dimen/language_btn_confirm_width"
+            android:layout_height="@dimen/language_btn_confirm_height"
+            android:layout_marginTop="@dimen/language_btn_confirm_margin_top"
             android:layout_marginEnd="@dimen/screen_padding"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_confirm_language"
@@ -58,7 +58,7 @@
             android:id="@+id/list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="@dimen/language_list_margin_top"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

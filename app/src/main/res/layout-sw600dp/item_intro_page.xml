@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TABLET (sw600dp). Cùng view id với layout/item_intro_page.xml.
+     Lý do layout riêng: ảnh ở điện thoại cao theo tỉ lệ 360:550 (wrap_content); tablet thấp hơn nên ảnh phải co theo
+     chiều cao còn lại (0dp + weight, centerCrop). Chừa chỗ ở đáy cho chấm và nút Next đè lên trang. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivArt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/intro_page_tv_text_margin_top"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/intro_page_tv_text_padding_horizontal"
+        android:paddingBottom="@dimen/intro_page_bottom_reserve"
+        android:textColor="@color/intro_text"
+        android:textSize="@dimen/text_section" />
+</LinearLayout>

@@ -6,15 +6,15 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
-        <item name="android:padding">1.5dp</item>
+        <item name="android:padding">@dimen/banner_card_padding</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:src">@drawable/bg_image_placeholder</item>
         <item name="android:importantForAccessibility">no</item>
-        <item name="android:elevation">2dp</item>
+        <item name="android:elevation">@dimen/banner_card_elevation</item>
         <item name="android:outlineSpotShadowColor" tools:targetApi="28">@color/banner_card_shadow</item>
         <item name="android:outlineAmbientShadowColor" tools:targetApi="28">@color/banner_card_shadow</item>
         <item name="strokeColor">@color/white</item>
-        <item name="strokeWidth">3dp</item>
+        <item name="strokeWidth">@dimen/banner_card_stroke_width</item>
         <item name="shapeAppearance">@style/Shape.Rounded8</item>
     </style>
 
@@ -23,7 +23,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="layout_constraintDimensionRatio">29.047:22.488</item>
-        <item name="android:elevation">3dp</item>
+        <item name="android:elevation">@dimen/banner_crown_elevation</item>
     </style>
 
     <style name="Banner.CrownImage" parent="">
@@ -45,7 +45,7 @@
     <!-- Nhãn mục trên Home ("New filter", "Trending Videos"): Londrina 18sp navy, cao 20dp -->
     <style name="Text.Section" parent="">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_height">@dimen/text_section_height</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:textAppearance">@style/TextAppearance.RankingFilter.TitleMedium</item>

@@ -93,19 +93,21 @@ class GalleryFragment : Fragment() {
         _binding = null
     }
 
+    private val spanCount get() = resources.getInteger(R.integer.span_filters)
+
     private fun setUpVideoGrid() {
         videoAdapter = GalleryVideoAdapter(onOpen = ::openVideo, onDelete = ::confirmDeleteVideo)
-        binding.rvVideos.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
+        binding.rvVideos.layoutManager = GridLayoutManager(requireContext(), spanCount)
         binding.rvVideos.adapter = videoAdapter
-        binding.rvVideos.addItemDecoration(GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.space_m)))
+        binding.rvVideos.addItemDecoration(GridSpacingDecoration(spanCount, resources.getDimensionPixelSize(R.dimen.space_m)))
     }
 
     private fun setUpFilterGrid() {
         tileAdapter = CreateFilterTileAdapter { openMakeFilter(null) }
         filterAdapter = FilterAdapter(onClick = ::openCamera, onMoreClick = ::showFilterMenu)
-        binding.rvFilters.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
+        binding.rvFilters.layoutManager = GridLayoutManager(requireContext(), spanCount)
         binding.rvFilters.adapter = ConcatAdapter(tileAdapter, filterAdapter)
-        binding.rvFilters.addItemDecoration(GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.space_m)))
+        binding.rvFilters.addItemDecoration(GridSpacingDecoration(spanCount, resources.getDimensionPixelSize(R.dimen.space_m)))
     }
 
     private fun render(ui: GalleryUi) {
@@ -199,7 +201,6 @@ class GalleryFragment : Fragment() {
     }
 
     private companion object {
-        const val SPAN_COUNT = 2
         const val REQUEST_DELETE_VIDEO = "gallery_delete_video"
         const val REQUEST_DELETE_FILTER = "gallery_delete_filter"
     }

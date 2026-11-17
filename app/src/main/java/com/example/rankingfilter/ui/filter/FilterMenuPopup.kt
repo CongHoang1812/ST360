@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.core.graphics.drawable.toDrawable
+import com.example.rankingfilter.R
 import com.example.rankingfilter.databinding.PopupFilterMenuBinding
 
 /**
@@ -15,9 +16,6 @@ import com.example.rankingfilter.databinding.PopupFilterMenuBinding
  * Dùng lại ở Gallery → My Filters (giai đoạn 7).
  */
 object FilterMenuPopup {
-
-    private const val OFFSET_X_DP = -94
-    private const val OFFSET_Y_DP = 8
 
     fun show(anchor: View, onEdit: () -> Unit, onDelete: () -> Unit) {
         val binding = PopupFilterMenuBinding.inflate(LayoutInflater.from(anchor.context))
@@ -33,7 +31,11 @@ object FilterMenuPopup {
         binding.menuEdit.setOnClickListener { popup.dismiss(); onEdit() }
         binding.menuDelete.setOnClickListener { popup.dismiss(); onDelete() }
 
-        val density = anchor.resources.displayMetrics.density
-        popup.showAsDropDown(anchor, (OFFSET_X_DP * density).toInt(), (OFFSET_Y_DP * density).toInt())
+        val res = anchor.resources
+        popup.showAsDropDown(
+            anchor,
+            res.getDimensionPixelOffset(R.dimen.filter_menu_offset_x),
+            res.getDimensionPixelOffset(R.dimen.filter_menu_offset_y),
+        )
     }
 }

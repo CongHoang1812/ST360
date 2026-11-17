@@ -32,9 +32,9 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         app:indicatorColor="@color/navy"
-        app:indicatorSize="44dp"
+        app:indicatorSize="@dimen/splash_progress_indicator_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideSpinner"
-        app:trackThickness="5dp" />
+        app:trackThickness="@dimen/splash_progress_track_thickness" />
 </androidx.constraintlayout.widget.ConstraintLayout>

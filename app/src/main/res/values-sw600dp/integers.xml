@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tablet >=600dp: số cột lưới.
+     FILE SINH TỰ ĐỘNG bởi scripts/gen_screen_dimens.py, đừng sửa tay. -->
+<resources>
+    <integer name="span_filters">2</integer>
+    <integer name="span_make_filter_photos">3</integer>
+</resources>

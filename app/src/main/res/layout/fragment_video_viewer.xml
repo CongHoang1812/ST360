@@ -24,7 +24,7 @@
             android:id="@+id/btnBack"
             style="@style/Button.Back"
             android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/video_viewer_btn_back_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,8 +46,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="@dimen/video_viewer_video_frame_margin_top"
+            android:layout_marginBottom="@dimen/video_viewer_video_frame_margin_bottom"
             app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="@dimen/corner_8"
             app:cardElevation="0dp"
@@ -57,7 +57,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnBack"
             app:strokeColor="@color/white"
-            app:strokeWidth="2dp">
+            app:strokeWidth="@dimen/video_viewer_video_frame_stroke_width">
 
             <androidx.media3.ui.PlayerView
                 android:id="@+id/playerView"
@@ -79,8 +79,8 @@
 
             <ImageView
                 android:id="@+id/ivPlay"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/video_viewer_iv_play_width"
+                android:layout_height="@dimen/video_viewer_iv_play_height"
                 android:layout_gravity="center"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_play_overlay_60"
@@ -95,8 +95,8 @@
                 android:layout_margin="@dimen/space_s"
                 android:background="@drawable/bg_video_time"
                 android:orientation="vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
+                android:paddingTop="@dimen/video_viewer_time_bar_padding_top"
+                android:paddingBottom="@dimen/video_viewer_time_bar_padding_bottom"
                 android:visibility="gone">
 
                 <TextView
@@ -106,14 +106,14 @@
                     android:fontFeatureSettings="tnum"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_button"
                     tools:text="00:12/00:50" />
 
                 <SeekBar
                     android:id="@+id/seekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="@dimen/video_viewer_seek_bar_margin_top"
                     android:contentDescription="@string/cd_video_position"
                     android:progressBackgroundTint="#66FFFFFF"
                     android:progressTint="@color/white"
@@ -127,7 +127,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="@dimen/video_viewer_buttons_margin_bottom"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +146,7 @@
 
             <Space
                 android:layout_width="@dimen/space_m"
-                android:layout_height="1dp" />
+                android:layout_height="@dimen/video_viewer_space1_height" />
 
             <FrameLayout
                 android:id="@+id/btnDownload"

@@ -7,14 +7,14 @@
         </shape>
     </item>
     <item
-        android:bottom="7dp"
-        android:left="7dp"
-        android:right="7dp"
-        android:top="7dp">
+        android:bottom="@dimen/nav_camera_button_item_bottom"
+        android:left="@dimen/nav_camera_button_item_left"
+        android:right="@dimen/nav_camera_button_item_right"
+        android:top="@dimen/nav_camera_button_item_top">
         <shape android:shape="oval">
             <solid android:color="@color/white" />
             <stroke
-                android:width="4dp"
+                android:width="@dimen/nav_camera_button_stroke_width"
                 android:color="@color/primary" />
         </shape>
     </item>

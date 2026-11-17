@@ -9,12 +9,12 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="328dp"
+        android:layout_width="@dimen/add_photo_linearlayout1_width"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_dialog"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="24dp">
+        android:paddingHorizontal="@dimen/add_photo_linearlayout1_padding_horizontal"
+        android:paddingVertical="@dimen/add_photo_linearlayout1_padding_vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:gravity="center"
             android:text="@string/add_photo_title"
             android:textColor="@color/navy"
-            android:textSize="20sp" />
+            android:textSize="@dimen/add_photo_textview1_text_size" />
 
         <FrameLayout
             android:id="@+id/btnTakePhoto"
@@ -49,9 +49,9 @@
 
     <ImageButton
         android:id="@+id/btnClose"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="@dimen/add_photo_btn_close_width"
+        android:layout_height="@dimen/add_photo_btn_close_height"
+        android:layout_marginTop="@dimen/add_photo_btn_close_margin_top"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/cd_close"
         android:src="@drawable/ic_close_circle" />

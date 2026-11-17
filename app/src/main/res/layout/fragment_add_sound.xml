@@ -17,13 +17,13 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp">
+            android:paddingBottom="@dimen/add_sound_header_padding_bottom">
 
             <ImageButton
                 android:id="@+id/btnBack"
                 style="@style/Button.Back"
                 android:layout_marginStart="@dimen/screen_padding"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/add_sound_btn_back_margin_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +31,7 @@
                 style="@style/Text.ScreenTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="@dimen/add_sound_textview1_margin_horizontal"
                 android:text="@string/camera_add_sound"
                 app:layout_constraintBottom_toBottomOf="@id/btnBack"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -75,8 +75,8 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/add_sound_progressbar1_width"
+            android:layout_height="@dimen/add_sound_progressbar1_height"
             android:layout_gravity="center"
             android:indeterminateTint="@color/primary" />
     </FrameLayout>

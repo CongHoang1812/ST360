@@ -6,8 +6,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivFlag"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/language_iv_flag_width"
+        android:layout_height="@dimen/language_iv_flag_height"
         android:importantForAccessibility="no"
         android:scaleType="centerCrop"
         app:shapeAppearance="@style/Shape.Pill" />
@@ -17,12 +17,12 @@
         style="@style/Text.MenuLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/language_tv_name_margin_start"
         android:layout_weight="1" />
 
     <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="@dimen/language_imageview1_width"
+        android:layout_height="@dimen/language_imageview1_height"
         android:duplicateParentState="true"
         android:importantForAccessibility="no"
         android:src="@drawable/ic_radio" />

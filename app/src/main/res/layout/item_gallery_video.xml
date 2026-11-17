@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/white"
-        app:strokeWidth="2dp">
+        app:strokeWidth="@dimen/gallery_video_card_stroke_width">
 
         <ImageView
             android:id="@+id/ivThumbnail"
@@ -32,11 +32,11 @@
 
         <ImageButton
             android:id="@+id/btnDelete"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="@dimen/gallery_video_btn_delete_width"
+            android:layout_height="@dimen/gallery_video_btn_delete_height"
             android:layout_gravity="top|end"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="@dimen/gallery_video_btn_delete_margin_top"
+            android:layout_marginEnd="@dimen/gallery_video_btn_delete_margin_end"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_delete_video"
             android:src="@drawable/ic_photo_delete" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Icon nút chọn filter 48dp (Figma 60:389): sticker mặt cười 28dp tại (10, 10) và 3 ngôi sao tại (30.6, 10) -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="48dp" android:height="48dp"
+    android:width="@dimen/choose_filter_48_vector_width" android:height="@dimen/choose_filter_48_vector_height"
     android:viewportWidth="48" android:viewportHeight="48">
     <group android:translateX="12" android:translateY="13">
         <path android:fillColor="@color/white" android:pathData="M7.00017 9.3333C7.64452 9.3333 8.16683 8.60577 8.16683 7.70825C8.16683 6.81085 7.64452 6.08332 7.00017 6.08332C6.35582 6.08332 5.8335 6.81085 5.8335 7.70825C5.8335 8.60577 6.35582 9.3333 7.00017 9.3333ZM12.8335 9.3333C13.4779 9.3333 14.0002 8.60577 14.0002 7.70825C14.0002 6.81085 13.4779 6.08332 12.8335 6.08332C12.1891 6.08332 11.6668 6.81085 11.6668 7.70825C11.6668 8.60577 12.1891 9.3333 12.8335 9.3333Z" />

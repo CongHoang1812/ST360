@@ -41,6 +41,8 @@ class ChooseFilterFragment : Fragment() {
         return binding.root
     }
 
+    private val spanCount get() = resources.getInteger(R.integer.span_filters)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val isNewPack = viewModel.mode == FilterMode.NEW_PACK
@@ -61,10 +63,10 @@ class ChooseFilterFragment : Fragment() {
         }
 
         adapter = FilterAdapter(::openCamera, onMoreClick = ::showFilterMenu)
-        binding.rvFilters.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
+        binding.rvFilters.layoutManager = GridLayoutManager(requireContext(), spanCount)
         binding.rvFilters.adapter = adapter
         binding.rvFilters.addItemDecoration(
-            GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.filter_cell_gap))
+            GridSpacingDecoration(spanCount, resources.getDimensionPixelSize(R.dimen.filter_cell_gap))
         )
 
         ConfirmDialogFragment.listen(this, REQUEST_DELETE) { id -> id?.let(viewModel::deleteUserFilter) }
@@ -156,7 +158,6 @@ class ChooseFilterFragment : Fragment() {
     }
 
     companion object {
-        private const val SPAN_COUNT = 2
         private const val REQUEST_DELETE = "delete_user_filter"
         const val ARG_FILTER_ID = "filter_id"
         const val ARG_IS_USER_FILTER = "is_user_filter"

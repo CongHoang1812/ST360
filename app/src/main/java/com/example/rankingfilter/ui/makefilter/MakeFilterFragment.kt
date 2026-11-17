@@ -69,6 +69,8 @@ class MakeFilterFragment : Fragment() {
         return binding.root
     }
 
+    private val spanCount get() = resources.getInteger(R.integer.span_make_filter_photos)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.content.applySystemBarsPadding(top = true)
@@ -82,11 +84,11 @@ class MakeFilterFragment : Fragment() {
             onRemoveClick = viewModel::removePhoto,
             onAddClick = ::showAddPhotoDialog,
         )
-        binding.rvPhotos.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
+        binding.rvPhotos.layoutManager = GridLayoutManager(requireContext(), spanCount)
         binding.rvPhotos.adapter = adapter
         binding.rvPhotos.itemAnimator = null
         binding.rvPhotos.addItemDecoration(
-            GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.photo_cell_gap))
+            GridSpacingDecoration(spanCount, resources.getDimensionPixelSize(R.dimen.photo_cell_gap))
         )
 
         binding.etName.doAfterTextChanged { viewModel.setName(it?.toString().orEmpty()) }
@@ -225,6 +227,5 @@ class MakeFilterFragment : Fragment() {
         /** Khóa kết quả trong savedStateHandle của màn trước: id filter vừa lưu. */
         const val RESULT_FILTER_SAVED = "filter_saved"
         private const val REQUEST_LEAVE = "leave_make_filter"
-        private const val SPAN_COUNT = 3
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Icon camera trong popup Add Photo (Figma 57:345) -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="22dp" android:height="22dp"
+    android:width="@dimen/camera_22_vector_width" android:height="@dimen/camera_22_vector_height"
     android:viewportWidth="22" android:viewportHeight="22">
     <group android:translateX="1.146" android:translateY="2.0625">
         <path android:pathData="M12.604 9.85413C12.604 11.3729 11.3728 12.6041 9.854 12.6041C8.33522 12.6041 7.104 11.3729 7.104 9.85413C7.104 8.33534 8.33522 7.10413 9.854 7.10413C11.3728 7.10413 12.604 8.33534 12.604 9.85413Z" android:strokeColor="@color/primary" android:strokeWidth="1.375" />

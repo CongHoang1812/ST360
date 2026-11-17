@@ -23,9 +23,9 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="28dp">
+            android:layout_height="@dimen/setting_framelayout1_height"
+            android:layout_marginTop="@dimen/setting_framelayout1_margin_top"
+            android:layout_marginBottom="@dimen/setting_framelayout1_margin_bottom">
 
             <ImageButton
                 android:id="@+id/btnBack"
@@ -36,7 +36,7 @@
                 style="@style/Text.ScreenTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="60dp"
+                android:layout_marginHorizontal="@dimen/setting_textview1_margin_horizontal"
                 android:gravity="center"
                 android:text="@string/title_setting" />
         </FrameLayout>
@@ -46,8 +46,8 @@
             style="@style/Row.Menu">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/setting_imageview1_width"
+                android:layout_height="@dimen/setting_imageview1_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_setting_language" />
 
@@ -55,7 +55,7 @@
                 style="@style/Text.MenuLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/setting_textview2_margin_start"
                 android:text="@string/setting_language" />
         </LinearLayout>
         <LinearLayout
@@ -63,8 +63,8 @@
             style="@style/Row.Menu">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/setting_imageview2_width"
+                android:layout_height="@dimen/setting_imageview2_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_setting_rate" />
 
@@ -72,7 +72,7 @@
                 style="@style/Text.MenuLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/setting_textview3_margin_start"
                 android:text="@string/setting_rate" />
         </LinearLayout>
         <LinearLayout
@@ -80,8 +80,8 @@
             style="@style/Row.Menu">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/setting_imageview3_width"
+                android:layout_height="@dimen/setting_imageview3_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_setting_share" />
 
@@ -89,7 +89,7 @@
                 style="@style/Text.MenuLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/setting_textview4_margin_start"
                 android:text="@string/setting_share" />
         </LinearLayout>
         <LinearLayout
@@ -97,8 +97,8 @@
             style="@style/Row.Menu">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/setting_imageview4_width"
+                android:layout_height="@dimen/setting_imageview4_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_setting_privacy" />
 
@@ -106,7 +106,7 @@
                 style="@style/Text.MenuLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/setting_textview5_margin_start"
                 android:text="@string/setting_privacy" />
         </LinearLayout>
     </LinearLayout>

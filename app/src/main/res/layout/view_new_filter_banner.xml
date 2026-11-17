@@ -83,11 +83,11 @@
 
         <TextView
             style="@style/Banner.CrownNumber"
-            android:paddingTop="5dp"
+            android:paddingTop="@dimen/new_filter_banner_textview1_padding_top"
             android:text="1"
             tools:ignore="HardcodedText,SmallSp"
             android:textColor="@color/crown_text_gold"
-            android:textSize="9.5sp" />
+            android:textSize="@dimen/new_filter_banner_textview1_text_size" />
     </FrameLayout>
 
     <!-- Vương miện hạng 2 (bạc), 23.2 x 17.9, xoay 6.44° -->
@@ -109,11 +109,11 @@
 
         <TextView
             style="@style/Banner.CrownNumber"
-            android:paddingTop="2dp"
+            android:paddingTop="@dimen/new_filter_banner_textview2_padding_top"
             android:text="2"
             tools:ignore="HardcodedText,SmallSp"
             android:textColor="@color/crown_text_silver"
-            android:textSize="8.8sp" />
+            android:textSize="@dimen/new_filter_banner_textview2_text_size" />
     </FrameLayout>
 
     <!-- Vương miện hạng 3 (đồng), 22.5 x 17.3, xoay 19.04° -->
@@ -135,11 +135,11 @@
 
         <TextView
             style="@style/Banner.CrownNumber"
-            android:paddingTop="3dp"
+            android:paddingTop="@dimen/new_filter_banner_textview3_padding_top"
             android:text="3"
             tools:ignore="HardcodedText,SmallSp"
             android:textColor="@color/crown_text_bronze"
-            android:textSize="8.8sp" />
+            android:textSize="@dimen/new_filter_banner_textview3_text_size" />
     </FrameLayout>
 
     <!-- Nút "Explore pack" tại (241, 90) -->
@@ -162,17 +162,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_explore_pack"
-        android:drawablePadding="4dp"
+        android:drawablePadding="@dimen/new_filter_banner_btn_explore_drawable_padding"
         android:fontFamily="@font/roboto_medium"
         app:fontFamily="@font/roboto_medium"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp"
+        android:paddingHorizontal="@dimen/new_filter_banner_btn_explore_padding_horizontal"
+        android:paddingVertical="@dimen/new_filter_banner_btn_explore_padding_vertical"
         android:text="@string/home_explore_pack"
         android:textColor="@color/white"
-        android:textSize="10sp"
+        android:textSize="@dimen/new_filter_banner_btn_explore_text_size"
         android:textStyle="italic"
         tools:ignore="SmallSp"
         app:drawableEndCompat="@drawable/ic_arrow_forward_12"

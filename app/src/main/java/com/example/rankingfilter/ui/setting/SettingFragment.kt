@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import com.example.rankingfilter.data.AppPrefs
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +19,7 @@ import com.example.rankingfilter.databinding.FragmentSettingBinding
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import com.example.rankingfilter.ui.language.LanguageFragment
 
-/** Setting (Figma 18:170): Language, Rate us, Share app, Privacy & Policy. */
+/** Setting (Figma 18:170): Language, Rate us (popup RateDialogFragment, Figma 4034:33), Share app, Privacy & Policy. */
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingBinding? = null
@@ -40,7 +42,9 @@ class SettingFragment : Fragment() {
                 bundleOf(LanguageFragment.ARG_FROM_SETTINGS to true),
             )
         }
-        binding.rowRate.setOnClickListener { rateApp() }
+        binding.rowRate.isVisible = !AppPrefs.isRated(requireContext())
+        RateDialogFragment.listen(this) { binding.rowRate.isVisible = false }
+        binding.rowRate.setOnClickListener { RateDialogFragment.show(this) }
         binding.rowShare.setOnClickListener { shareApp() }
         binding.rowPrivacy.setOnClickListener { openUrl(AppConfig.PRIVACY_POLICY_URL) }
     }
@@ -48,16 +52,6 @@ class SettingFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    /** Mở trang app trong Google Play; máy không có Play thì mở bằng trình duyệt. */
-    private fun rateApp() {
-        val market = Intent(Intent.ACTION_VIEW, "market://details?id=${requireContext().packageName}".toUri())
-        try {
-            startActivity(market)
-        } catch (_: ActivityNotFoundException) {
-            openUrl(playStoreWebUrl)
-        }
     }
 
     private fun shareApp() {

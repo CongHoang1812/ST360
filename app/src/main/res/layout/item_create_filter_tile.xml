@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/tile"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_create_filter_tile"
@@ -20,17 +21,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/create_filter_tile_imageview1_width"
+            android:layout_height="@dimen/create_filter_tile_imageview1_height"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_add_circle_56" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/create_filter_tile_textview1_margin_top"
             android:text="@string/create_filter"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="@dimen/create_filter_tile_textview1_text_size" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

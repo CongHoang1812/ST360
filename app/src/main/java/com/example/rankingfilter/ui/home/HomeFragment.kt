@@ -74,12 +74,14 @@ class HomeFragment : Fragment() {
         binding.banner.btnExplore.setOnClickListener { nav.navigate(R.id.action_home_to_newFilter) }
     }
 
+    private val spanCount get() = resources.getInteger(R.integer.span_filters)
+
     private fun setupTrending() {
         trendingAdapter = TrendingAdapter(::openPreview)
         binding.rvTrending.apply {
-            layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
+            layoutManager = GridLayoutManager(requireContext(), spanCount)
             adapter = trendingAdapter
-            addItemDecoration(GridSpacingDecoration(SPAN_COUNT, resources.getDimensionPixelSize(R.dimen.space_m)))
+            addItemDecoration(GridSpacingDecoration(spanCount, resources.getDimensionPixelSize(R.dimen.space_m)))
         }
         binding.btnRetry.setOnClickListener { viewModel.load() }
     }
@@ -131,6 +133,5 @@ class HomeFragment : Fragment() {
     }
 
     private companion object {
-        const val SPAN_COUNT = 2
     }
 }

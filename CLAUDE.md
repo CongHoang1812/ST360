@@ -57,7 +57,6 @@ Giai đoạn 2 đã có:
 - `data/trending/`: `TrendingApi` (BASE, ghép URL, đổi `'`→`’` và `...`→`…` rồi `Uri.encode`, `matchFilterId`),
   `TrendingRepository` đọc `folders.json` (mảng chuỗi, HttpURLConnection + kotlinx.serialization), `TrendingVideo`
   (id = nguyên tên thư mục). URL lấy từ `AppConfig.TRENDING_FOLDERS_URL`. Lỗi mạng → dùng avatar filter làm dữ liệu dự phòng.
-- `ui/common/ComingSoonFragment`: màn tạm cho newFilter, chooseFilter, gallery, setting (arg `title` kiểu reference).
 - Insets: MainActivity KHÔNG còn padding chung; mỗi Fragment tự gọi `applySystemBarsPadding()` (ui/common/Insets.kt).
 - Asset Figma: `drawable-nodpi/` (nền Home, logo, banner) và vector `ic_crown_gold/silver/bronze`, icon nav, settings.
   Ảnh Figma export qua MCP bị dính nền xám #444 → lấy ảnh gốc (rawImages) và tự cắt, vector thì chuyển tay.
@@ -88,7 +87,7 @@ bảng xin quyền khi từ chối → Open Settings → cấp quyền → quay 
 - `ui/camera/CameraFragment` + `fragment_camera.xml` (Figma 5:9): PreviewView toàn màn, hàng trên (Back, pill Add Sound,
   lật camera, flash), cột 12 ô số, dải 60s/30s/Free/15s, nút quay, nút chọn filter. Hàng trên bám đỉnh, cụm dưới bám đáy.
 - 12 ô số tạo bằng vòng lặp từ `item_rank_slot.xml` (có sẵn `ivPhoto` ẩn cho 5c); `sizeRankSlots()` tự thu nhỏ ô
-  nếu cột không đủ cao. Kích thước lấy từ `dimens.xml` (`rank_slot_*`, `rank_column_*`).
+  nếu cột không đủ cao. Kích thước lấy từ `dimens.xml` (`rank_slot_*`, `rank_column_*`); ô 42dp, số 22sp, khe 5dp (từng 36dp/20sp/6dp, tăng 16/11/2026 cho dễ nhìn).
 - CameraX: chỉ `Preview`, mặc định camera trước; `bindCamera()` gọi lại khi lật. Flash = torch
   (`cameraControl.enableTorch`), nút tự mờ khi camera không có đèn; nút lật mờ khi máy chỉ có một camera.
 - Quyền CAMERA + RECORD_AUDIO: tự hỏi một lần khi vào màn; bị từ chối thì hiện bảng giải thích, nút "Allow" hỏi lại,
@@ -109,7 +108,7 @@ nghiêng đúng chiều và dời theo hướng đỉnh đầu, che kín mặt t
 - Góc nghiêng: euler Z (dương = ngược chiều kim đồng hồ) → đổi dấu → dựng vector "đỉnh đầu" → biến đổi cùng ma trận
   → atan2. Lật gương camera trước tự đảo dấu, không if camera trước/sau. Toán nằm trong `HeadPlacements` (hàm thuần,
   7 test JUnit ở `app/src/test/.../HeadPlacementsTest`; chạy `./gradlew :app:testDebugUnitTest`).
-- Ảnh đặt dọc theo hướng đỉnh đầu (không chỉ xoay tại chỗ): cạnh = 0,9 × bề rộng mặt (cạnh ngắn của khung),
+- Ảnh đặt dọc theo hướng đỉnh đầu (không chỉ xoay tại chỗ): cạnh = 0,55 × bề rộng mặt (từng 0,9 → 0,65 → 0,55) (cạnh ngắn của khung),
   khe hở 0,12 × chiều cao mặt (`SIZE_RATIO`, `GAP_RATIO` trong `HeadPlacements`, chỉnh được).
 - `FaceOverlayView`: làm mượt 0,5, ẩn sau 150ms không thấy mặt (tránh nhấp nháy), center-crop ảnh về hình vuông.
   Ảnh chờ: `drawable-nodpi/head_placeholder.jpg` ("?" trong Figma 5:13, ảnh JPEG 640x640 thật sự, không trong suốt).
@@ -123,10 +122,11 @@ chưa chơi, nút dừng bỏ ván):
   không mất ván. `GameUi.isActive` = đã bấm quay (kể cả vừa xếp xong), `isPlaying` = đang chơi và còn ô trống.
 - `CameraFragment`: vòng `spinLoop()` 150ms (cùng vòng đời STARTED, chỉ spin khi đang chơi VÀ thấy mặt); chạm ô chỉ chốt khi
   đang thấy mặt (mất mặt thì ảnh ẩn, người chơi không biết mình chốt ảnh nào mà chốt rồi không sửa được).
-  Xếp đủ 12 → chờ 700ms (thấy cột đầy) → `stopGame()` → `action_camera_to_preview` (màn tạm `resultPreviewFragment`).
+  (Đã đổi 16/11/2026: xếp đủ 12 KHÔNG còn tự dừng; video quay tiếp tới khi bấm dừng hoặc hết giờ, ảnh trên đầu ẩn khi đủ 12 ô.
+  Ghi chú cũ "chờ 700ms rồi sang Preview" không còn đúng.)
 - Giao diện đang chơi theo Figma 8:102/8:192/8:235: ẩn Back, Add Sound, lật camera, flash, dải thời lượng, nút chọn filter;
   nút quay thành hình vuông bo 8dp 32dp; ô trống viền trắng; ô đã chốt hiện ảnh nhỏ + số hạng đứng BÊN TRÁI ô
-  (`item_rank_slot.xml` = [số 28dp][ô 36dp], `rank_column_start` 14dp). Nút làm lại KHÔNG có trong design: tôi đặt ở chỗ nút lật
+  (`item_rank_slot.xml` = [số 28dp][ô 42dp], `rank_column_start` 14dp). Nút làm lại KHÔNG có trong design: tôi đặt ở chỗ nút lật
   camera (`btnRestart`, icon `ic_restart_20`). Hiển thị điều khiển do `CameraFragment.updateControls()` quản lý (đã bỏ Group).
 - `FaceOverlayView`: vẽ bằng BitmapShader + drawRoundRect; `cornerRatio` 0 cho ảnh chờ "?", 0,12 cho ảnh của filter.
 - Chưa có: đồng hồ 00:00:10 trên đầu màn (5d), quay video thật (5d), thời lượng 15/30/60s (5d, hiện chỉ chọn được).
@@ -154,11 +154,11 @@ OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (View
   setDurationLimitMillis, MIRROR_MODE_ON_FRONT_ONLY (video camera trước lật gương như preview, để overlay đúng chiều).
   Phân loại lỗi: NO_STORAGE (kiểm trước 150MB + lỗi giữa chừng), CAMERA_INTERRUPTED, NO_DATA, MIC_PERMISSION, UNKNOWN.
 - `CameraFragment`: máy trạng thái RecPhase IDLE/STARTING/RECORDING/STOPPING. Ván bắt đầu khi video bắt đầu ghi. Dừng tay,
-  hết giờ hoặc xếp đủ 12 ô (chờ 700ms) → lưu → màn Preview tạm nhận `video_uri`. Làm lại = bỏ video, quay lại từ đầu.
+  hết giờ (xếp đủ 12 ô thì KHÔNG tự dừng nữa) → lưu → màn Preview tạm nhận `video_uri`. Làm lại = bỏ video, quay lại từ đầu.
   Rời màn / xoay màn hình giữa chừng = bỏ video và ván. Đồng hồ `timerPill` (Figma 14:683). Theo dõi CameraState để báo camera bị chiếm.
 - Manifest thêm WRITE_EXTERNAL_STORAGE (maxSdk 28) cho Android 9 trở xuống; nhánh này không có máy để thử.
 - CẦN KIỂM TRÊN MÁY: overlay có hiện trên preview không và có đúng vị trí/chiều (camera trước lật gương) không; video lưu ra có
-  ảnh trên đầu + cột hạng không (mở bằng app Ảnh); đồng hồ; tự dừng 15s; xếp đủ 12 ô tự dừng; làm lại; có tiếng; file nằm ở
+  ảnh trên đầu + cột hạng không (mở bằng app Ảnh); đồng hồ; tự dừng 15s; (xếp đủ 12 ô không còn tự dừng); làm lại; có tiếng; file nằm ở
   Movies/RankingFilter; nhận diện mặt còn khớp không khi có stream sharing.
 
 Giai đoạn 6 đã kiểm trên Xiaomi (15/11/2026): Add Sound đúng design; nghe thử báo lỗi êm khi server 404 (không crash);
@@ -222,14 +222,15 @@ Không dùng `pm clear` khi kiểm (xóa filter/video của người dùng).
 
 Giai đoạn 8 đã có:
 - Luồng: Splash (2s) → Language → Intro → Permission → Home; đã xem intro (`AppPrefs.isIntroSeen`, SharedPreferences) thì Splash → Home.
-  Nav start = `splashFragment`; mỗi màn onboarding popUpTo chính nó (inclusive). `ComingSoonFragment` không còn dùng trong nav.
+  Nav start = `splashFragment`; mỗi màn onboarding popUpTo chính nó (inclusive). (`ComingSoonFragment` đã xóa 17/11/2026.)
 - `ui/splash`: `splash_full.webp` là ảnh khung Figma 3:2 đã vá (thanh trạng thái + dòng quảng cáo thay bằng nền `bg_home`) + vòng tròn tải native.
 - `ui/language/LanguageFragment` (arg `from_settings`): 6 dòng (`APP_LANGUAGES`: en es fr hi pt id), tick lưu bằng `AppCompatDelegate.setApplicationLocales`,
   `res/xml/locales_config.xml` + `android:localeConfig` + `AppLocalesMetadataHolderService` (manifest). Điều hướng TRƯỚC rồi mới đổi ngôn ngữ (đổi làm tạo lại Activity).
 - `ui/intro`: ViewPager2 3 trang (`intro_art_1..3.webp` = ảnh khung Figma cắt 360x550 đã vá thanh trạng thái), chấm, Next, Skip (Skip KHÔNG có trong design, thêm theo prompt).
   Câu trang 1 đổi thành "Tap to rank them from #1 to #12." (design ghi "Drag, drop … #10" không đúng app).
 - `ui/permission`: 3 MaterialSwitch (Camera, Photos, Microphone); chạm = xin quyền, đã cấp/bị từ chối hẳn = mở cài đặt app. Continue luôn đi tiếp.
-- `ui/setting`: Language / Rate us (market:// → web) / Share app (ACTION_SEND) / Privacy & Policy (`AppConfig.PRIVACY_POLICY_URL` đang RỖNG, điền sau; rỗng thì báo Toast).
+- `ui/setting/RateDialogFragment` (16/11/2026, Figma 4034:33; build OK, CHƯA kiểm trên máy): bấm Rate us trong Setting mở popup 5 sao; emoji là ảnh PNG 160px lấy từ Figma (`drawable-nodpi/rate_emoji_0..5.png`), sao là vector theo path Figma (vàng #FFDC4E / xám #C4C4C4, kéo ngón tay để chấm), lời nhắn đổi theo số sao; chọn 1–5 sao + Rate → chỉ Toast cảm ơn (`rate_thanks`) rồi đóng, KHÔNG mở Play Store; 0 sao bấm Rate → không làm gì. Rate xong lưu cờ `AppPrefs.isRated` và ẩn dòng Rate us trong Setting (cả những lần mở app sau).
+- `ui/setting`: Language / Rate us (popup, ẩn sau khi đã rate) / Share app (ACTION_SEND) / Privacy & Policy (`AppConfig.PRIVACY_POLICY_URL` đang RỖNG, điền sau; rỗng thì báo Toast).
 - Đã dịch toàn bộ `strings.xml` sang es, fr, hi, pt, in (bản dịch do tôi viết, nên nhờ người bản ngữ rà lại trước khi phát hành).
 - Ảnh Figma export bị dính nền #444: ảnh Splash/Intro lấy từ ảnh KHUNG đầy đủ (có nền thật) rồi cắt; Pillow cài ở scratchpad, không có trong repo.
 
@@ -275,7 +276,19 @@ Git Bash đổi đường dẫn `/sdcard/...` → đặt `MSYS_NO_PATHCONV=1` kh
 
 Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 
+- Đa kích thước màn hình (16/11/2026, theo `docs/multi-screen/`; build OK chưa chạy, CHƯA kiểm trên máy/emulator tablet): thiết kế 360dp, mọi kích thước là `@dimen`
+  (491 chỗ số cứng đã chuyển, tên dạng `<màn>_<view>_<thuộc tính>`, một số tên chưa đẹp như `*_framelayout1_*`). `scripts/gen_screen_dimens.py` nhân với 1,6 (sw600dp) / 2,0 (sw800dp)
+  và sinh `values-sw600dp|sw800dp/dimens.xml` + `integers.xml`. Số cột lưới giữ như điện thoại (2 và 3). `content_max_width` ở `PHONE` (không giới hạn bề rộng).
+  Layout riêng duy nhất: `layout-sw600dp/fragment_intro.xml` + `item_intro_page.xml` (tỉ lệ 360:660 vượt chiều cao tablet; ảnh co theo chiều cao còn lại). Camera: `sizeRankSlots()` tự thu nhỏ ô.
+- Đa màn hình: layout chỉ dùng @dimen; dimen điện thoại ở values/dimens.xml. Không sửa tay values-sw600dp / values-sw800dp.
+- Thêm / đổi dimen thì chạy `python3 scripts/gen_screen_dimens.py`; có dòng "!" thì chỉnh `fixed` / `STACKS`.
+- Màn xếp dọc cố định phải vào STACKS; số cột lưới lấy từ R.integer.*_columns (hiện là `span_filters`, `span_make_filter_photos`).
+
 ## Quyết định kỹ thuật đã chốt
+
+- Không hiệu ứng chạm (ripple): theme đặt `selectableItemBackground(Borderless)` trong suốt, `Button.Primary` và nút pill có
+  `rippleColor` trong suốt (người dùng yêu cầu 16/11/2026, áp dụng cả thẻ video/filter/dòng nhạc). Chưa kiểm trên máy.
+- Thanh điều hướng hệ thống bị ẩn (`MainActivity.hideNavigationBar`, vuốt từ đáy để hiện tạm). Chưa kiểm trên máy: nội dung sát đáy ở Camera/Home/Gallery.
 
 - Kotlin + XML Views (không Compose), ViewBinding, minSdk 24, compile/targetSdk 37, Java 17.
 - Package / applicationId: `com.example.rankingfilter`.

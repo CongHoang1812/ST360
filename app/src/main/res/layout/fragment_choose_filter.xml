@@ -30,7 +30,7 @@
             android:id="@+id/btnBack"
             style="@style/Button.Back"
             android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/choose_filter_btn_back_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +40,7 @@
             style="@style/Text.ScreenTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
+            android:layout_marginHorizontal="@dimen/choose_filter_title_margin_horizontal"
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
@@ -54,7 +54,7 @@
             android:id="@+id/tabs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="@dimen/choose_filter_tabs_margin_top"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/screen_padding"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,7 @@
                 style="@style/Tab.Pill"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/tab_pill_height"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="@dimen/choose_filter_tab_discover_margin_end"
                 android:layout_weight="1"
                 android:checked="true"
                 android:text="@string/tab_discover" />
@@ -76,7 +76,7 @@
                 style="@style/Tab.Pill"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/tab_pill_height"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="@dimen/choose_filter_tab_my_filters_margin_start"
                 android:layout_weight="1"
                 android:text="@string/tab_my_filters" />
         </LinearLayout>
@@ -86,7 +86,7 @@
             android:id="@+id/rvFilters"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/choose_filter_rv_filters_margin_top"
             android:clipToPadding="false"
             android:paddingHorizontal="@dimen/screen_padding"
             android:paddingBottom="@dimen/space_m"
@@ -94,7 +94,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabs"
-            app:layout_goneMarginTop="68dp"
+            app:layout_goneMarginTop="@dimen/choose_filter_rv_filters_gone_margin_top"
             tools:itemCount="6"
             tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/item_filter"
@@ -102,8 +102,8 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/choose_filter_progress_width"
+            android:layout_height="@dimen/choose_filter_progress_height"
             android:indeterminateTint="@color/primary"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/rvFilters"
@@ -147,26 +147,26 @@
                 android:includeFontPadding="false"
                 android:text="@string/my_filters_empty_title"
                 android:textColor="@color/navy"
-                android:textSize="20sp" />
+                android:textSize="@dimen/choose_filter_textview1_text_size" />
 
             <TextView
-                android:layout_width="258dp"
+                android:layout_width="@dimen/choose_filter_textview2_width"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/choose_filter_textview2_margin_top"
                 android:fontFamily="@font/londrina_solid_light"
                 app:fontFamily="@font/londrina_solid_light"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="@string/my_filters_empty_desc"
                 android:textColor="@color/navy"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_button" />
 
             <!-- Nút "Create Filter": 210dp, gradient vàng, icon add_circle 24dp + chữ 20sp -->
             <FrameLayout
                 android:id="@+id/btnCreateFilter"
-                android:layout_width="210dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="@dimen/choose_filter_btn_create_filter_width"
+                android:layout_height="@dimen/choose_filter_btn_create_filter_height"
+                android:layout_marginTop="@dimen/choose_filter_btn_create_filter_margin_top"
                 android:background="@drawable/bg_create_filter_button"
                 android:clickable="true"
                 android:focusable="true"
@@ -176,11 +176,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawablePadding="12dp"
+                    android:drawablePadding="@dimen/choose_filter_textview3_drawable_padding"
                     android:gravity="center"
                     android:text="@string/create_filter"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/choose_filter_textview3_text_size"
                     app:drawableStartCompat="@drawable/ic_add_circle_24" />
             </FrameLayout>
         </LinearLayout>

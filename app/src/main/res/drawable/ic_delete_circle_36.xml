@@ -2,7 +2,7 @@
 <!-- Nút xóa video ở màn xem video (Figma 21:390): tròn hồng 36dp viền trắng, thùng rác đỏ 16dp ở giữa -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="36dp" android:height="36dp"
+    android:width="@dimen/delete_circle_36_vector_width" android:height="@dimen/delete_circle_36_vector_height"
     android:viewportWidth="36" android:viewportHeight="36">
     <path android:pathData="M18,0a18,18 0,1 1,0 36a18,18 0,1 1,0 -36z">
         <aapt:attr name="android:fillColor">

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Icon quay video trên nút "Try now" (Figma node 28:1525) -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="16dp"
+    android:width="@dimen/video_24_vector_width"
+    android:height="@dimen/video_24_vector_height"
     android:viewportWidth="24"
     android:viewportHeight="16">
     <path

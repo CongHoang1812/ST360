@@ -2,5 +2,5 @@
 <!-- Nút dừng khi đang quay (Figma 8:191): hình vuông đỏ bo 8dp, to 32dp (đặt kích thước bằng LayoutParams) -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="@color/record_red" />
-    <corners android:radius="8dp" />
+    <corners android:radius="@dimen/record_stop_corners_radius" />
 </shape>

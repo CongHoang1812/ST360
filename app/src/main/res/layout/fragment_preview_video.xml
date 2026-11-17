@@ -28,7 +28,7 @@
     <!-- Lớp tối dần cao 150dp ở đáy -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/preview_video_view1_height"
         android:layout_gravity="bottom"
         android:background="@drawable/bg_bottom_scrim" />
 
@@ -41,7 +41,7 @@
             android:id="@+id/btnBack"
             style="@style/Button.Back"
             android:layout_marginStart="@dimen/screen_padding"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/preview_video_btn_back_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,8 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rank_slot"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
+            android:paddingHorizontal="@dimen/preview_video_error_text_padding_horizontal"
+            android:paddingVertical="@dimen/preview_video_error_text_padding_vertical"
             android:text="@string/preview_play_error"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="@color/white"
@@ -65,14 +65,14 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="@dimen/preview_video_title_height"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/preview_video_title_margin_bottom"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/preview_video_title_text_size"
             app:layout_constraintBottom_toTopOf="@id/btnTryNow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,9 +82,9 @@
         <FrameLayout
             android:id="@+id/btnTryNow"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/preview_video_btn_try_now_height"
             android:layout_marginHorizontal="@dimen/screen_padding"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/preview_video_btn_try_now_margin_bottom"
             android:background="@drawable/bg_try_now"
             android:clickable="true"
             android:focusable="true"
@@ -97,11 +97,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawablePadding="12dp"
+                android:drawablePadding="@dimen/preview_video_textview1_drawable_padding"
                 android:gravity="center"
                 android:text="@string/preview_try_now"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="@dimen/preview_video_textview1_text_size"
                 app:drawableStartCompat="@drawable/ic_video_24" />
         </FrameLayout>
 

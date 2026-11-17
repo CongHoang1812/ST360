@@ -20,7 +20,7 @@ import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import com.google.android.material.materialswitch.MaterialSwitch
 
 /**
- * Xin quyền (Figma 3:7): công tắc Camera, Photos, Microphone. Chạm vào = xin quyền; đã bị từ chối hẳn
+ * Xin quyền (Figma 3:7): công tắc Camera, Microphone, và Storage (chỉ Android 9-). Chạm vào = xin quyền; đã bị từ chối hẳn
  * hoặc đã cấp thì mở trang cài đặt của app (Android không cho app tự thu hồi quyền).
  * Continue luôn đi tiếp: từng màn (Camera, Add Photo) sẽ xin lại khi cần.
  */
@@ -29,9 +29,12 @@ class PermissionFragment : Fragment() {
     private var _binding: FragmentPermissionBinding? = null
     private val binding get() = _binding!!
 
-    private val photosPermission: String
-        get() = if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES
-        else Manifest.permission.READ_EXTERNAL_STORAGE
+    /**
+     * Chỉ Android 9 trở xuống cần quyền bộ nhớ (nút Download chép video ra Movies). Từ Android 10 lưu qua
+     * MediaStore không cần quyền; chọn ảnh dùng Photo Picker nên không bao giờ cần quyền Ảnh.
+     */
+    private val needsStorage = Build.VERSION.SDK_INT <= Build.VERSION_CODES.P
+    private val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     /** Quyền đã từng được hỏi trong màn này: bị từ chối mà không còn giải thích được = từ chối hẳn. */
     private val askedOnce = mutableSetOf<String>()
@@ -49,7 +52,8 @@ class PermissionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.content.applySystemBarsPadding(top = true, bottom = true)
         bindRow(binding.rowCamera, binding.switchCamera, Manifest.permission.CAMERA)
-        bindRow(binding.rowPhotos, binding.switchPhotos, photosPermission)
+        binding.rowStorage.visibility = if (needsStorage) View.VISIBLE else View.GONE
+        if (needsStorage) bindRow(binding.rowStorage, binding.switchStorage, storagePermission)
         bindRow(binding.rowMicrophone, binding.switchMicrophone, Manifest.permission.RECORD_AUDIO)
         binding.btnContinue.setOnClickListener { findNavController().navigate(R.id.action_permission_to_home) }
     }
@@ -86,7 +90,7 @@ class PermissionFragment : Fragment() {
     private fun renderSwitches() {
         val b = _binding ?: return
         b.switchCamera.isChecked = granted(Manifest.permission.CAMERA)
-        b.switchPhotos.isChecked = granted(photosPermission)
+        if (needsStorage) b.switchStorage.isChecked = granted(storagePermission)
         b.switchMicrophone.isChecked = granted(Manifest.permission.RECORD_AUDIO)
     }
 

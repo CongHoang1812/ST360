@@ -37,8 +37,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/photo_slot_imageview1_width"
+                android:layout_height="@dimen/photo_slot_imageview1_height"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_add_photo_36" />
 
@@ -49,31 +49,31 @@
                 android:includeFontPadding="false"
                 android:text="@string/make_filter_add"
                 android:textColor="@color/navy"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_body" />
         </LinearLayout>
 
         <!-- Ô trống: badge số 28dp, đen 20% -->
         <TextView
             android:id="@+id/tvBadge"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="@dimen/photo_slot_tv_badge_width"
+            android:layout_height="@dimen/photo_slot_tv_badge_height"
             android:layout_gravity="center"
             android:background="@drawable/bg_photo_badge"
             android:gravity="center"
             android:importantForAccessibility="no"
             android:includeFontPadding="false"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_button"
             tools:text="2" />
 
         <!-- Nút xóa trên ô đang chọn: tại (60, 4) trong ô 100dp -->
         <ImageButton
             android:id="@+id/btnRemove"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="@dimen/photo_slot_btn_remove_width"
+            android:layout_height="@dimen/photo_slot_btn_remove_height"
             android:layout_gravity="top|end"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginTop="@dimen/photo_slot_btn_remove_margin_top"
+            android:layout_marginEnd="@dimen/photo_slot_btn_remove_margin_end"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_remove_photo"
             android:src="@drawable/ic_photo_delete" />

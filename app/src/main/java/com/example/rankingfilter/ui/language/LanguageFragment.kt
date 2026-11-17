@@ -38,7 +38,7 @@ class LanguageFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val fromSettings get() = arguments?.getBoolean(ARG_FROM_SETTINGS) ?: false
-    private var selectedTag = DEFAULT_TAG
+    private var selectedTag: String? = null
     private val rows = mutableListOf<Pair<AppLanguage, ItemLanguageBinding>>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -49,7 +49,8 @@ class LanguageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.content.applySystemBarsPadding(top = true, bottom = true)
-        selectedTag = savedInstanceState?.getString(KEY_SELECTED) ?: currentTag()
+        // Lần đầu mở app chưa chọn ngôn ngữ nào; trong Setting chọn sẵn ngôn ngữ đang dùng.
+        selectedTag = savedInstanceState?.getString(KEY_SELECTED) ?: if (fromSettings) currentTag() else null
 
         binding.btnBack.visibility = if (fromSettings) View.VISIBLE else View.GONE
         if (fromSettings) {
@@ -91,14 +92,17 @@ class LanguageFragment : Fragment() {
 
     private fun renderSelection() {
         rows.forEach { (language, row) -> row.root.isSelected = language.tag == selectedTag }
+        // Nút lưu chỉ hiện khi đã chọn một ngôn ngữ (INVISIBLE để giữ chỗ bố cục).
+        binding.btnConfirm.visibility = if (selectedTag != null) View.VISIBLE else View.INVISIBLE
     }
 
     private fun confirm() {
+        val tag = selectedTag ?: return
         val nav = findNavController()
         // Đi tiếp trước rồi mới đổi ngôn ngữ: setApplicationLocales tạo lại Activity,
         // back stack của Navigation được khôi phục theo màn đích.
         if (fromSettings) nav.navigateUp() else nav.navigate(R.id.action_language_to_intro)
-        val wanted = LocaleListCompat.forLanguageTags(selectedTag)
+        val wanted = LocaleListCompat.forLanguageTags(tag)
         if (AppCompatDelegate.getApplicationLocales().toLanguageTags() != wanted.toLanguageTags()) {
             AppCompatDelegate.setApplicationLocales(wanted)
         }

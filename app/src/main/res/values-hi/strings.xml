@@ -8,8 +8,6 @@
     <string name="title_camera">कैमरा</string>
     <string name="title_preview">प्रीव्यू</string>
     <string name="title_success">सफल</string>
-    <string name="coming_soon">जल्द आ रहा है</string>
-    <string name="coming_soon_filter">फ़िल्टर: %1$s</string>
 
     <string name="tab_discover">खोजें</string>
     <string name="tab_my_filters">मेरे फ़िल्टर</string>
@@ -151,9 +149,9 @@
     <string name="intro_3">अपना वीडियो बनाएँ और शेयर करें।</string>
     <string name="intro_next">आगे</string>
     <string name="intro_skip">छोड़ें</string>
-    <string name="permission_desc">मज़ेदार रैंकिंग वीडियो बनाने और शेयर करने के लिए कैमरा, फ़ोटो और माइक्रोफ़ोन की अनुमति दें।</string>
+    <string name="permission_desc">मज़ेदार रैंकिंग वीडियो बनाने और शेयर करने के लिए कैमरा और माइक्रोफ़ोन की अनुमति दें।</string>
     <string name="permission_camera">कैमरा</string>
-    <string name="permission_photos">फ़ोटो</string>
+    <string name="permission_storage">स्टोरेज</string>
     <string name="permission_microphone">माइक्रोफ़ोन</string>
     <string name="permission_continue">जारी रखें</string>
     <string name="setting_language">भाषा</string>
@@ -162,4 +160,13 @@
     <string name="setting_privacy">गोपनीयता नीति</string>
     <string name="share_app_text">Ranking Filter आज़माएँ! %1$s</string>
     <string name="setting_link_unavailable">यह लिंक नहीं खुल सका।</string>
+    <string name="rate_title_initial">क्या आपको ऐप पसंद है?</string>
+    <string name="rate_subtitle_initial">हमें अपना अनुभव बताएं</string>
+    <string name="rate_title_low">अरे नहीं!</string>
+    <string name="rate_subtitle_low">कृपया हमें अपनी राय दें</string>
+    <string name="rate_title_high">हम भी आपको पसंद करते हैं!</string>
+    <string name="rate_subtitle_high">आपकी राय के लिए धन्यवाद</string>
+    <string name="rate_button">रेट करें</string>
+    <string name="rate_exit">बाहर निकलें</string>
+    <string name="rate_thanks">आपकी राय के लिए धन्यवाद!</string>
 </resources>

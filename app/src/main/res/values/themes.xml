@@ -2,6 +2,11 @@
 
     <!-- Theme sáng duy nhất (không có values-night), nền kem, font mặc định Londrina Solid -->
     <style name="Base.Theme.RankingFilter" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Không hiệu ứng chạm (ripple) cho mọi nút/ô bấm; MaterialButton có rippleColor riêng -->
+        <item name="selectableItemBackground">@android:color/transparent</item>
+        <item name="selectableItemBackgroundBorderless">@android:color/transparent</item>
+        <item name="android:selectableItemBackground">@android:color/transparent</item>
+        <item name="android:selectableItemBackgroundBorderless">@android:color/transparent</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimaryContainer">@color/card_blue</item>

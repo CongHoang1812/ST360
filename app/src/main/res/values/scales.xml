@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hệ số phóng cho view có cỡ cố định theo theme (MaterialSwitch). Điện thoại = 1; tablet do scripts/gen_screen_dimens.py sinh ở values-sw*/scales.xml -->
+<resources>
+    <item name="switch_scale" type="dimen" format="float">1</item>
+</resources>

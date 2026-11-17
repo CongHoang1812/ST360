@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:contentDescription="@string/cd_trending_video"
         android:foreground="?attr/selectableItemBackground"
-        android:padding="0.5dp"
+        android:padding="@dimen/trending_video_thumb_padding"
         android:scaleType="centerCrop"
         android:src="@drawable/bg_image_placeholder"
         app:layout_constraintDimensionRatio="156:240"
@@ -20,6 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/Shape.Rounded8"
         app:strokeColor="@color/white"
-        app:strokeWidth="1dp" />
+        app:strokeWidth="@dimen/trending_video_thumb_stroke_width" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

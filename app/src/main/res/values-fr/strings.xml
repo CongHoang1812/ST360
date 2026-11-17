@@ -8,8 +8,6 @@
     <string name="title_camera">Caméra</string>
     <string name="title_preview">Aperçu</string>
     <string name="title_success">Terminé !</string>
-    <string name="coming_soon">Bientôt disponible</string>
-    <string name="coming_soon_filter">Filtre : %1$s</string>
 
     <string name="tab_discover">Découvrir</string>
     <string name="tab_my_filters">Mes filtres</string>
@@ -152,9 +150,9 @@
     <string name="intro_3">Créez et partagez votre vidéo.</string>
     <string name="intro_next">Suivant</string>
     <string name="intro_skip">Passer</string>
-    <string name="permission_desc">Autorisez l\'accès à votre caméra, vos photos et votre micro pour créer et partager des vidéos de classement amusantes.</string>
+    <string name="permission_desc">Autorisez l\'accès à votre caméra et votre micro pour créer et partager des vidéos de classement amusantes.</string>
     <string name="permission_camera">Caméra</string>
-    <string name="permission_photos">Photos</string>
+    <string name="permission_storage">Stockage</string>
     <string name="permission_microphone">Micro</string>
     <string name="permission_continue">Continuer</string>
     <string name="setting_language">Langue</string>
@@ -163,4 +161,13 @@
     <string name="setting_privacy">Politique de confidentialité</string>
     <string name="share_app_text">Essayez Ranking Filter ! %1$s</string>
     <string name="setting_link_unavailable">Impossible d\'ouvrir ce lien.</string>
+    <string name="rate_title_initial">Vous aimez l\'appli ?</string>
+    <string name="rate_subtitle_initial">Dites-nous ce que vous en pensez</string>
+    <string name="rate_title_low">Oh, non !</string>
+    <string name="rate_subtitle_low">Donnez-nous votre avis, s\'il vous plaît</string>
+    <string name="rate_title_high">Nous aussi, on vous aime !</string>
+    <string name="rate_subtitle_high">Merci pour votre avis</string>
+    <string name="rate_button">Noter</string>
+    <string name="rate_exit">Quitter</string>
+    <string name="rate_thanks">Merci pour votre avis !</string>
 </resources>
