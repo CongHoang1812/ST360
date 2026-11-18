@@ -16,7 +16,6 @@ import com.example.rankingfilter.databinding.PopupFilterMenuBinding
  * Dùng lại ở Gallery → My Filters (giai đoạn 7).
  */
 object FilterMenuPopup {
-
     fun show(anchor: View, onEdit: () -> Unit, onDelete: () -> Unit) {
         val binding = PopupFilterMenuBinding.inflate(LayoutInflater.from(anchor.context))
         val popup = PopupWindow(

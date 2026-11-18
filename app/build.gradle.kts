@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
@@ -16,7 +19,7 @@ android {
         minSdk = 24
         targetSdk = 37
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,8 +28,11 @@ android {
         release {
             optimization {
                 enable = true
-                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
+                keepRules {
+                    files.add(file("proguard-rules.pro"))
+                }
             }
+            isShrinkResources = true
         }
     }
     compileOptions {
@@ -38,9 +44,16 @@ android {
     }
 }
 
+
+
 room {
     // Xuất schema để viết migration khi đổi cấu trúc bảng.
     schemaDirectory("$projectDir/schemas")
+}
+
+val formattedDate: String = SimpleDateFormat("MM.dd.yyyy").format(Date())
+base {
+    archivesName = "ST316_Ranking_Filter_Fun_Challengev${android.defaultConfig.versionName}$formattedDate"
 }
 
 dependencies {
@@ -85,7 +98,11 @@ dependencies {
 
     // ML Kit
     implementation(libs.mlkit.face.detection)
-
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-config-ktx")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
