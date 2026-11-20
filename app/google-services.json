@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "701353452873",
+    "project_id": "st316-67246",
+    "storage_bucket": "st316-67246.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701353452873:android:c3ba8a3aa613a67460a698",
+        "android_client_info": {
+          "package_name": "com.funny.rank.filters"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5qSf-wburY_y1C5F-LpIRhDCgj1ZL3-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
