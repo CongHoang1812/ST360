@@ -52,7 +52,7 @@
     <string name="camera_add_sound">Añadir sonido</string>
     <string name="camera_duration_free">Libre</string>
     <string name="camera_permission_title">Permitir cámara y micrófono</string>
-    <string name="camera_permission_message">Ranking Filter necesita tu cámara y tu micrófono para grabar vídeos de ránking.</string>
+    <string name="camera_permission_message">Ranking Filter: Funny Game necesita tu cámara y tu micrófono para grabar vídeos de ránking.</string>
     <string name="camera_permission_allow">Permitir</string>
     <string name="camera_permission_settings">Abrir ajustes</string>
     <string name="camera_open_error">No se puede abrir la cámara.</string>
@@ -168,7 +168,7 @@
     <string name="setting_rate">Valóranos</string>
     <string name="setting_share">Compartir la app</string>
     <string name="setting_privacy">Política de privacidad</string>
-    <string name="share_app_text">¡Prueba Ranking Filter! %1$s</string>
+    <string name="share_app_text">¡Prueba Ranking Filter: Funny Game! %1$s</string>
     <string name="setting_link_unavailable">No se puede abrir este enlace.</string>
     <string name="rate_title_initial">¿Te gusta la app?</string>
     <string name="rate_subtitle_initial">Cuéntanos tu experiencia</string>

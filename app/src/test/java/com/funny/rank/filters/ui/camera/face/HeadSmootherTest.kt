@@ -1,4 +1,4 @@
-package com.example.rankingfilter.ui.camera.face
+package com.funny.rank.filters.ui.camera.face
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

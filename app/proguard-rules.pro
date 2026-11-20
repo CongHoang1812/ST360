@@ -7,11 +7,11 @@
 
 # kotlinx-serialization: FilterDto đọc từ assets/filters.json bằng serializer sinh sẵn.
 -keepattributes *Annotation*, InnerClasses
--keep,includedescriptorclasses class com.example.rankingfilter.data.**$$serializer { *; }
--keepclassmembers class com.example.rankingfilter.data.** {
+-keep,includedescriptorclasses class com.funny.rank.filters.data.**$$serializer { *; }
+-keepclassmembers class com.funny.rank.filters.data.** {
     *** Companion;
 }
--keepclasseswithmembers class com.example.rankingfilter.data.** {
+-keepclasseswithmembers class com.funny.rank.filters.data.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

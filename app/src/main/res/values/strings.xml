@@ -1,6 +1,6 @@
 <resources>
     <!-- Ngôn ngữ mặc định: English. Bản dịch ở values-es, values-fr, values-hi, values-pt, values-in. -->
-    <string name="app_name" translatable="false">Ranking Filter</string>
+    <string name="app_name" translatable="false">Ranking Filter: Funny Game</string>
 
     <!-- Tiêu đề màn -->
     <string name="title_new_filter">New filter</string>
@@ -54,7 +54,7 @@
     <string name="camera_duration_seconds">%1$ds</string>
     <string name="camera_duration_free">Free</string>
     <string name="camera_permission_title">Allow camera and microphone</string>
-    <string name="camera_permission_message">Ranking Filter needs your camera and microphone to record ranking videos.</string>
+    <string name="camera_permission_message">Ranking Filter: Funny Game needs your camera and microphone to record ranking videos.</string>
     <string name="camera_permission_allow">Allow</string>
     <string name="camera_permission_settings">Open Settings</string>
     <string name="camera_open_error">Can\'t open the camera.</string>
@@ -184,7 +184,7 @@
     <string name="setting_rate">Rate us</string>
     <string name="setting_share">Share app</string>
     <string name="setting_privacy">Privacy &amp; Policy</string>
-    <string name="share_app_text">Try Ranking Filter! %1$s</string>
+    <string name="share_app_text">Try Ranking Filter: Funny Game! %1$s</string>
     <string name="setting_link_unavailable">Can\'t open this link.</string>
     <string name="rate_title_initial">Do you like the app?</string>
     <string name="rate_subtitle_initial">Let us know your experience</string>

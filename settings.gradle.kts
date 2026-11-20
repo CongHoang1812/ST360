@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "RankingFilter"
+rootProject.name = "RankingFilter_FunnyGame"
 include(":app")

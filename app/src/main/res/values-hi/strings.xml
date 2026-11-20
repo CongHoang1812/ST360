@@ -47,7 +47,7 @@
     <string name="camera_add_sound">साउंड जोड़ें</string>
     <string name="camera_duration_free">फ़्री</string>
     <string name="camera_permission_title">कैमरा और माइक्रोफ़ोन की अनुमति दें</string>
-    <string name="camera_permission_message">रैंकिंग वीडियो रिकॉर्ड करने के लिए Ranking Filter को आपके कैमरे और माइक्रोफ़ोन की ज़रूरत है।</string>
+    <string name="camera_permission_message">रैंकिंग वीडियो रिकॉर्ड करने के लिए Ranking Filter: Funny Game को आपके कैमरे और माइक्रोफ़ोन की ज़रूरत है।</string>
     <string name="camera_permission_allow">अनुमति दें</string>
     <string name="camera_permission_settings">सेटिंग खोलें</string>
     <string name="camera_open_error">कैमरा नहीं खुल रहा।</string>
@@ -153,7 +153,7 @@
     <string name="setting_rate">हमें रेट करें</string>
     <string name="setting_share">ऐप शेयर करें</string>
     <string name="setting_privacy">गोपनीयता नीति</string>
-    <string name="share_app_text">Ranking Filter आज़माएँ! %1$s</string>
+    <string name="share_app_text">Ranking Filter: Funny Game आज़माएँ! %1$s</string>
     <string name="setting_link_unavailable">यह लिंक नहीं खुल सका।</string>
     <string name="rate_title_initial">क्या आपको ऐप पसंद है?</string>
     <string name="rate_subtitle_initial">हमें अपना अनुभव बताएं</string>

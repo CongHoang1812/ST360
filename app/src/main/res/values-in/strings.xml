@@ -46,7 +46,7 @@
     <string name="camera_add_sound">Tambah Suara</string>
     <string name="camera_duration_free">Bebas</string>
     <string name="camera_permission_title">Izinkan kamera dan mikrofon</string>
-    <string name="camera_permission_message">Ranking Filter memerlukan kamera dan mikrofonmu untuk merekam video peringkat.</string>
+    <string name="camera_permission_message">Ranking Filter: Funny Game memerlukan kamera dan mikrofonmu untuk merekam video peringkat.</string>
     <string name="camera_permission_allow">Izinkan</string>
     <string name="camera_permission_settings">Buka Pengaturan</string>
     <string name="camera_open_error">Kamera tidak dapat dibuka.</string>
@@ -152,7 +152,7 @@
     <string name="setting_rate">Beri kami nilai</string>
     <string name="setting_share">Bagikan aplikasi</string>
     <string name="setting_privacy">Kebijakan Privasi</string>
-    <string name="share_app_text">Coba Ranking Filter! %1$s</string>
+    <string name="share_app_text">Coba Ranking Filter: Funny Game! %1$s</string>
     <string name="setting_link_unavailable">Tautan ini tidak dapat dibuka.</string>
     <string name="rate_title_initial">Suka aplikasinya?</string>
     <string name="rate_subtitle_initial">Ceritakan pengalamanmu</string>

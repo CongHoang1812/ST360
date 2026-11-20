@@ -1,4 +1,4 @@
-# Ranking Filter (Android)
+# Ranking Filter: Funny Game (Android)
 
 App quay video có filter xếp hạng: ảnh đổi ngẫu nhiên trên đầu người dùng, người dùng chạm ô 1–12 để chốt hạng.
 
@@ -293,7 +293,7 @@ Kiểm thử trên máy thật: dùng emulator nếu được (máy này chưa c
 (Xiaomi 24069RA21C, 1220x2712, density 480 → 1dp = 3px), kiểm tra app đang ở foreground trước mỗi lần `input tap`,
 không nối nhiều phím BACK (đã từng chạm nhầm sang app khác); ẩn bàn phím bằng `keyevent 111` (ESC), không dùng BACK.
 Nếu adb treo: `taskkill //PID <pid adb.exe> //F` rồi `adb start-server`; bọc lệnh adb trong `timeout`.
-Thu hồi quyền để thử luồng bị từ chối: `adb shell pm revoke com.example.rankingfilter android.permission.CAMERA`
+Thu hồi quyền để thử luồng bị từ chối: `adb shell pm revoke com.funny.rank.filters android.permission.CAMERA`
 (và `RECORD_AUDIO`); hộp thoại quyền hiện từng quyền một (camera rồi micro).
 Git Bash đổi đường dẫn `/sdcard/...` → đặt `MSYS_NO_PATHCONV=1` khi gọi `adb shell`. Không tự thao tác Photo Picker
 (lộ ảnh riêng của người dùng): nhờ người dùng chọn ảnh.
@@ -320,7 +320,7 @@ Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 - Thanh điều hướng hệ thống bị ẩn (`MainActivity.hideNavigationBar`, vuốt từ đáy để hiện tạm). Chưa kiểm trên máy: nội dung sát đáy ở Camera/Home/Gallery.
 
 - Kotlin + XML Views (không Compose), ViewBinding, minSdk 24, compile/targetSdk 37, Java 17.
-- Package / applicationId: `com.example.rankingfilter`.
+- Package / applicationId: `com.funny.rank.filters`.
 - AGP 9.5.1 có Kotlin tích hợp: KHÔNG apply plugin `kotlin-android` trong `app/build.gradle.kts`.
   Kotlin 2.4.21 được ghim bằng `apply false` ở `build.gradle.kts` gốc; serialization plugin apply ở module app.
 - Phiên bản thư viện nằm trong `gradle/libs.versions.toml`. Room 2.8.5 + KSP 2.3.12 (KSP2 không còn gắn số phiên bản
@@ -347,6 +347,7 @@ Cấu trúc hiện tại:
 - `MainActivity` chứa `NavHostFragment` (`res/layout/activity_main.xml`, `res/navigation/nav_graph.xml`).
 - `ui/placeholder/PlaceholderFragment` là màn tạm, thay bằng Home ở giai đoạn 2.
 
-- Icon app (19/11/2026, đã kiểm trên Xiaomi): trước đây ảnh trong `ic_launcher_foreground` chỉ chiếm 72/108dp và có góc bo sẵn, nền `ic_launcher_background`
-  gần trắng → máy nào hiện cả lớp adaptive thì icon nhỏ, nền trắng. Giờ ảnh phóng thành 81/108dp (324/432px, phủ kín vùng 72dp hiển thị) và nền là màu xanh
-  #C2EAFD lấy từ mép ảnh. Ảnh legacy `mipmap-*/ic_launcher*.webp` (máy < Android 8) vốn đã kín khung, giữ nguyên.
+- Icon app (20/11/2026, đổi sang logo Figma node 36:592 "Option 1", 512x512, ảnh cô gái + 3 món ăn có vương miện; build OK, đã cài lên Xiaomi, CHƯA nhìn trên màn hình chính):
+  `ic_launcher_foreground` = ảnh 288/432px (đúng 72/108dp, vùng hiển thị) vì ảnh đã kín khung, phóng 81dp thì mất vương miện số 1 khi mask tròn;
+  nền `ic_launcher_background` màu #B0E0FF (trung vị màu viền ảnh). `mipmap-*/ic_launcher.webp` = ảnh thu nhỏ, `ic_launcher_round.webp` = cắt tròn.
+  Script tạo icon: `make_icon.py` ở scratchpad (Pillow), không có trong repo.

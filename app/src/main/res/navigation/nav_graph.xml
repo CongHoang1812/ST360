@@ -8,7 +8,7 @@
     <!-- Giai đoạn 8: Splash → Language → Intro → Permission → Home -->
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.rankingfilter.ui.splash.SplashFragment"
+        android:name="com.funny.rank.filters.ui.splash.SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splash_to_home"
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/languageFragment"
-        android:name="com.example.rankingfilter.ui.language.LanguageFragment"
+        android:name="com.funny.rank.filters.ui.language.LanguageFragment"
         android:label="@string/language_title"
         tools:layout="@layout/fragment_language">
         <argument
@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/introFragment"
-        android:name="com.example.rankingfilter.ui.intro.IntroFragment"
+        android:name="com.funny.rank.filters.ui.intro.IntroFragment"
         tools:layout="@layout/fragment_intro">
         <action
             android:id="@+id/action_intro_to_permission"
@@ -85,7 +85,7 @@
 
     <fragment
         android:id="@+id/permissionFragment"
-        android:name="com.example.rankingfilter.ui.permission.PermissionFragment"
+        android:name="com.funny.rank.filters.ui.permission.PermissionFragment"
         android:label="@string/title_permission"
         tools:layout="@layout/fragment_permission">
         <action
@@ -102,7 +102,7 @@
     <!-- Giai đoạn 2 -->
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.rankingfilter.ui.home.HomeFragment"
+        android:name="com.funny.rank.filters.ui.home.HomeFragment"
         android:label="@string/nav_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -144,7 +144,7 @@
 
     <fragment
         android:id="@+id/previewVideoFragment"
-        android:name="com.example.rankingfilter.ui.preview.PreviewPagerFragment"
+        android:name="com.funny.rank.filters.ui.preview.PreviewPagerFragment"
         android:label="@string/home_trending_videos"
         tools:layout="@layout/fragment_preview_pager">
         <argument
@@ -184,7 +184,7 @@
     <!-- Giai đoạn 3: Choose a Filter (mode ALL) -->
     <fragment
         android:id="@+id/chooseFilterFragment"
-        android:name="com.example.rankingfilter.ui.filter.ChooseFilterFragment"
+        android:name="com.funny.rank.filters.ui.filter.ChooseFilterFragment"
         android:label="@string/title_choose_filter"
         tools:layout="@layout/fragment_choose_filter">
         <argument
@@ -216,7 +216,7 @@
          Dùng chung id action với chooseFilterFragment nên ChooseFilterFragment gọi được ở cả hai màn. -->
     <fragment
         android:id="@+id/newFilterFragment"
-        android:name="com.example.rankingfilter.ui.filter.ChooseFilterFragment"
+        android:name="com.funny.rank.filters.ui.filter.ChooseFilterFragment"
         android:label="@string/title_new_filter"
         tools:layout="@layout/fragment_choose_filter">
         <argument
@@ -246,7 +246,7 @@
     <!-- Giai đoạn 4: Make a Filter / Edit filter (filter_id khác null = sửa filter tự tạo) -->
     <fragment
         android:id="@+id/makeFilterFragment"
-        android:name="com.example.rankingfilter.ui.makefilter.MakeFilterFragment"
+        android:name="com.funny.rank.filters.ui.makefilter.MakeFilterFragment"
         android:label="@string/title_make_filter"
         tools:layout="@layout/fragment_make_filter">
         <argument
@@ -269,7 +269,7 @@
     <!-- Successful sau khi tạo filter (Figma 57:137) -->
     <fragment
         android:id="@+id/filterSuccessFragment"
-        android:name="com.example.rankingfilter.ui.makefilter.FilterSuccessFragment"
+        android:name="com.funny.rank.filters.ui.makefilter.FilterSuccessFragment"
         android:label="@string/title_success"
         tools:layout="@layout/fragment_filter_success">
         <argument
@@ -292,7 +292,7 @@
     <!-- Giai đoạn 5: Camera, nhận filter_id (+ is_user_filter cho filter tự tạo ở giai đoạn 4) -->
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.example.rankingfilter.ui.camera.CameraFragment"
+        android:name="com.funny.rank.filters.ui.camera.CameraFragment"
         android:label="@string/title_camera"
         tools:layout="@layout/fragment_camera">
         <argument
@@ -338,7 +338,7 @@
     <!-- Giai đoạn 6: Preview video vừa quay (Figma 8:334) -->
     <fragment
         android:id="@+id/resultPreviewFragment"
-        android:name="com.example.rankingfilter.ui.result.PreviewFragment"
+        android:name="com.funny.rank.filters.ui.result.PreviewFragment"
         android:label="@string/title_preview"
         tools:layout="@layout/fragment_preview">
         <!-- Bản nháp trong filesDir/drafts -->
@@ -364,7 +364,7 @@
     <!-- Giai đoạn 6: Successful (Figma 14:451) -->
     <fragment
         android:id="@+id/successFragment"
-        android:name="com.example.rankingfilter.ui.result.SuccessFragment"
+        android:name="com.funny.rank.filters.ui.result.SuccessFragment"
         android:label="@string/title_success"
         tools:layout="@layout/fragment_success">
         <argument
@@ -385,7 +385,7 @@
     <!-- Giai đoạn 6: Add Sound (Figma 14:620 / 22:738), mở từ pill trên Camera -->
     <fragment
         android:id="@+id/addSoundFragment"
-        android:name="com.example.rankingfilter.ui.sound.AddSoundFragment"
+        android:name="com.funny.rank.filters.ui.sound.AddSoundFragment"
         android:label="@string/camera_add_sound"
         tools:layout="@layout/fragment_add_sound">
         <argument
@@ -397,7 +397,7 @@
     <!-- Giai đoạn 7: Gallery (Figma 21:281): My Videos + My Filters -->
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.example.rankingfilter.ui.gallery.GalleryFragment"
+        android:name="com.funny.rank.filters.ui.gallery.GalleryFragment"
         android:label="@string/title_gallery"
         tools:layout="@layout/fragment_gallery">
         <action
@@ -440,7 +440,7 @@
     <!-- Giai đoạn 7: xem một video đã lưu (Figma 8:278 / 21:368) -->
     <fragment
         android:id="@+id/videoViewerFragment"
-        android:name="com.example.rankingfilter.ui.gallery.VideoViewerFragment"
+        android:name="com.funny.rank.filters.ui.gallery.VideoViewerFragment"
         android:label="@string/title_gallery"
         tools:layout="@layout/fragment_video_viewer">
         <argument
@@ -451,7 +451,7 @@
     <!-- Giai đoạn 8: Setting -->
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.rankingfilter.ui.setting.SettingFragment"
+        android:name="com.funny.rank.filters.ui.setting.SettingFragment"
         android:label="@string/title_setting"
         tools:layout="@layout/fragment_setting">
         <action

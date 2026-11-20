@@ -9,13 +9,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.rankingfilter"
+    namespace = "com.funny.rank.filters"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.rankingfilter"
+        applicationId = "com.funny.rank.filters"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
@@ -25,6 +25,7 @@ android {
     }
 
     buildTypes {
+        debug { isDebuggable = false } // TEMP đo hiệu năng, PHẢI xóa
         release {
             optimization {
                 enable = true
@@ -53,7 +54,7 @@ room {
 
 val formattedDate: String = SimpleDateFormat("MM.dd.yyyy").format(Date())
 base {
-    archivesName = "ST316_Ranking_Filter_Fun_Challengev${android.defaultConfig.versionName}$formattedDate"
+    archivesName = "ST316_Ranking_Filter_Funny_Game_v${android.defaultConfig.versionName}$formattedDate"
 }
 
 dependencies {
