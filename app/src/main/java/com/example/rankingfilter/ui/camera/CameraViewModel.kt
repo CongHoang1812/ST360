@@ -22,6 +22,7 @@ import com.example.rankingfilter.data.music.MusicTrack
 import com.example.rankingfilter.data.userfilter.UserFilterRepository
 import com.example.rankingfilter.ui.camera.game.RankingGame
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.Channel
@@ -48,7 +49,6 @@ enum class RecordDuration(val seconds: Int?) {
 class CameraFilter(
     val id: String,
     val title: String,
-    val isUserFilter: Boolean,
     /** Ảnh theo đúng thứ tự trong filter; bitmap phần mềm (vẽ được lên Canvas của video). */
     val photos: List<Bitmap>,
 )
@@ -76,7 +76,6 @@ enum class GameStart { STARTED, FILTER_NOT_READY, NOT_ENOUGH_PHOTOS }
 
 data class CameraUiState(
     val filter: CameraFilter? = null,
-    val isFilterLoading: Boolean = true,
     val duration: RecordDuration = RecordDuration.FREE,
     val lensFacing: Int = CameraSelector.LENS_FACING_FRONT,
     val game: GameUi = GameUi(),
@@ -135,18 +134,19 @@ class CameraViewModel(
 
     private var game: RankingGame<Bitmap>? = null
 
-    /** Kiểm trước khi quay: filter đã tải xong và đủ 12 ảnh chưa. Không đổi trạng thái gì. */
+    /** Kiểm trước khi quay: filter đã tải xong và đủ 10 ảnh chưa. Không đổi trạng thái gì. */
     fun checkGameReady(): GameStart {
         val filter = _state.value.filter ?: return GameStart.FILTER_NOT_READY
-        if (filter.photos.size < FilterDto.PHOTO_COUNT) return GameStart.NOT_ENOUGH_PHOTOS
+        if (filter.photos.size < FilterDto.MIN_PHOTO_COUNT) return GameStart.NOT_ENOUGH_PHOTOS
         return GameStart.STARTED
     }
 
-    /** Bắt đầu một ván mới với 12 ảnh của filter (xáo trộn, ô trống hết). Gọi khi video bắt đầu ghi. */
+    /** Bắt đầu một ván mới với ảnh của filter (10–12 ô, xáo trộn, ô trống hết). Gọi khi video bắt đầu ghi. */
     fun startGame(): GameStart {
         val ready = checkGameReady()
         if (ready != GameStart.STARTED) return ready
-        game = RankingGame(_state.value.filter!!.photos, FilterDto.PHOTO_COUNT)
+        val photos = _state.value.filter!!.photos
+        game = RankingGame(photos, FilterDto.slotCountFor(photos.size))
         publishGame()
         return GameStart.STARTED
     }
@@ -195,6 +195,16 @@ class CameraViewModel(
      * Đọc filter theo argument "filter_id" / "is_user_filter" của nav_graph;
      * thiếu argument thì dùng filter chọn gần nhất (SelectedFilterStore).
      */
+    private var loadJob: Job? = null
+
+    /** Đổi sang filter khác ngay trên Camera này (chọn từ màn chọn filter mở bằng nút trên Camera). */
+    fun changeFilter(id: String, isUserFilter: Boolean) {
+        if (id == _state.value.filter?.id && isUserFilter == savedState.get<Boolean>(ARG_IS_USER_FILTER)) return
+        savedState[ARG_FILTER_ID] = id
+        savedState[ARG_IS_USER_FILTER] = isUserFilter
+        loadFilter()
+    }
+
     private fun loadFilter() {
         val store = SelectedFilterStore(getApplication())
         val id = savedState.get<String>(ARG_FILTER_ID) ?: store.lastFilterId
@@ -203,7 +213,8 @@ class CameraViewModel(
         } else {
             store.lastIsUserFilter
         }
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             val filter = try {
                 id?.let { if (isUser) loadUserFilter(it) else loadBuiltInFilter(it) }
             } catch (e: CancellationException) {
@@ -214,27 +225,26 @@ class CameraViewModel(
             }
             if (filter == null || filter.photos.isEmpty()) {
                 Log.w(TAG, "Không có filter để dùng (id=$id, isUser=$isUser)")
-                _state.update { it.copy(isFilterLoading = false) }
                 _events.send(CameraEvent.FilterMissing)
                 return@launch
             }
-            if (filter.photos.size != FilterDto.PHOTO_COUNT) {
-                Log.w(TAG, "Filter '${filter.id}' có ${filter.photos.size} ảnh, cần ${FilterDto.PHOTO_COUNT}")
+            if (filter.photos.size !in FilterDto.MIN_PHOTO_COUNT..FilterDto.PHOTO_COUNT) {
+                Log.w(TAG, "Filter '${filter.id}' có ${filter.photos.size} ảnh, cần ${FilterDto.MIN_PHOTO_COUNT}..${FilterDto.PHOTO_COUNT}")
             }
             Log.d(TAG, "Filter '${filter.title}' (id=${filter.id}, user=$isUser): ${filter.photos.size} ảnh")
-            _state.update { it.copy(filter = filter, isFilterLoading = false) }
+            _state.update { it.copy(filter = filter) }
         }
     }
 
     private suspend fun loadBuiltInFilter(id: String): CameraFilter? {
         val dto = BuiltInFilterRepository.getAll(getApplication()).firstOrNull { it.id == id } ?: return null
-        return CameraFilter(dto.id, dto.title, isUserFilter = false, photos = decodeAll(dto.photos.map(::assetUri)))
+        return CameraFilter(dto.id, dto.title, photos = decodeAll(dto.photos.map(::assetUri)))
     }
 
     private suspend fun loadUserFilter(id: String): CameraFilter? {
         val data = UserFilterRepository(getApplication()).getById(id) ?: return null
         val uris = data.photos.map { File(it.path).toUri().toString() }
-        return CameraFilter(data.filter.id, data.filter.name, isUserFilter = true, photos = decodeAll(uris))
+        return CameraFilter(data.filter.id, data.filter.name, photos = decodeAll(uris))
     }
 
     /** Giải mã song song bằng Coil (dùng lại cache, tự xoay theo EXIF); ảnh lỗi bị bỏ qua. */

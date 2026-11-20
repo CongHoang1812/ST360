@@ -21,6 +21,7 @@ import com.example.rankingfilter.data.music.MusicRepository
 import com.example.rankingfilter.databinding.FragmentAddSoundBinding
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import com.example.rankingfilter.video.VideoCache
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -66,6 +67,7 @@ class AddSoundFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch { viewModel.state.collect(::render) }
                 launch { viewModel.events.collect(::onEvent) }
+                launch { trackProgress() }
             }
         }
     }
@@ -82,6 +84,7 @@ class AddSoundFragment : Fragment() {
         player = null
         loadedId = null
         viewModel.setPlaying(null)
+        viewModel.setProgress(null, 0)
     }
 
     override fun onDestroyView() {
@@ -122,12 +125,30 @@ class AddSoundFragment : Fragment() {
                 // Đã tải về máy (từng chọn) thì phát file, không thì phát từ server qua cache đĩa của ExoPlayer.
                 val local = MusicRepository.cachedFile(requireContext(), row.track)
                 val item = if (local.exists()) MediaItem.fromUri(android.net.Uri.fromFile(local)) else MediaItem.fromUri(row.track.url)
+                viewModel.setProgress(id, 0)
                 p.setMediaItem(item)
                 p.prepare()
                 p.play()
             }
         }
         updatePlaying()
+    }
+
+    /** Cập nhật thời gian đã phát của bài đang nạp, mỗi [PROGRESS_INTERVAL_MS] (chạy trong vòng đời STARTED). */
+    private suspend fun trackProgress() {
+        while (true) {
+            val p = player
+            val id = loadedId
+            if (p != null && id != null && p.playbackState != Player.STATE_IDLE) {
+                // Phát hết: làm tròn như tổng thời lượng (MusicAdapter.formatDuration) để dừng đúng ở số đó.
+                val ended = p.playbackState == Player.STATE_ENDED && p.duration > 0
+                val position = if (ended) (p.duration + 500) / 1000 * 1000 else p.currentPosition
+                viewModel.setProgress(id, position)
+            } else {
+                viewModel.setProgress(null, 0)
+            }
+            delay(PROGRESS_INTERVAL_MS)
+        }
     }
 
     private fun updatePlaying() {
@@ -159,5 +180,6 @@ class AddSoundFragment : Fragment() {
     companion object {
         /** Khóa kết quả trong savedStateHandle của màn trước (Camera): id bài nhạc đã chọn. */
         const val RESULT_MUSIC_ID = "selected_music_id_result"
+        private const val PROGRESS_INTERVAL_MS = 200L
     }
 }

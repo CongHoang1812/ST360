@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Back từ màn nền tối (Trending video) về: màn dưới chỉ trượt vào, KHÔNG mờ dần. Nếu cả hai cùng mờ dần thì
+     giữa animation nền đen trộn vào làm cả màn tối lại; giữ màn dưới đặc, chỉ màn video mờ dần phía trên. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/fast_out_slow_in"
+    android:ordering="together">
+    <objectAnimator
+        android:duration="@integer/nav_anim_duration"
+        android:propertyName="translationX"
+        android:valueFrom="@dimen/nav_slide_offset_negative"
+        android:valueTo="0dp"
+        android:valueType="floatType" />
+</set>

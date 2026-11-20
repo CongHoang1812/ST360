@@ -49,8 +49,6 @@ object BuiltInFilterRepository {
                     if (it.isNotEmpty()) cache = it
                 }
         }
-
-    suspend fun findById(context: Context, id: String): FilterDto? = getAll(context).firstOrNull { it.id == id }
 }
 
 /** Đường dẫn để Coil tải ảnh trong assets. */

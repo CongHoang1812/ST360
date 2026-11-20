@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.splash
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,7 @@ class SplashFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 delay(SPLASH_MS)
                 val seen = AppPrefs.isIntroSeen(requireContext())
-                findNavController().navigate(if (seen) R.id.action_splash_to_intro else R.id.action_splash_to_language)
+                findNavController().navigateSafe(if (seen) R.id.action_splash_to_intro else R.id.action_splash_to_language)
             }
         }
     }

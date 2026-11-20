@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.setting
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
@@ -37,7 +38,7 @@ class SettingFragment : Fragment() {
         binding.content.applySystemBarsPadding(top = true, bottom = true)
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
         binding.rowLanguage.setOnClickListener {
-            findNavController().navigate(
+            findNavController().navigateSafe(
                 R.id.action_setting_to_language,
                 bundleOf(LanguageFragment.ARG_FROM_SETTINGS to true),
             )

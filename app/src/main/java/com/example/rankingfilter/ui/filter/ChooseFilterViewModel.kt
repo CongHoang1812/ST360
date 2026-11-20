@@ -74,9 +74,12 @@ class ChooseFilterViewModel(
         savedState[KEY_TAB] = newTab
     }
 
-    /** Xóa filter tự tạo (Room + thư mục ảnh); lưới tự cập nhật qua Flow. */
-    fun deleteUserFilter(id: String) {
-        viewModelScope.launch { userRepository.delete(id) }
+    /** Xóa filter tự tạo (Room + thư mục ảnh); lưới tự cập nhật qua Flow. [onDeleted] chạy trên luồng chính khi xóa xong. */
+    fun deleteUserFilter(id: String, onDeleted: () -> Unit) {
+        viewModelScope.launch {
+            userRepository.delete(id)
+            onDeleted()
+        }
     }
 
     /** Lưu filter vừa chọn để Camera dùng (giai đoạn 5). */

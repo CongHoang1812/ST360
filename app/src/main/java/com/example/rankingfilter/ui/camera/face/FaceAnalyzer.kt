@@ -19,7 +19,6 @@ data class TrackedFace(
     val box: RectF,
     /** Góc nghiêng đầu trong view, độ, chiều kim đồng hồ dương. */
     val rollDegrees: Float,
-    val trackingId: Int?,
 )
 
 /**
@@ -126,7 +125,7 @@ class FaceAnalyzer(
         toView.mapPoints(points)
         val roll = HeadPlacements.viewRollDegrees(points[2] - points[0], points[3] - points[1])
 
-        onFace(TrackedFace(box, roll, face.trackingId))
+        onFace(TrackedFace(box, roll))
     }
 
     /** Giữ mặt đang theo dõi nếu còn; không thì lấy mặt lớn nhất (gần camera nhất). */

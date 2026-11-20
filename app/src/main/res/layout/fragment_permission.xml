@@ -82,16 +82,19 @@
                 android:layout_weight="1"
                 android:text="@string/permission_camera" />
 
-            <com.google.android.material.materialswitch.MaterialSwitch
+            <androidx.appcompat.widget.SwitchCompat
+                style="@style/Widget.AppCompat.CompoundButton.Switch"
                 android:id="@+id/switchCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="@dimen/switch_scale"
                 android:scaleY="@dimen/switch_scale"
                 android:contentDescription="@string/permission_camera"
-                app:thumbTint="@color/switch_thumb"
-                app:trackDecorationTint="@android:color/transparent"
-                app:trackTint="@color/switch_track" />
+                android:background="@null"
+                android:thumb="@drawable/switch_thumb"
+                app:thumbTint="@null"
+                app:track="@drawable/switch_track"
+                app:trackTint="@null" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rowStorage"
@@ -116,16 +119,19 @@
                 android:layout_weight="1"
                 android:text="@string/permission_storage" />
 
-            <com.google.android.material.materialswitch.MaterialSwitch
+            <androidx.appcompat.widget.SwitchCompat
+                style="@style/Widget.AppCompat.CompoundButton.Switch"
                 android:id="@+id/switchStorage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="@dimen/switch_scale"
                 android:scaleY="@dimen/switch_scale"
                 android:contentDescription="@string/permission_storage"
-                app:thumbTint="@color/switch_thumb"
-                app:trackDecorationTint="@android:color/transparent"
-                app:trackTint="@color/switch_track" />
+                android:background="@null"
+                android:thumb="@drawable/switch_thumb"
+                app:thumbTint="@null"
+                app:track="@drawable/switch_track"
+                app:trackTint="@null" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rowMicrophone"
@@ -150,16 +156,19 @@
                 android:layout_weight="1"
                 android:text="@string/permission_microphone" />
 
-            <com.google.android.material.materialswitch.MaterialSwitch
+            <androidx.appcompat.widget.SwitchCompat
+                style="@style/Widget.AppCompat.CompoundButton.Switch"
                 android:id="@+id/switchMicrophone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="@dimen/switch_scale"
                 android:scaleY="@dimen/switch_scale"
                 android:contentDescription="@string/permission_microphone"
-                app:thumbTint="@color/switch_thumb"
-                app:trackDecorationTint="@android:color/transparent"
-                app:trackTint="@color/switch_track" />
+                android:background="@null"
+                android:thumb="@drawable/switch_thumb"
+                app:thumbTint="@null"
+                app:track="@drawable/switch_track"
+                app:trackTint="@null" />
         </LinearLayout>
             </LinearLayout>
 

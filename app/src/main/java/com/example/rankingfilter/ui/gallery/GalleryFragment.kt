@@ -1,9 +1,11 @@
 package com.example.rankingfilter.ui.gallery
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -66,9 +68,9 @@ class GalleryFragment : Fragment() {
             selected = BottomTab.GALLERY,
             onHome = { if (!nav.popBackStack(R.id.homeFragment, false)) nav.navigateUp() },
             onGallery = { binding.rvVideos.smoothScrollToPosition(0) },
-            onCamera = { nav.navigate(R.id.action_gallery_to_chooseFilter) },
+            onCamera = { nav.navigateSafe(R.id.action_gallery_to_chooseFilter) },
         )
-        binding.btnSettings.setOnClickListener { nav.navigate(R.id.action_gallery_to_setting) }
+        binding.btnSettings.setOnClickListener { nav.navigateSafe(R.id.action_gallery_to_setting) }
         binding.tabVideos.setOnClickListener { viewModel.selectTab(GalleryTab.VIDEOS) }
         binding.tabFilters.setOnClickListener { viewModel.selectTab(GalleryTab.FILTERS) }
         binding.btnCreateFilter.setOnClickListener { openMakeFilter(null) }
@@ -77,7 +79,10 @@ class GalleryFragment : Fragment() {
         setUpFilterGrid()
 
         ConfirmDialogFragment.listen(this, REQUEST_DELETE_VIDEO) { path -> path?.let(viewModel::deleteVideo) }
-        ConfirmDialogFragment.listen(this, REQUEST_DELETE_FILTER) { id -> id?.let(viewModel::deleteFilter) }
+        ConfirmDialogFragment.listen(this, REQUEST_DELETE_FILTER) { id ->
+            val appContext = requireContext().applicationContext
+            id?.let { viewModel.deleteFilter(it) { Toast.makeText(appContext, R.string.filter_deleted, Toast.LENGTH_SHORT).show() } }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -142,7 +147,7 @@ class GalleryFragment : Fragment() {
     // ---------------------------------------------------------------- My Videos
 
     private fun openVideo(file: File) {
-        findNavController().navigate(
+        findNavController().navigateSafe(
             R.id.action_gallery_to_viewer,
             bundleOf(VideoViewerFragment.ARG_VIDEO_PATH to file.absolutePath),
         )
@@ -165,7 +170,7 @@ class GalleryFragment : Fragment() {
 
     /** Chạm một filter tự tạo: quay luôn với filter đó. */
     private fun openCamera(item: FilterCardItem) {
-        findNavController().navigate(
+        findNavController().navigateSafe(
             R.id.action_gallery_to_camera,
             bundleOf(
                 CameraViewModel.ARG_FILTER_ID to item.id,
@@ -175,7 +180,7 @@ class GalleryFragment : Fragment() {
     }
 
     private fun openMakeFilter(filterId: String?) {
-        findNavController().navigate(
+        findNavController().navigateSafe(
             R.id.action_gallery_to_makeFilter,
             bundleOf(MakeFilterViewModel.ARG_FILTER_ID to filterId),
         )

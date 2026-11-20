@@ -22,20 +22,22 @@
     <string name="make_filter_name_label">Nom du filtre</string>
     <string name="make_filter_name_hint">Saisissez le nom du filtre</string>
     <string name="make_filter_photos_count">Photos %1$d/%2$d</string>
-    <string name="make_filter_need_photos">Il faut %1$d photos</string>
+    <string name="make_filter_need_photos">Minimum %1$d photos</string>
     <string name="make_filter_add">Ajouter</string>
     <string name="make_filter_add_photos">Ajouter des photos</string>
     <string name="make_filter_cover_label">Photo de couverture</string>
     <string name="make_filter_cover_hint">Passez cette étape pour utiliser votre première photo comme couverture.</string>
     <string name="make_filter_choose_photos">Choisir des photos</string>
     <string name="make_filter_save">Enregistrer le filtre</string>
-    <string name="make_filter_saved">Filtre enregistré</string>
+    <string name="make_filter_updated">Filtre mis à jour avec succès</string>
+    <string name="filter_deleted">Filtre supprimé avec succès</string>
+    <string name="filter_success_message">Ton filtre de classement est prêt à jouer.</string>
     <string name="make_filter_save_error">Impossible d\'enregistrer le filtre. Veuillez réessayer.</string>
     <string name="make_filter_load_error">Impossible d\'ouvrir ce filtre.</string>
     <plurals name="make_filter_too_many">
-        <item quantity="one">Seulement %1$d photo de plus a été ajoutée (un filtre contient %2$d photos).</item>
-        <item quantity="many">Seulement %1$d photos de plus ont été ajoutées (un filtre contient %2$d photos).</item>
-        <item quantity="other">Seulement %1$d photos de plus ont été ajoutées (un filtre contient %2$d photos).</item>
+        <item quantity="one">Seulement %1$d photo de plus a été ajoutée (un filtre peut contenir jusqu’à %2$d photos).</item>
+        <item quantity="many">Seulement %1$d photos de plus ont été ajoutées (un filtre peut contenir jusqu’à %2$d photos).</item>
+        <item quantity="other">Seulement %1$d photos de plus ont été ajoutées (un filtre peut contenir jusqu’à %2$d photos).</item>
     </plurals>
     <string name="add_photo_title">Ajouter une photo</string>
     <string name="add_photo_take">Prendre une photo</string>
@@ -124,12 +126,12 @@
     <string name="cd_choose_filter">Choisir un filtre</string>
     <string name="cd_rank_slot">Rang %1$d</string>
     <string name="cd_stop">Arrêter</string>
-    <string name="cd_restart">Recommencer</string>
     <string name="cd_play_music">Lire %1$s</string>
     <string name="cd_pause_music">Mettre %1$s en pause</string>
     <string name="cd_confirm_music">Utiliser ce son</string>
     <string name="cd_retake">Enregistrer à nouveau</string>
     <string name="cd_home">Accueil</string>
+    <string name="cd_remove_music">Retirer la musique</string>
     <string name="cd_video_preview">Aperçu de la vidéo</string>
     <string name="cd_video_thumbnail">Vidéo enregistrée</string>
     <string name="cd_share_more">Autres applications</string>
@@ -138,18 +140,11 @@
 
     <string name="title_permission">Autorisations</string>
     <string name="language_title">Langue</string>
-    <string name="lang_english">Anglais</string>
-    <string name="lang_spanish">Espagnol</string>
-    <string name="lang_french">Français</string>
-    <string name="lang_hindi">Hindi</string>
-    <string name="lang_portuguese">Portugais</string>
-    <string name="lang_indonesian">Indonésien</string>
     <string name="cd_confirm_language">Confirmer la langue</string>
-    <string name="intro_1">Touchez pour les classer de la 1re à la 12e place.</string>
+    <string name="intro_1">Glissez, déposez et classez-les de la 1re à la 10e place.</string>
     <string name="intro_2">Créez votre propre filtre de classement.</string>
     <string name="intro_3">Créez et partagez votre vidéo.</string>
     <string name="intro_next">Suivant</string>
-    <string name="intro_skip">Passer</string>
     <string name="permission_desc">Autorisez l\'accès à votre caméra et votre micro pour créer et partager des vidéos de classement amusantes.</string>
     <string name="permission_camera">Caméra</string>
     <string name="permission_storage">Stockage</string>
@@ -170,4 +165,8 @@
     <string name="rate_button">Noter</string>
     <string name="rate_exit">Quitter</string>
     <string name="rate_thanks">Merci pour votre avis !</string>
+    <!-- Preview: nút thử lại (Figma 4045:35) -->
+    <string name="preview_retake_title">Quitter la vidéo ?</string>
+    <string name="preview_retake_message">Votre vidéo ne sera pas enregistrée. Voulez-vous réessayer ?</string>
+    <string name="preview_retake_confirm">Réessayer</string>
 </resources>

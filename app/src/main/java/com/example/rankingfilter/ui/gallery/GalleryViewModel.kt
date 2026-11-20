@@ -70,9 +70,12 @@ class GalleryViewModel(
         }
     }
 
-    /** Xóa filter tự tạo (Room + thư mục ảnh); lưới tự cập nhật qua Flow. */
-    fun deleteFilter(id: String) {
-        viewModelScope.launch { filterRepository.delete(id) }
+    /** Xóa filter tự tạo (Room + thư mục ảnh); lưới tự cập nhật qua Flow. [onDeleted] chạy trên luồng chính khi xóa xong. */
+    fun deleteFilter(id: String, onDeleted: () -> Unit) {
+        viewModelScope.launch {
+            filterRepository.delete(id)
+            onDeleted()
+        }
     }
 
     private companion object {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icon nút flash trên Camera: bật (selected) = tia chớp (Figma 5:9), tắt = tia chớp gạch chéo (Figma 14:533) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_zap_20" android:state_selected="true" />
+    <item android:drawable="@drawable/ic_zap_off_20" />
+</selector>

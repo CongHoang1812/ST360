@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.result
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -33,6 +34,7 @@ import com.example.rankingfilter.ui.camera.CameraViewModel
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
 import com.example.rankingfilter.ui.filter.FilterAdapter
 import com.example.rankingfilter.ui.filter.FilterCardItem
+import com.example.rankingfilter.ui.home.HomeFragment
 import kotlinx.coroutines.launch
 
 /**
@@ -161,9 +163,13 @@ class SuccessFragment : Fragment() {
 
     // ---------------------------------------------------------------- Điều hướng
 
-    /** Try More Filters: quay tiếp với filter đó. Back từ Camera về Home. */
+    /** Try More Filters: quay tiếp với filter đó. Back từ Camera về Home (action có popUpTo Home). */
     private fun tryFilter(item: FilterCardItem) {
-        findNavController().navigate(
+        val nav = findNavController()
+        // Back từ Camera về Home thì Home cuộn lên đầu màn (giống nút Home ở đây).
+        runCatching { nav.getBackStackEntry(R.id.homeFragment) }.getOrNull()
+            ?.savedStateHandle?.set(HomeFragment.KEY_SCROLL_TO_TOP, true)
+        nav.navigateSafe(
             R.id.action_success_to_camera,
             bundleOf(
                 CameraViewModel.ARG_FILTER_ID to item.id,
@@ -174,6 +180,9 @@ class SuccessFragment : Fragment() {
 
     private fun goHome() {
         val nav = findNavController()
+        // Về Home thì cuộn lên đầu màn (không giữ vị trí cuộn cũ).
+        runCatching { nav.getBackStackEntry(R.id.homeFragment) }.getOrNull()
+            ?.savedStateHandle?.set(HomeFragment.KEY_SCROLL_TO_TOP, true)
         if (!nav.popBackStack(R.id.homeFragment, false)) nav.navigateUp()
     }
 

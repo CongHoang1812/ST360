@@ -71,6 +71,26 @@
                 android:text="@string/camera_add_sound"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_button" />
+
+            <!-- Đã chọn nhạc (Figma 14:576): vạch trắng 20dp + nút X bỏ nhạc. Nút rộng hơn icon để dễ chạm. -->
+            <View
+                android:id="@+id/musicDivider"
+                android:layout_width="@dimen/camera_music_divider_width"
+                android:layout_height="@dimen/camera_imageview1_height"
+                android:layout_marginStart="@dimen/space_s"
+                android:background="@color/white"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btnClearMusic"
+                android:layout_width="@dimen/camera_btn_clear_music_width"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="@string/cd_remove_music"
+                android:paddingStart="@dimen/space_s"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close_20"
+                android:visibility="gone" />
         </LinearLayout>
 
         <!-- Nút lật camera tại (308, 52) và flash tại (308, 96): tròn 36dp, đen 20%, viền trắng -->
@@ -91,13 +111,13 @@
             android:layout_width="@dimen/camera_round_button"
             android:layout_height="@dimen/camera_round_button"
             android:layout_marginTop="@dimen/space_s"
-            android:background="@drawable/bg_camera_round_button_toggle"
+            android:background="@drawable/bg_camera_round_button"
             android:contentDescription="@string/cd_flash"
             android:scaleType="center"
-            android:src="@drawable/ic_zap_20"
+            android:src="@drawable/ic_flash_toggle"
             app:layout_constraintEnd_toEndOf="@id/btnFlip"
             app:layout_constraintTop_toBottomOf="@id/btnFlip"
-            app:tint="@color/camera_toggle_icon" />
+            app:tint="@color/white" />
 
         <!-- Đồng hồ khi đang quay (Figma 14:683): thay chỗ pill Add Sound, chấm đỏ 12dp + 00:00:10 -->
         <LinearLayout
@@ -129,20 +149,6 @@
                 android:textSize="@dimen/text_button"
                 tools:text="00:00:10" />
         </LinearLayout>
-
-        <!-- Nút làm lại: chỉ hiện khi đang chơi, thay chỗ nút lật camera (đã ẩn). Design chưa vẽ nút này. -->
-        <ImageButton
-            android:id="@+id/btnRestart"
-            android:layout_width="@dimen/camera_round_button"
-            android:layout_height="@dimen/camera_round_button"
-            android:layout_marginEnd="@dimen/screen_padding"
-            android:background="@drawable/bg_camera_round_button"
-            android:contentDescription="@string/cd_restart"
-            android:scaleType="center"
-            android:src="@drawable/ic_restart_20"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnBack" />
 
         <!-- Cột 12 ô số: các ô do CameraFragment tạo bằng vòng lặp.
              Cao 0dp (từ y=128 tới trên dải thời lượng) để code biết còn bao nhiêu chỗ. -->

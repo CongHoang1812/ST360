@@ -160,7 +160,6 @@
     <dimen name="home_progress_trending_margin_top">96dp</dimen>
     <dimen name="home_empty_trending_margin_top">96dp</dimen>
     <dimen name="intro_dots_margin_bottom">68dp</dimen>
-    <dimen name="intro_btn_skip_margin_bottom">44dp</dimen>
     <dimen name="intro_btn_next_margin_bottom">44dp</dimen>
     <dimen name="language_btn_back_margin_top">24dp</dimen>
     <dimen name="language_title_margin_start">56dp</dimen>
@@ -310,8 +309,8 @@
     <dimen name="photo_slot_tv_badge_height">56dp</dimen>
     <dimen name="photo_slot_btn_remove_width">56dp</dimen>
     <dimen name="photo_slot_btn_remove_height">56dp</dimen>
-    <dimen name="photo_slot_btn_remove_margin_top">8dp</dimen>
-    <dimen name="photo_slot_btn_remove_margin_end">24dp</dimen>
+    <dimen name="photo_slot_btn_remove_margin_top">16dp</dimen>
+    <dimen name="photo_slot_btn_remove_margin_end">16dp</dimen>
     <dimen name="trending_video_thumb_padding">1dp</dimen>
     <dimen name="trending_video_thumb_stroke_width">2dp</dimen>
     <dimen name="filter_menu_linearlayout1_padding_horizontal">40dp</dimen>
@@ -321,12 +320,11 @@
     <dimen name="bottom_nav_nav_bar_margin_top">48dp</dimen>
     <dimen name="bottom_nav_nav_bar_elevation">16dp</dimen>
     <dimen name="bottom_nav_nav_bar_min_height">112dp</dimen>
-    <dimen name="bottom_nav_tab_home_width">144dp</dimen>
+    <dimen name="bottom_nav_tab_content_offset">24dp</dimen>
     <dimen name="bottom_nav_tab_home_height">112dp</dimen>
     <dimen name="bottom_nav_icon_home_width">40dp</dimen>
     <dimen name="bottom_nav_icon_home_height">40dp</dimen>
     <dimen name="bottom_nav_label_home_height">40dp</dimen>
-    <dimen name="bottom_nav_tab_gallery_width">144dp</dimen>
     <dimen name="bottom_nav_tab_gallery_height">112dp</dimen>
     <dimen name="bottom_nav_icon_gallery_width">40dp</dimen>
     <dimen name="bottom_nav_icon_gallery_height">40dp</dimen>
@@ -505,4 +503,19 @@
     <dimen name="banner_crown_elevation">6dp</dimen>
     <dimen name="text_section_height">40dp</dimen>
     <dimen name="intro_page_bottom_reserve">128dp</dimen>
+    <dimen name="nav_slide_offset">96dp</dimen>
+    <dimen name="nav_slide_offset_negative">-96dp</dimen>
+    <dimen name="filter_success_btn_home_margin_top">24dp</dimen>
+    <dimen name="filter_success_title_margin_horizontal">120dp</dimen>
+    <dimen name="filter_success_card_margin_top">112dp</dimen>
+    <dimen name="filter_success_card_stroke_width">4dp</dimen>
+    <dimen name="filter_success_name_height">144dp</dimen>
+    <dimen name="filter_success_name_text_size">64sp</dimen>
+    <dimen name="filter_success_message_margin_top">48dp</dimen>
+    <dimen name="filter_success_buttons_margin_top">48dp</dimen>
+    <dimen name="filter_success_button_gap">32dp</dimen>
+    <dimen name="filter_success_padding_bottom">48dp</dimen>
+    <dimen name="camera_music_divider_width">2dp</dimen>
+    <dimen name="camera_btn_clear_music_width">56dp</dimen>
+    <dimen name="close_20_vector_size">40dp</dimen>
 </resources>

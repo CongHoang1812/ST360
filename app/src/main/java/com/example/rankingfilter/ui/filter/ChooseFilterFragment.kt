@@ -1,9 +1,11 @@
 package com.example.rankingfilter.ui.filter
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -59,7 +61,7 @@ class ChooseFilterFragment : Fragment() {
         binding.tabDiscover.setOnClickListener { onTabClicked(FilterTab.DISCOVER) }
         binding.tabMyFilters.setOnClickListener { onTabClicked(FilterTab.MY_FILTERS) }
         binding.btnCreateFilter.setOnClickListener {
-            findNavController().navigate(R.id.action_chooseFilter_to_makeFilter)
+            findNavController().navigateSafe(R.id.action_chooseFilter_to_makeFilter)
         }
 
         adapter = FilterAdapter(::openCamera, onMoreClick = ::showFilterMenu)
@@ -69,7 +71,10 @@ class ChooseFilterFragment : Fragment() {
             GridSpacingDecoration(spanCount, resources.getDimensionPixelSize(R.dimen.filter_cell_gap))
         )
 
-        ConfirmDialogFragment.listen(this, REQUEST_DELETE) { id -> id?.let(viewModel::deleteUserFilter) }
+        ConfirmDialogFragment.listen(this, REQUEST_DELETE) { id ->
+            val appContext = requireContext().applicationContext
+            id?.let { viewModel.deleteUserFilter(it) { Toast.makeText(appContext, R.string.filter_deleted, Toast.LENGTH_SHORT).show() } }
+        }
 
         // Make a Filter lưu xong → mở tab My Filters để thấy filter vừa tạo / vừa sửa.
         val entry = findNavController().currentBackStackEntry
@@ -92,7 +97,7 @@ class ChooseFilterFragment : Fragment() {
         FilterMenuPopup.show(
             anchor = anchor,
             onEdit = {
-                findNavController().navigate(
+                findNavController().navigateSafe(
                     R.id.action_chooseFilter_to_makeFilter,
                     bundleOf(MakeFilterViewModel.ARG_FILTER_ID to item.id),
                 )
@@ -145,7 +150,20 @@ class ChooseFilterFragment : Fragment() {
 
     private fun openCamera(item: FilterCardItem) {
         viewModel.onFilterChosen(item)
-        findNavController().navigate(
+        val nav = findNavController()
+        if (arguments?.getBoolean(ARG_PICK_FOR_CAMERA) == true) {
+            // Bấm nhanh hai ô: ô sau chạy khi màn này đã bị pop (đang ở Camera) → bỏ qua, không pop thêm về Home.
+            val current = nav.currentDestination?.id
+            if (current != R.id.chooseFilterFragment && current != R.id.newFilterFragment) return
+            // Mở từ Camera: trả filter về Camera đó rồi quay lại (không mở thêm Camera).
+            nav.previousBackStackEntry?.savedStateHandle?.let {
+                it[RESULT_IS_USER_FILTER] = item.isUserFilter
+                it[RESULT_FILTER_ID] = item.id
+            }
+            nav.popBackStack()
+            return
+        }
+        nav.navigateSafe(
             R.id.action_chooseFilter_to_camera,
             bundleOf(ARG_FILTER_ID to item.id, ARG_IS_USER_FILTER to item.isUserFilter),
         )
@@ -161,5 +179,11 @@ class ChooseFilterFragment : Fragment() {
         private const val REQUEST_DELETE = "delete_user_filter"
         const val ARG_FILTER_ID = "filter_id"
         const val ARG_IS_USER_FILTER = "is_user_filter"
+
+        const val ARG_PICK_FOR_CAMERA = "pick_for_camera"
+
+        /** Kết quả trả về Camera khi [ARG_PICK_FOR_CAMERA]: id filter vừa chọn (đặt SAU [RESULT_IS_USER_FILTER]). */
+        const val RESULT_FILTER_ID = "picked_filter_id"
+        const val RESULT_IS_USER_FILTER = "picked_is_user_filter"
     }
 }

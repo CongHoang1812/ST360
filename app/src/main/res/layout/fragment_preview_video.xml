@@ -8,12 +8,15 @@
     android:background="@color/black"
     tools:context=".ui.preview.PreviewVideoFragment">
 
+    <!-- texture_view (không dùng SurfaceView mặc định): SurfaceView không theo alpha/translationX của animation
+         chuyển màn → Back về Home bị đen màn tới khi animation xong. -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:resize_mode="zoom"
         app:show_buffering="when_playing"
+        app:surface_type="texture_view"
         app:shutter_background_color="@android:color/transparent"
         app:use_controller="false" />
 

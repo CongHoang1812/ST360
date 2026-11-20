@@ -39,17 +39,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/btnSkip"
-        style="@style/Text.IntroAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/screen_padding"
-        android:layout_marginBottom="@dimen/intro_btn_skip_margin_bottom"
-        android:text="@string/intro_skip"
-        app:layout_constraintBottom_toBottomOf="@id/pager"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/btnNext"
         style="@style/Text.IntroAction"
         android:layout_width="wrap_content"

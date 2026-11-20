@@ -1,9 +1,9 @@
 package com.example.rankingfilter.ui.makefilter
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -128,10 +129,7 @@ class MakeFilterFragment : Fragment() {
 
         val count = state.photos.size
         binding.tvPhotosCount.text = getString(R.string.make_filter_photos_count, count, FilterDto.PHOTO_COUNT)
-        binding.tvPhotosHint.text = getString(R.string.make_filter_need_photos, FilterDto.PHOTO_COUNT)
-        binding.tvPhotosHint.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(requireContext(), if (state.isFull) R.color.primary else R.color.primary_50)
-        )
+        binding.tvPhotosHint.text = getString(R.string.make_filter_need_photos, FilterDto.MIN_PHOTO_COUNT)
         adapter.submitList(PhotoSlot.build(state.photos, state.selected))
         binding.btnAddPhotos.isEnabled = !state.isFull
 
@@ -153,9 +151,19 @@ class MakeFilterFragment : Fragment() {
     private fun onEvent(event: MakeFilterEvent) {
         when (event) {
             is MakeFilterEvent.Saved -> {
-                toast(R.string.make_filter_saved)
                 findNavController().previousBackStackEntry?.savedStateHandle?.set(RESULT_FILTER_SAVED, event.filterId)
-                leave()
+                if (viewModel.filterId != null) {
+                    // Sửa filter có sẵn: Toast "đã cập nhật" rồi quay lại.
+                    toast(R.string.make_filter_updated)
+                    leave()
+                } else {
+                    // Tạo mới: sang màn Successful (Figma 57:137), Make a Filter bị gỡ khỏi back stack.
+                    backCallback.isEnabled = false
+                    findNavController().navigateSafe(
+                        R.id.action_makeFilter_to_filterSuccess,
+                        bundleOf(FilterSuccessFragment.ARG_FILTER_ID to event.filterId),
+                    )
+                }
             }
             is MakeFilterEvent.Message -> toast(event.textRes)
             is MakeFilterEvent.TooManyPhotos -> Toast.makeText(

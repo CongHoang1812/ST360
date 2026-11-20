@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.permission
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,13 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.rankingfilter.R
 import com.example.rankingfilter.databinding.FragmentPermissionBinding
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
-import com.google.android.material.materialswitch.MaterialSwitch
 
 /**
  * Xin quyền (Figma 3:7): công tắc Camera, Microphone, và Storage (chỉ Android 9-). Chạm vào = xin quyền; đã bị từ chối hẳn
@@ -55,7 +56,7 @@ class PermissionFragment : Fragment() {
         binding.rowStorage.visibility = if (needsStorage) View.VISIBLE else View.GONE
         if (needsStorage) bindRow(binding.rowStorage, binding.switchStorage, storagePermission)
         bindRow(binding.rowMicrophone, binding.switchMicrophone, Manifest.permission.RECORD_AUDIO)
-        binding.btnContinue.setOnClickListener { findNavController().navigate(R.id.action_permission_to_home) }
+        binding.btnContinue.setOnClickListener { findNavController().navigateSafe(R.id.action_permission_to_home) }
     }
 
     override fun onStart() {
@@ -68,7 +69,7 @@ class PermissionFragment : Fragment() {
         _binding = null
     }
 
-    private fun bindRow(row: View, toggle: MaterialSwitch, permission: String) {
+    private fun bindRow(row: View, toggle: SwitchCompat, permission: String) {
         // Công tắc chỉ phản ánh trạng thái thật: chạm hàng hay công tắc đều đi qua cùng một đường.
         val click = View.OnClickListener {
             renderSwitches()

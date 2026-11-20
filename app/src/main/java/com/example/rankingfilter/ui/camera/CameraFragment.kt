@@ -51,7 +51,6 @@ import androidx.lifecycle.withStarted
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.example.rankingfilter.R
 import com.example.rankingfilter.data.FilterDto
 import com.example.rankingfilter.databinding.FragmentCameraBinding
@@ -66,10 +65,12 @@ import com.example.rankingfilter.ui.camera.overlay.OverlayScene
 import com.example.rankingfilter.ui.camera.record.VideoRecorder
 import com.example.rankingfilter.data.music.MusicRepository
 import com.example.rankingfilter.data.video.VideoLibrary
+import com.example.rankingfilter.ui.filter.ChooseFilterFragment
 import com.example.rankingfilter.ui.result.PreviewViewModel
 import com.example.rankingfilter.ui.sound.AddSoundFragment
 import com.example.rankingfilter.ui.sound.AddSoundViewModel
 import com.example.rankingfilter.ui.common.applySystemBarsPadding
+import com.example.rankingfilter.ui.common.navigateSafe
 import kotlin.random.Random
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -136,8 +137,6 @@ class CameraFragment : Fragment() {
     private var musicPlayer: ExoPlayer? = null
     private var musicPlayerFile: File? = null
 
-    /** Người dùng bấm "làm lại": khi bản ghi cũ bị bỏ xong thì quay lại từ đầu. */
-    private var restartPending = false
 
     /** 12 dòng hạng ở cột trái, theo thứ tự hạng 1..12. Chỉ là vùng chạm; hình do [CameraOverlay] vẽ. */
     private val rankSlots = mutableListOf<ItemRankSlotBinding>()
@@ -205,9 +204,11 @@ class CameraFragment : Fragment() {
         binding.btnFlash.setOnClickListener { toggleTorch() }
         binding.btnChooseFilter.setOnClickListener { openChooseFilter() }
         binding.btnAddSound.setOnClickListener { openAddSound() }
+        // X trên pill: bỏ nhạc đã chọn, quay lại dùng tiếng micro.
+        binding.btnClearMusic.setOnClickListener { viewModel.setMusic(null) }
         listenMusicResult()
+        listenFilterResult()
         binding.btnRecord.setOnClickListener { onRecordClicked() }
-        binding.btnRestart.setOnClickListener { restartRecording() }
         binding.btnPermission.setOnClickListener { onPermissionButtonClicked() }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -239,7 +240,6 @@ class CameraFragment : Fragment() {
         setLightStatusBarIcons(true)
         // Rời màn giữa chừng (về Home, có cuộc gọi…): CameraX sắp đóng camera nên bản ghi không trọn vẹn → bỏ.
         if (recPhase != RecPhase.IDLE) {
-            restartPending = false
             finishJob?.cancel()
             recorder?.stop(keep = false)
         }
@@ -261,7 +261,6 @@ class CameraFragment : Fragment() {
         recorder?.release()
         recorder = null
         recPhase = RecPhase.IDLE
-        restartPending = false
         finishJob = null
         // ViewModel sống qua xoay màn hình, nhưng ván gắn với bản ghi vừa bỏ nên cũng dừng.
         viewModel.stopGame()
@@ -335,17 +334,6 @@ class CameraFragment : Fragment() {
         recorder?.stop(keep = true)
     }
 
-    /** Làm lại: bỏ video đang quay, xóa các ô đã chốt, rồi quay lại từ đầu khi file cũ đóng xong. */
-    private fun restartRecording() {
-        if (recPhase != RecPhase.RECORDING) return
-        restartPending = true
-        finishJob?.cancel()
-        finishJob = null
-        viewModel.stopGame()
-        setRecPhase(RecPhase.STOPPING)
-        recorder?.stop(keep = false)
-    }
-
     private val recorderListener = object : VideoRecorder.Listener {
         override fun onStarted() {
             if (_binding == null) return
@@ -374,7 +362,7 @@ class CameraFragment : Fragment() {
             // Chuyển màn khi Fragment ở trạng thái cho phép (callback có thể đến lúc app vừa xuống nền).
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.lifecycle.withStarted {
-                    findNavController().navigate(
+                    findNavController().navigateSafe(
                         R.id.action_camera_to_preview,
                         bundleOf(
                             PreviewViewModel.ARG_VIDEO_PATH to file.absolutePath,
@@ -387,11 +375,7 @@ class CameraFragment : Fragment() {
 
         override fun onDiscarded() {
             if (_binding == null) return
-            val restart = restartPending
             resetAfterRecording()
-            if (restart && viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                beginRecording()
-            }
         }
 
         override fun onFailed(failure: VideoRecorder.Failure) {
@@ -404,7 +388,6 @@ class CameraFragment : Fragment() {
     /** Bản ghi đã kết thúc (lưu, bỏ hoặc lỗi): về trạng thái chưa quay, chưa chơi. */
     private fun resetAfterRecording() {
         musicPlayer?.pause()
-        restartPending = false
         finishJob?.cancel()
         finishJob = null
         viewModel.stopGame()
@@ -508,8 +491,13 @@ class CameraFragment : Fragment() {
     private fun render(state: CameraUiState) {
         durationViews().forEach { (duration, view) -> view.isSelected = duration == state.duration }
         binding.tvAddSound.text = state.music?.title ?: getString(R.string.camera_add_sound)
+        binding.musicDivider.isVisible = state.music != null
+        binding.btnClearMusic.isVisible = state.music != null
         if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) prepareMusicPlayer()
         game = state.game
+        // Filter tự tạo có thể 10–11 ảnh: số ô hạng = số ảnh (filter có sẵn luôn 12). Không đổi giữa ván.
+        val slotCount = state.filter?.let { FilterDto.slotCountFor(it.photos.size) } ?: FilterDto.PHOTO_COUNT
+        if (slotCount != rankSlots.size && !state.game.isActive) createRankSlots(slotCount)
         updateControls()
         rankSlots.forEachIndexed { index, slot -> renderSlot(index, slot, state.game.slots.getOrNull(index)) }
         publishScene()
@@ -551,8 +539,6 @@ class CameraFragment : Fragment() {
         b.btnChooseFilter.isVisible = idle
         b.timerPill.isVisible = playing
         b.rankColumn.isVisible = cameraVisible
-        b.btnRestart.isVisible = playing
-        b.btnRestart.isEnabled = recPhase == RecPhase.RECORDING
         b.btnRecord.isVisible = cameraVisible
         // Trong lúc chờ CameraX bắt đầu / đóng file thì chưa bấm được.
         b.btnRecord.isEnabled = recPhase == RecPhase.IDLE || recPhase == RecPhase.RECORDING
@@ -575,12 +561,25 @@ class CameraFragment : Fragment() {
         }
     }
 
-    /** Tạo 12 dòng hạng bằng vòng lặp; kích thước lấy từ dimens và được tính lại khi biết chiều cao cột. */
+    /** Tạo cột hạng (mặc định 12 dòng); kích thước lấy từ dimens và được tính lại khi biết chiều cao cột. */
     private fun buildRankSlots() {
+        val column = binding.rankColumn
+        createRankSlots(FilterDto.PHOTO_COUNT)
+        column.addOnLayoutChangeListener { v, _, top, _, bottom, _, oldTop, _, oldBottom ->
+            // Vị trí các ô có thể đã đổi: lần vẽ overlay tới sẽ đo lại.
+            slotGeometry = null
+            // Đổi LayoutParams trong lúc đang layout thì bị bỏ qua, nên dời sang frame sau.
+            if (bottom - top != oldBottom - oldTop) v.post { if (_binding != null) sizeRankSlots(bottom - top) }
+        }
+    }
+
+    /** Dựng lại [count] dòng hạng (10–12, theo số ảnh của filter). */
+    private fun createRankSlots(count: Int) {
         val column = binding.rankColumn
         column.removeAllViews()
         rankSlots.clear()
-        repeat(FilterDto.PHOTO_COUNT) { index ->
+        slotGeometry = null
+        repeat(count) { index ->
             val slot = ItemRankSlotBinding.inflate(layoutInflater, column, false)
             slot.tvNumber.text = slotNumbers[index]
             slot.tvRank.text = slotNumbers[index]
@@ -590,12 +589,6 @@ class CameraFragment : Fragment() {
             rankSlots += slot
         }
         sizeRankSlots(column.height)
-        column.addOnLayoutChangeListener { v, _, top, _, bottom, _, oldTop, _, oldBottom ->
-            // Vị trí các ô có thể đã đổi: lần vẽ overlay tới sẽ đo lại.
-            slotGeometry = null
-            // Đổi LayoutParams trong lúc đang layout thì bị bỏ qua, nên dời sang frame sau.
-            if (bottom - top != oldBottom - oldTop) v.post { if (_binding != null) sizeRankSlots(bottom - top) }
-        }
     }
 
     /**
@@ -647,13 +640,24 @@ class CameraFragment : Fragment() {
 
     private fun openChooseFilter() {
         val nav = findNavController()
-        // Thường vào Camera từ Choose a Filter: quay lại đúng màn đó. Nếu vào từ đường khác thì mở mới.
-        if (!nav.popBackStack(R.id.chooseFilterFragment, false)) {
-            nav.navigate(
-                R.id.chooseFilterFragment,
-                null,
-                navOptions { popUpTo(R.id.cameraFragment) { inclusive = true } },
-            )
+        // Màn chọn filter là "bộ chọn" của Camera này: Back = về đây giữ filter cũ, chọn filter = về đây và đổi filter
+        // (listenFilterResult). Vào Camera từ New filter thì mở New filter, còn lại mở Choose a Filter.
+        val fromNewPack = nav.previousBackStackEntry?.destination?.id == R.id.newFilterFragment
+        nav.navigateSafe(
+            if (fromNewPack) R.id.action_camera_to_newFilter else R.id.action_camera_to_chooseFilter,
+            bundleOf(ChooseFilterFragment.ARG_PICK_FOR_CAMERA to true),
+        )
+    }
+
+    /** Màn chọn filter (mở bằng nút trên Camera) trả về filter vừa chọn qua savedStateHandle của màn này. */
+    private fun listenFilterResult() {
+        val entry = findNavController().currentBackStackEntry ?: return
+        val handle = entry.savedStateHandle
+        handle.getLiveData<String>(ChooseFilterFragment.RESULT_FILTER_ID).observe(viewLifecycleOwner) { id ->
+            if (id == null) return@observe
+            val isUser = handle.remove<Boolean>(ChooseFilterFragment.RESULT_IS_USER_FILTER) == true
+            handle.remove<String>(ChooseFilterFragment.RESULT_FILTER_ID)
+            viewModel.changeFilter(id, isUser)
         }
     }
 
@@ -661,7 +665,7 @@ class CameraFragment : Fragment() {
 
     private fun openAddSound() {
         if (isBusy) return
-        findNavController().navigate(
+        findNavController().navigateSafe(
             R.id.action_camera_to_addSound,
             bundleOf(AddSoundViewModel.ARG_SELECTED to (viewModel.state.value.music?.id ?: -1)),
         )

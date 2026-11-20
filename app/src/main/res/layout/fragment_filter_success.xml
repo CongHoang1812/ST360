@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Successful sau khi tạo filter (Figma 57:137). Design 360 x 800, thanh trạng thái 40dp: y ở đây = y design - 40.
+     Cuộn được vì tablet/màn thấp có thể không đủ chỗ cho ô ảnh vuông. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    tools:context=".ui.makefilter.FilterSuccessFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_home" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/filter_success_padding_bottom">
+
+            <!-- Nút Home 36dp tại (308, 52) -->
+            <ImageButton
+                android:id="@+id/btnHome"
+                android:layout_width="@dimen/back_button_size"
+                android:layout_height="@dimen/back_button_size"
+                android:layout_marginTop="@dimen/filter_success_btn_home_margin_top"
+                android:layout_marginEnd="@dimen/screen_padding"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_home"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_home_circle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/Text.ScreenTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filter_success_title_margin_horizontal"
+                android:text="@string/title_success"
+                app:layout_constraintBottom_toBottomOf="@id/btnHome"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btnHome" />
+
+            <!-- Ô ảnh bìa vuông 328dp tại y=144, viền navy 2dp, bo 8dp, tên filter trên dải gradient trắng 72dp ở đáy -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/filter_success_card_margin_top"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/corner_8"
+                app:cardElevation="0dp"
+                app:contentPadding="0dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnHome"
+                app:strokeColor="@color/navy"
+                app:strokeWidth="@dimen/filter_success_card_stroke_width">
+
+                <ImageView
+                    android:id="@+id/ivCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/filter_success_name_height"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_filter_name_gradient"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/londrina_solid"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/space_s"
+                    android:textColor="@color/navy"
+                    android:textSize="@dimen/filter_success_name_text_size"
+                    app:fontFamily="@font/londrina_solid"
+                    tools:text="Name the Filter" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/filter_success_message_margin_top"
+                android:fontFamily="@font/londrina_solid"
+                android:gravity="center"
+                android:text="@string/filter_success_message"
+                android:textColor="@color/navy"
+                android:textSize="@dimen/text_button"
+                app:fontFamily="@font/londrina_solid"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card" />
+
+            <!-- Hai nút 156dp tại y=539: My Filters (xanh lá) và Try now (xanh dương) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/filter_success_buttons_margin_top"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvMessage">
+
+                <FrameLayout
+                    android:id="@+id/btnMyFilters"
+                    style="@style/Frame.ViewerButton"
+                    android:background="@drawable/bg_green_gradient_button">
+
+                    <TextView
+                        style="@style/Text.ViewerButton"
+                        android:text="@string/tab_my_filters" />
+                </FrameLayout>
+
+                <Space
+                    android:layout_width="@dimen/filter_success_button_gap"
+                    android:layout_height="@dimen/filter_success_button_gap" />
+
+                <FrameLayout
+                    android:id="@+id/btnTryNow"
+                    style="@style/Frame.ViewerButton"
+                    android:background="@drawable/bg_blue_gradient_button">
+
+                    <TextView
+                        style="@style/Text.ViewerButton"
+                        android:text="@string/preview_try_now" />
+                </FrameLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

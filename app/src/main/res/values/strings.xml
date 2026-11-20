@@ -27,19 +27,21 @@
     <string name="make_filter_name_label">Filter Name</string>
     <string name="make_filter_name_hint">Enter filter name</string>
     <string name="make_filter_photos_count">Photos %1$d/%2$d</string>
-    <string name="make_filter_need_photos">Need %1$d photos</string>
+    <string name="make_filter_need_photos">Minimum %1$d photos</string>
     <string name="make_filter_add">Add</string>
     <string name="make_filter_add_photos">Add Photos</string>
     <string name="make_filter_cover_label">Cover photo</string>
     <string name="make_filter_cover_hint">Skip and use your first photo as the cover.</string>
     <string name="make_filter_choose_photos">Choose Photos</string>
     <string name="make_filter_save">Save Filter</string>
-    <string name="make_filter_saved">Filter saved</string>
+    <string name="make_filter_updated">Filter updated successfully</string>
+    <string name="filter_deleted">Filter deleted successfully</string>
+    <string name="filter_success_message">Your ranking filter is ready to play.</string>
     <string name="make_filter_save_error">Couldn\'t save the filter. Please try again.</string>
     <string name="make_filter_load_error">Couldn\'t open this filter.</string>
     <plurals name="make_filter_too_many">
-        <item quantity="one">Only %1$d more photo was added (a filter has %2$d photos).</item>
-        <item quantity="other">Only %1$d more photos were added (a filter has %2$d photos).</item>
+        <item quantity="one">Only %1$d more photo was added (a filter can have up to %2$d photos).</item>
+        <item quantity="other">Only %1$d more photos were added (a filter can have up to %2$d photos).</item>
     </plurals>
     <string name="add_photo_title">Add Photo</string>
     <string name="add_photo_take">Take a Photo</string>
@@ -147,12 +149,12 @@
     <string name="cd_choose_filter">Choose a filter</string>
     <string name="cd_rank_slot">Rank %1$d</string>
     <string name="cd_stop">Stop</string>
-    <string name="cd_restart">Start over</string>
     <string name="cd_play_music">Play %1$s</string>
     <string name="cd_pause_music">Pause %1$s</string>
     <string name="cd_confirm_music">Use this sound</string>
     <string name="cd_retake">Record again</string>
     <string name="cd_home">Home</string>
+    <string name="cd_remove_music">Remove music</string>
     <string name="cd_video_preview">Video preview</string>
     <string name="cd_video_thumbnail">Saved video</string>
     <string name="cd_share_more">More apps</string>
@@ -162,18 +164,17 @@
     <!-- Phase 8: Language / Intro / Permission / Setting -->
     <string name="title_permission">Permission</string>
     <string name="language_title">Language</string>
-    <string name="lang_english">English</string>
-    <string name="lang_spanish">Spanish</string>
-    <string name="lang_french">French</string>
-    <string name="lang_hindi">Hindi</string>
-    <string name="lang_portuguese">Portuguese</string>
-    <string name="lang_indonesian">Indonesian</string>
+    <string name="lang_english" translatable="false">English</string>
+    <string name="lang_spanish" translatable="false">Spanish</string>
+    <string name="lang_french" translatable="false">French</string>
+    <string name="lang_hindi" translatable="false">Hindi</string>
+    <string name="lang_portuguese" translatable="false">Portuguese</string>
+    <string name="lang_indonesian" translatable="false">Indonesian</string>
     <string name="cd_confirm_language">Confirm language</string>
-    <string name="intro_1">Tap to rank them from #1 to #12.</string>
+    <string name="intro_1">Drag, drop, and rank them from #1 to #10.</string>
     <string name="intro_2">Create your own ranking filter.</string>
     <string name="intro_3">Create and share your video.</string>
     <string name="intro_next">Next</string>
-    <string name="intro_skip">Skip</string>
     <string name="permission_desc">Allow access to your camera and microphone to create and share fun ranking videos.</string>
     <string name="permission_camera">Camera</string>
     <string name="permission_storage">Storage</string>
@@ -194,4 +195,8 @@
     <string name="rate_button">Rate</string>
     <string name="rate_exit">Exit</string>
     <string name="rate_thanks">Thanks for your feedback!</string>
+    <!-- Preview: nút thử lại (Figma 4045:35) -->
+    <string name="preview_retake_title">Leave Video?</string>
+    <string name="preview_retake_message">Your video won\'t be saved. Do you want to try again?</string>
+    <string name="preview_retake_confirm">Try Again</string>
 </resources>

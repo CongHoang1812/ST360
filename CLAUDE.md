@@ -53,6 +53,7 @@ Giai đoạn 2 đã có:
 - `ui/home/HomeFragment` + `HomeViewModel` + `TrendingAdapter`; layout `fragment_home.xml`,
   `view_new_filter_banner.xml` (đặt theo % khung 328:114), `item_trending_video.xml` (tỉ lệ 156:240).
 - `ui/common/BottomNav.kt` + `view_bottom_nav.xml`: bottom nav tự vẽ, dùng lại ở Gallery (giai đoạn 7) với `BottomTab.GALLERY`.
+  Tab Home / Gallery mỗi tab phủ kín một nửa thanh (Guideline 50%) để dễ chạm; nút camera đè giữa nên vẫn nhận chạm giữa; nội dung lệch `bottom_nav_tab_content_offset` 12dp giữ tâm icon như Figma (19/11/2026, build OK, đã cài, CHƯA kiểm trên máy).
 - `ui/preview/PreviewVideoFragment`: ExoPlayer lặp video, cache đĩa 200 MB (`video/VideoCache.kt`), nút Try now → chooseFilter (truyền `filter_id`).
 - `data/trending/`: `TrendingApi` (BASE, ghép URL, đổi `'`→`’` và `...`→`…` rồi `Uri.encode`, `matchFilterId`),
   `TrendingRepository` đọc `folders.json` (mảng chuỗi, HttpURLConnection + kotlinx.serialization), `TrendingVideo`
@@ -79,8 +80,11 @@ Leave bỏ thay đổi, Delete xóa cả thư mục ảnh; CHƯA thử Take a Ph
 - `ui/common/ConfirmDialogFragment` (popup Leave / Delete, kết quả qua Fragment Result API), `ui/filter/FilterMenuPopup`
   (nút "…" trên ô filter tự tạo → Edit / Delete, theo Figma 29:2008; dùng lại ở Gallery giai đoạn 7).
 - Lưu xong → quay lại Choose a Filter và tự mở tab My Filters (`MakeFilterFragment.RESULT_FILTER_SAVED`).
+  Tạo mới xong → màn Successful (Figma 57:137, `ui/makefilter/FilterSuccessFragment`, `fragment_filter_success.xml`; Make a Filter bị
+  gỡ khỏi back stack bằng popUpTo inclusive): ảnh bìa + tên, My Filters / Back = về màn trước (tab My Filters), Try now → Camera
+  (popUpTo Successful, Back từ Camera về danh sách), Home. Build OK, CHƯA kiểm trên máy (19/11/2026). Sửa filter: Toast "Filter updated successfully" (`make_filter_updated`) rồi quay lại; xóa filter (Choose a Filter và Gallery)
+  báo "Filter deleted successfully" (`filter_deleted`) khi Room + thư mục ảnh đã xóa xong (19/11/2026, build OK, chưa kiểm trên máy).
 - Nút Save Filter khi bấm được dùng gradient vàng theo Figma (29:1871), không phải xanh như sổ tay ghi.
-- Chưa làm màn Successful (57:137) của Make a Filter: prompt 4b chỉ yêu cầu về My Filters.
 
 Giai đoạn 5a đã có (đã kiểm trên máy: preview trước/sau, lật, đèn pin ở camera sau, chọn thời lượng, nút chọn filter, Back,
 bảng xin quyền khi từ chối → Open Settings → cấp quyền → quay lại camera tự mở, Logcat báo 12 ảnh filter có sẵn):
@@ -89,13 +93,18 @@ bảng xin quyền khi từ chối → Open Settings → cấp quyền → quay 
 - 12 ô số tạo bằng vòng lặp từ `item_rank_slot.xml` (có sẵn `ivPhoto` ẩn cho 5c); `sizeRankSlots()` tự thu nhỏ ô
   nếu cột không đủ cao. Kích thước lấy từ `dimens.xml` (`rank_slot_*`, `rank_column_*`); ô 42dp, số 22sp, khe 5dp (từng 36dp/20sp/6dp, tăng 16/11/2026 cho dễ nhìn).
 - CameraX: chỉ `Preview`, mặc định camera trước; `bindCamera()` gọi lại khi lật. Flash = torch
-  (`cameraControl.enableTorch`), nút tự mờ khi camera không có đèn; nút lật mờ khi máy chỉ có một camera.
+  (`cameraControl.enableTorch`), nút tự mờ khi camera không có đèn (camera trước của Xiaomi không có đèn → không bật được, đúng như thiết kế code);
+  icon `ic_flash_toggle` (tắt = tia chớp gạch chéo Figma 14:533, bật = tia chớp 5:9), nền tối cả hai trạng thái (19/11/2026, đã kiểm trên Xiaomi camera sau); nút lật mờ khi máy chỉ có một camera.
 - Quyền CAMERA + RECORD_AUDIO: tự hỏi một lần khi vào màn; bị từ chối thì hiện bảng giải thích, nút "Allow" hỏi lại,
   hoặc "Open Settings" khi đã bị từ chối hẳn. Kiểm lại quyền mỗi lần `onStart`.
 - `CameraViewModel`: đọc `filter_id` / `is_user_filter` (thiếu thì lấy `SelectedFilterStore`), giải mã ảnh filter thành
   bitmap phần mềm 384px bằng Coil (`state.filter.photos`) để 5b–5d vẽ; log tag `CameraViewModel` báo số ảnh.
   Giữ thời lượng đã chọn (`RecordDuration`) và camera trước/sau trong SavedStateHandle.
-- Nút chọn filter: quay về Choose a Filter (popBackStack, không có trong back stack thì mở mới).
+- Nút chọn filter (19/11/2026, phương án người dùng chọn; build OK, CHƯA kiểm trên máy): màn chọn filter là "bộ chọn" của Camera. Camera mở
+  `action_camera_to_chooseFilter` (hoặc `_newFilter` nếu màn trước Camera là New filter) với `pick_for_camera = true`. Back = về Camera giữ filter cũ;
+  chọn filter = `ChooseFilterFragment` đặt `RESULT_IS_USER_FILTER` rồi `RESULT_FILTER_ID` vào savedStateHandle của Camera và popBackStack,
+  Camera (`listenFilterResult`) gọi `CameraViewModel.changeFilter`. Back stack luôn Home → Choose → Camera, không chồng nhiều Camera.
+  (Đã thử phương án "chọn filter = mở Camera mới chồng lên, Back đi đúng thứ tự", người dùng bảo đổi lại như cũ, 19/11/2026.)
 - Nút quay và Add Sound hiện Toast "Coming soon" (làm ở 5d và giai đoạn 6).
 - Thanh trạng thái đổi sang icon trắng khi ở màn Camera (`onStart`), trả lại icon đen ở `onStop`.
 
@@ -126,8 +135,7 @@ chưa chơi, nút dừng bỏ ván):
   Ghi chú cũ "chờ 700ms rồi sang Preview" không còn đúng.)
 - Giao diện đang chơi theo Figma 8:102/8:192/8:235: ẩn Back, Add Sound, lật camera, flash, dải thời lượng, nút chọn filter;
   nút quay thành hình vuông bo 8dp 32dp; ô trống viền trắng; ô đã chốt hiện ảnh nhỏ + số hạng đứng BÊN TRÁI ô
-  (`item_rank_slot.xml` = [số 28dp][ô 42dp], `rank_column_start` 14dp). Nút làm lại KHÔNG có trong design: tôi đặt ở chỗ nút lật
-  camera (`btnRestart`, icon `ic_restart_20`). Hiển thị điều khiển do `CameraFragment.updateControls()` quản lý (đã bỏ Group).
+  (`item_rank_slot.xml` = [số 28dp][ô 42dp], `rank_column_start` 14dp). Nút làm lại lúc quay đã BỎ (19/11/2026, đúng design; muốn quay lại thì dừng rồi bấm nút thử lại ở Preview). Hiển thị điều khiển do `CameraFragment.updateControls()` quản lý (đã bỏ Group).
 - `FaceOverlayView`: vẽ bằng BitmapShader + drawRoundRect; `cornerRatio` 0 cho ảnh chờ "?", 0,12 cho ảnh của filter.
 - Chưa có: đồng hồ 00:00:10 trên đầu màn (5d), quay video thật (5d), thời lượng 15/30/60s (5d, hiện chỉ chọn được).
 
@@ -163,11 +171,11 @@ OverlayEffect) giới hạn ở 720p rồi cắt theo tỉ lệ màn hình (View
 
 Giai đoạn 6 đã kiểm trên Xiaomi (15/11/2026): Add Sound đúng design; nghe thử báo lỗi êm khi server 404 (không crash);
 quay → Preview phát video có overlay → Save → bản nháp chuyển sang files/videos → Successful đúng design → Download chép ra
-Movies/RankingFilter, nút thành "Downloaded" → "…" mở bảng chia sẻ → Try More Filters mở Camera đúng filter → Back về Home.
+Movies/RankingFilter, nút thành "Downloaded" → "…" mở bảng chia sẻ → Try More Filters mở Camera đúng filter → Back về Home (19/11/2026: từng đổi thành về lại Successful, rồi người dùng bảo đổi lại về Home; `action_success_to_camera` có popUpTo Home; Home cuộn về đầu nhờ `KEY_SCROLL_TO_TOP` đặt trong `SuccessFragment.tryFilter`).
 SERVER NHẠC ĐÃ CHẠY LẠI (16/11/2026) và luồng nhạc đã kiểm trên Xiaomi: nghe thử (dòng được chọn + nút Pause, hệ thống thấy app phát âm thanh),
 tick → tải `cache/music/music_1.mp3` (~964 KB) → Camera hiện pill "Music 1", quay → nhạc phát ra loa, Preview phát video + nhạc, Save → trộn xong →
 Successful; file `files/videos/*.mp4` (9,9 MB) có track `vide` 15,50s + `soun` 15,55s. CHƯA kiểm: nghe nội dung file đã trộn có đúng là nhạc (không phải tiếng mic),
-bài ngắn hơn video (lặp lại), bỏ nhạc đã chọn (chưa có chức năng). Server Trending vẫn 404 (xem dưới).
+bài ngắn hơn video (lặp lại), bỏ nhạc đã chọn bằng nút X. Server Trending vẫn 404 (xem dưới).
 Lỗi đã gặp: theme đặt `materialCardViewStyle` = Card.Blue (contentPadding 16dp) cho MỌI MaterialCardView → khung video
 có viền đen dày; đã thêm `app:contentPadding="0dp"` (chưa nhìn lại trên máy vì mất kết nối).
 Trên điện thoại người dùng có app TurboVPN tự bật quảng cáo toàn màn hình: tap.sh đã chặn chạm nhầm, nhờ người dùng tắt.
@@ -185,9 +193,11 @@ Download mới chép ra thư viện ảnh; (3) Successful làm theo design (Down
   lại; `ensureLoaded()` để AddSoundViewModel hiện số liệu đã lưu ngay khi mở màn. Chưa kiểm: nâng cấp v1→v2 trên dữ liệu thật (lần kiểm dữ liệu app đã bị xóa từ trước, DB tạo mới v2), nghe thử/tải bài/phát nhạc lúc quay/trộn nhạc khi Save.
 - `ui/sound/` AddSound (Figma 14:620/22:738): chạm dòng = chọn + nghe thử (ExoPlayer qua `VideoCache`), chạm lại = tạm dừng;
   tick xám tới khi chọn; bấm tick = tải bài về máy rồi trả `RESULT_MUSIC_ID` qua savedStateHandle cho Camera.
-  Pill trên Camera hiện tên bài đã chọn. CHƯA có cách bỏ nhạc đã chọn (phải thoát Camera).
+  Bài đang nghe thử hiện thời gian đã phát đếm từ 00:00 (cập nhật 200ms, tạm dừng thì đứng yên, phát hết dừng đúng ở tổng thời lượng),
+  bài khác hiện tổng thời lượng (`MusicRow.positionMs`, 19/11/2026, đã kiểm trên Xiaomi).
+  Pill trên Camera hiện tên bài đã chọn + vạch ngăn + nút X (Figma 14:576, `btnClearMusic`, `ic_close_20`): bấm X = `setMusic(null)`, pill về "Add Sound" (19/11/2026, build OK, CHƯA kiểm trên máy).
 - `ui/result/PreviewFragment` (8:334): phát lặp bản nháp; có nhạc thì tắt tiếng video + phát nhạc, về giây 0 mỗi vòng.
-  Nút vòng tròn trái = bỏ + quay lại Camera; Home / Back = hỏi trước rồi bỏ. Save → Transformer → Successful (popUpTo Home).
+  Nút vòng tròn trái = hỏi popup "Leave Video?" (Figma 4045:35, ConfirmDialogFragment PRIMARY: Cancel / Try Again) rồi bỏ + quay lại Camera; Home / Back = hỏi trước rồi bỏ. Save → Transformer → Successful (popUpTo Home).
 - `ui/result/SuccessFragment` (14:451): ảnh thu nhỏ (giây 1), Download (Android 9- xin WRITE_EXTERNAL_STORAGE), Share tới đúng
   app nếu đã cài (FileProvider `files/videos`), không có thì bảng chia sẻ; Try More Filters (10 filter ngẫu nhiên) → Camera.
 - Nền Preview/Successful dùng lại `bg_home` (ảnh nền trong Figma giống hệt). Icon mạng xã hội: `drawable-nodpi/ic_share_*.png` 64px.
@@ -224,12 +234,15 @@ Giai đoạn 8 đã có:
 - Luồng: Splash (2s) → Language → Intro → Permission → Home; đã xem intro (`AppPrefs.isIntroSeen`, SharedPreferences) thì Splash → Home.
   Nav start = `splashFragment`; mỗi màn onboarding popUpTo chính nó (inclusive). (`ComingSoonFragment` đã xóa 17/11/2026.)
 - `ui/splash`: `splash_full.webp` là ảnh khung Figma 3:2 đã vá (thanh trạng thái + dòng quảng cáo thay bằng nền `bg_home`) + vòng tròn tải native.
-- `ui/language/LanguageFragment` (arg `from_settings`): 6 dòng (`APP_LANGUAGES`: en es fr hi pt id), tick lưu bằng `AppCompatDelegate.setApplicationLocales`,
+- `ui/language/LanguageFragment` (arg `from_settings`): 6 dòng (`APP_LANGUAGES`: en es fr hi pt id) tên ngôn ngữ cố định tiếng Anh như design (`lang_*` translatable=false, KHÔNG dịch: trước đây đổi sang French thì các dòng thành "Anglais, Espagnol…", người dùng báo lỗi 19/11/2026), tick lưu bằng `AppCompatDelegate.setApplicationLocales`,
   `res/xml/locales_config.xml` + `android:localeConfig` + `AppLocalesMetadataHolderService` (manifest). Điều hướng TRƯỚC rồi mới đổi ngôn ngữ (đổi làm tạo lại Activity).
-- `ui/intro`: ViewPager2 3 trang (`intro_art_1..3.webp` = ảnh khung Figma cắt 360x550 đã vá thanh trạng thái), chấm, Next, Skip (Skip KHÔNG có trong design, thêm theo prompt).
-  Câu trang 1 đổi thành "Tap to rank them from #1 to #12." (design ghi "Drag, drop … #10" không đúng app).
-- `ui/permission`: 3 MaterialSwitch (Camera, Photos, Microphone); chạm = xin quyền, đã cấp/bị từ chối hẳn = mở cài đặt app. Continue luôn đi tiếp.
+- `ui/intro`: ViewPager2 3 trang (`intro_art_1..3.webp` = ảnh khung Figma cắt 360x550 đã vá thanh trạng thái), chấm, Next (đã bỏ nút Skip 19/11/2026 theo yêu cầu người dùng, design không có).
+  Câu trang 1: "Drag, drop, and rank them from #1 to #10." đúng như design (người dùng yêu cầu 19/11/2026, dù app thật là chạm ô và có 12 ô).
+- `ui/permission`: 3 SwitchCompat (Camera, Photos, Microphone; núm `drawable/switch_thumb*` luôn 20dp, ray `switch_track` 56x28 theo Figma 27:616, đổi từ MaterialSwitch 19/11/2026 vì núm M3 co còn 16dp khi tắt; PHẢI có `app:thumbTint="@null"` + `app:trackTint="@null"`, không thì switchStyle của theme Material3 tô cả núm lẫn ray màu navy, núm biến mất; đã kiểm trên Xiaomi); chạm = xin quyền, đã cấp/bị từ chối hẳn = mở cài đặt app. Continue luôn đi tiếp.
 - `ui/setting/RateDialogFragment` (16/11/2026, Figma 4034:33; build OK, CHƯA kiểm trên máy): bấm Rate us trong Setting mở popup 5 sao; emoji là ảnh PNG 160px lấy từ Figma (`drawable-nodpi/rate_emoji_0..5.png`), sao là vector theo path Figma (vàng #FFDC4E / xám #C4C4C4, kéo ngón tay để chấm), lời nhắn đổi theo số sao; chọn 1–5 sao + Rate → chỉ Toast cảm ơn (`rate_thanks`) rồi đóng, KHÔNG mở Play Store; 0 sao bấm Rate → không làm gì. Rate xong lưu cờ `AppPrefs.isRated` và ẩn dòng Rate us trong Setting (cả những lần mở app sau).
+- Back ở Home (19/11/2026, build OK, CHƯA kiểm trên máy): thoát = `requireActivity().finish()` (không để mặc định Android 12+ chỉ đưa xuống nền),
+  nên mở lại đi Splash → Intro. Chưa Rate: lần lẻ thoát, lần chẵn hiện popup Rate (`AppPrefs.nextHomeBackCount`, đếm qua các lần mở app);
+  đã Rate (`AppPrefs.isRated`) thì luôn thoát. Rate xong trong popup mở từ Back ở Home (chấm sao + Rate) → Toast cảm ơn rồi thoát app luôn; Exit chỉ đóng popup (19/11/2026, build OK, CHƯA kiểm trên máy). Code ở `HomeFragment.setupRateOnBack()`.
 - `ui/setting`: Language / Rate us (popup, ẩn sau khi đã rate) / Share app (ACTION_SEND) / Privacy & Policy (`AppConfig.PRIVACY_POLICY_URL` đang RỖNG, điền sau; rỗng thì báo Toast).
 - Đã dịch toàn bộ `strings.xml` sang es, fr, hi, pt, in (bản dịch do tôi viết, nên nhờ người bản ngữ rà lại trước khi phát hành).
 - Ảnh Figma export bị dính nền #444: ảnh Splash/Intro lấy từ ảnh KHUNG đầy đủ (có nền thật) rồi cắt; Pillow cài ở scratchpad, không có trong repo.
@@ -263,6 +276,17 @@ Việc còn treo:
 Lỗi đã gặp khi chạy thật (đừng lặp lại):
 - Theme đặt `app:fontFamily` = Londrina và AppCompat ưu tiên nó hơn `android:fontFamily` → view dùng font khác
   phải ghi CẢ `android:fontFamily` và `app:fontFamily`.
+- Bấm nhanh 2 ô Trending ở Home → crash `action_home_to_preview cannot be found from the current destination` (19/11/2026). Đã sửa:
+  `ui/common/Navigation.kt` `NavController.navigateSafe()` (bỏ qua nếu màn hiện tại không có action) dùng cho mọi điều hướng ở Home,
+  `rvTrending` có `splitMotionEvents="false"`. Đã kiểm trên Xiaomi. 19/11/2026: lỗi này còn ở mọi màn (bấm nhiều filter cùng lúc) → MỌI
+  `navigate()` trong app đổi sang `navigateSafe()`, mọi RecyclerView có `splitMotionEvents="false"`, ChooseFilter ở chế độ chọn cho Camera
+  chỉ popBackStack khi màn hiện tại vẫn là chooseFilter/newFilter (không thì ô thứ hai pop luôn Camera về Home). Build OK, CHƯA kiểm trên máy.
+  Điều hướng mới: luôn dùng `navigateSafe()`, không gọi `navigate()` trực tiếp.
+  Đã thử chặn bấm Back 2 lần (navigateUpSafe/isTopOfNav), người dùng bảo bỏ, trả về như cũ (19/11/2026): nút Back gọi `navigateUp()` thường.
+- Tablet: mở video Trending thứ 2 trở đi thì lộ mép video trên/dưới (19/11/2026, người dùng báo). Nghi khung ViewPager2 đổi chiều cao
+  sau `setCurrentItem` (thanh điều hướng / taskbar ẩn hiện) nên trang lệch theo pixel. Đã thêm `PreviewPagerFragment.snapToCurrentPage()`
+  (căn trang hiện tại khít mép trên khi pager đổi kích thước và sau lần layout đầu). Build OK, CHƯA tái hiện/kiểm trên tablet
+  (giả lập bằng `adb shell wm density 240` trên Xiaomi bị chặn vì máy khóa; nhớ `wm density reset` sau khi thử).
 - DialogFragment inflate không có view cha → `layout_width` của thẻ gốc bị bỏ; bọc layout popup trong FrameLayout.
 
 Kiểm thử trên máy thật: dùng emulator nếu được (máy này chưa có AVD). Nếu dùng điện thoại của người dùng qua adb
@@ -288,6 +312,11 @@ Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
 
 - Không hiệu ứng chạm (ripple): theme đặt `selectableItemBackground(Borderless)` trong suốt, `Button.Primary` và nút pill có
   `rippleColor` trong suốt (người dùng yêu cầu 16/11/2026, áp dụng cả thẻ video/filter/dòng nhạc). Chưa kiểm trên máy.
+- Animation chuyển màn (19/11/2026; build OK, CHƯA kiểm trên máy, người dùng tự thử): `res/animator/nav_*.xml` gắn vào MỌI action trong `nav_graph.xml`.
+  Dùng animator (translationX + alpha) chứ không dùng `anim`, để SurfaceView (PreviewView của Camera, PlayerView của Trending) đi theo.
+  PlayerView của Trending (`fragment_preview_video.xml`) phải là `app:surface_type="texture_view"`: SurfaceView không theo alpha/translationX → Back về Home bị đen màn. Thêm: `PreviewVideoFragment.onStop` khi đang rời màn (`isLeaving`) chỉ dừng, release player ở onDestroyView (sau animation); release() chặn luồng chính và pager có 2–3 player → animation giật/đen. Xuống nền vẫn release ngay (19/11/2026, đã cài lên Xiaomi, CHƯA nhìn kết quả).
+  Màn thường: trượt 48dp (`nav_slide_offset`) + mờ dần, 300ms (`@integer/nav_anim_duration` trong `values/motion.xml`); onboarding (Splash/Language/Intro/Permission)
+  và Home ↔ Gallery: chỉ mờ dần. Action mới phải thêm đủ 4 thuộc tính enter/exit/popEnter/popExit; `navOptions` trong code cũng phải có `anim { }` (xem `CameraFragment.openChooseFilter`).
 - Thanh điều hướng hệ thống bị ẩn (`MainActivity.hideNavigationBar`, vuốt từ đáy để hiện tạm). Chưa kiểm trên máy: nội dung sát đáy ở Camera/Home/Gallery.
 
 - Kotlin + XML Views (không Compose), ViewBinding, minSdk 24, compile/targetSdk 37, Java 17.
@@ -298,7 +327,9 @@ Sau mỗi giai đoạn: cập nhật bảng trên, commit, push.
   với Kotlin; chạy được với Kotlin 2.4.21). Plugin `androidx.room` đặt `schemaDirectory`.
 - Coil 3 (`io.coil-kt.coil3`) kèm `coil-network-okhttp`.
 - Mọi chữ hiển thị nằm trong `strings.xml` (6 ngôn ngữ: en, es, fr, hi, pt, in). Tên 30 chủ đề giữ tiếng Anh.
-- Mọi filter có đúng 12 ảnh → Camera luôn 12 ô.
+- Filter có sẵn: đúng 12 ảnh. Filter tự tạo: 10–12 ảnh (19/11/2026, theo Figma 57:247 "Minimum 10 photos"; `FilterDto.MIN_PHOTO_COUNT`).
+  Make a Filter: Add + ô mờ tới ô 10, Save bật từ 10 ảnh. Camera: số ô hạng = `FilterDto.slotCountFor(số ảnh)` (dựng lại khi filter nạp xong,
+  không đổi giữa ván). Build OK, CHƯA kiểm trên máy.
 - Không có quảng cáo (bỏ AdMob, bỏ dòng "This action can contain ads").
 - Video Trending trên server, đọc qua `folders.json` (không có config.json).
 - Nhạc 74 bài trên server (KHÔNG có trong assets): `https://lvtglobal.site/public/app/ST314_FunnyFaceFilters/music/music_<1..74>.mp3`
@@ -315,3 +346,7 @@ export JAVA_HOME=/snap/android-studio/current/jbr   # hoặc JBR của Android S
 Cấu trúc hiện tại:
 - `MainActivity` chứa `NavHostFragment` (`res/layout/activity_main.xml`, `res/navigation/nav_graph.xml`).
 - `ui/placeholder/PlaceholderFragment` là màn tạm, thay bằng Home ở giai đoạn 2.
+
+- Icon app (19/11/2026, đã kiểm trên Xiaomi): trước đây ảnh trong `ic_launcher_foreground` chỉ chiếm 72/108dp và có góc bo sẵn, nền `ic_launcher_background`
+  gần trắng → máy nào hiện cả lớp adaptive thì icon nhỏ, nền trắng. Giờ ảnh phóng thành 81/108dp (324/432px, phủ kín vùng 72dp hiển thị) và nền là màu xanh
+  #C2EAFD lấy từ mép ảnh. Ảnh legacy `mipmap-*/ic_launcher*.webp` (máy < Android 8) vốn đã kín khung, giữ nguyên.

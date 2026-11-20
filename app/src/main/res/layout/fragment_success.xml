@@ -191,6 +191,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFilters"
+                android:splitMotionEvents="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_s"

@@ -191,7 +191,6 @@
     <dimen name="home_progress_trending_margin_top">48dp</dimen>
     <dimen name="home_empty_trending_margin_top">48dp</dimen>
     <dimen name="intro_dots_margin_bottom">34dp</dimen>
-    <dimen name="intro_btn_skip_margin_bottom">22dp</dimen>
     <dimen name="intro_btn_next_margin_bottom">22dp</dimen>
     <dimen name="language_btn_back_margin_top">12dp</dimen>
     <dimen name="language_title_margin_start">28dp</dimen>
@@ -341,8 +340,8 @@
     <dimen name="photo_slot_tv_badge_height">28dp</dimen>
     <dimen name="photo_slot_btn_remove_width">28dp</dimen>
     <dimen name="photo_slot_btn_remove_height">28dp</dimen>
-    <dimen name="photo_slot_btn_remove_margin_top">4dp</dimen>
-    <dimen name="photo_slot_btn_remove_margin_end">12dp</dimen>
+    <dimen name="photo_slot_btn_remove_margin_top">8dp</dimen>
+    <dimen name="photo_slot_btn_remove_margin_end">8dp</dimen>
     <dimen name="trending_video_thumb_padding">0.5dp</dimen>
     <dimen name="trending_video_thumb_stroke_width">1dp</dimen>
     <dimen name="filter_menu_linearlayout1_padding_horizontal">20dp</dimen>
@@ -352,12 +351,11 @@
     <dimen name="bottom_nav_nav_bar_margin_top">24dp</dimen>
     <dimen name="bottom_nav_nav_bar_elevation">8dp</dimen>
     <dimen name="bottom_nav_nav_bar_min_height">56dp</dimen>
-    <dimen name="bottom_nav_tab_home_width">72dp</dimen>
+    <dimen name="bottom_nav_tab_content_offset">12dp</dimen>
     <dimen name="bottom_nav_tab_home_height">56dp</dimen>
     <dimen name="bottom_nav_icon_home_width">20dp</dimen>
     <dimen name="bottom_nav_icon_home_height">20dp</dimen>
     <dimen name="bottom_nav_label_home_height">20dp</dimen>
-    <dimen name="bottom_nav_tab_gallery_width">72dp</dimen>
     <dimen name="bottom_nav_tab_gallery_height">56dp</dimen>
     <dimen name="bottom_nav_icon_gallery_width">20dp</dimen>
     <dimen name="bottom_nav_icon_gallery_height">20dp</dimen>
@@ -538,4 +536,22 @@
 
     <!-- Intro tablet (layout-sw600dp): chỗ chừa dưới câu mô tả cho chấm và nút Next -->
     <dimen name="intro_page_bottom_reserve">64dp</dimen>
+    <!-- Chuyển màn: quãng trượt ngang của màn vào/ra (res/animator/nav_*.xml) -->
+    <dimen name="nav_slide_offset">48dp</dimen>
+    <dimen name="nav_slide_offset_negative">-48dp</dimen>
+    <!-- Successful sau khi tạo filter (Figma 57:137) -->
+    <dimen name="filter_success_btn_home_margin_top">12dp</dimen>
+    <dimen name="filter_success_title_margin_horizontal">60dp</dimen>
+    <dimen name="filter_success_card_margin_top">56dp</dimen>
+    <dimen name="filter_success_card_stroke_width">2dp</dimen>
+    <dimen name="filter_success_name_height">72dp</dimen>
+    <dimen name="filter_success_name_text_size">32sp</dimen>
+    <dimen name="filter_success_message_margin_top">24dp</dimen>
+    <dimen name="filter_success_buttons_margin_top">24dp</dimen>
+    <dimen name="filter_success_button_gap">16dp</dimen>
+    <dimen name="filter_success_padding_bottom">24dp</dimen>
+    <!-- Pill nhạc đã chọn: vạch ngăn + nút X (Figma 14:576) -->
+    <dimen name="camera_music_divider_width">1dp</dimen>
+    <dimen name="camera_btn_clear_music_width">28dp</dimen>
+    <dimen name="close_20_vector_size">20dp</dimen>
 </resources>

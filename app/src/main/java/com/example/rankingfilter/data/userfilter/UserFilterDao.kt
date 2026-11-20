@@ -20,10 +20,6 @@ interface UserFilterDao {
     @Query("SELECT * FROM user_filter WHERE id = :id")
     suspend fun getById(id: String): UserFilterWithPhotos?
 
-    @Transaction
-    @Query("SELECT * FROM user_filter WHERE id = :id")
-    fun observeById(id: String): Flow<UserFilterWithPhotos?>
-
     @Upsert
     suspend fun upsertFilter(filter: UserFilter)
 

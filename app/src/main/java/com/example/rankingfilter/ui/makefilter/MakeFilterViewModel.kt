@@ -41,7 +41,7 @@ data class MakeFilterUiState(
     val remaining: Int get() = (FilterDto.PHOTO_COUNT - photos.size).coerceAtLeast(0)
     val coverToShow: Uri? get() = cover ?: photos.firstOrNull()
     val canSave: Boolean
-        get() = name.isNotBlank() && photos.size == FilterDto.PHOTO_COUNT && !isSaving && !isLoading
+        get() = name.isNotBlank() && photos.size in FilterDto.MIN_PHOTO_COUNT..FilterDto.PHOTO_COUNT && !isSaving && !isLoading
 }
 
 sealed interface MakeFilterEvent {

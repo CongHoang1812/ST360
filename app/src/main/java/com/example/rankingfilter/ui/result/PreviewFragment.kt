@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.result
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -57,12 +58,13 @@ class PreviewFragment : Fragment() {
         binding.content.applySystemBarsPadding(top = true, bottom = true)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
 
-        binding.btnRetake.setOnClickListener { retake() }
+        binding.btnRetake.setOnClickListener { askRetake() }
         binding.btnHome.setOnClickListener { askLeave(REQUEST_LEAVE_HOME) }
         binding.btnSave.setOnClickListener { viewModel.save() }
         binding.playerView.setOnClickListener { togglePlayback() }
 
         ConfirmDialogFragment.listen(this, REQUEST_LEAVE_BACK) { retake() }
+        ConfirmDialogFragment.listen(this, REQUEST_RETAKE) { retake() }
         ConfirmDialogFragment.listen(this, REQUEST_LEAVE_HOME) { goHome() }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -102,7 +104,7 @@ class PreviewFragment : Fragment() {
         when (event) {
             is PreviewEvent.Saved -> {
                 backCallback.isEnabled = false
-                findNavController().navigate(
+                findNavController().navigateSafe(
                     R.id.action_preview_to_success,
                     bundleOf(SuccessViewModel.ARG_VIDEO_PATH to event.file.absolutePath),
                 )
@@ -182,6 +184,19 @@ class PreviewFragment : Fragment() {
         )
     }
 
+    /** Nút thử lại: hỏi trước "Leave Video?" (Figma 4045:35), Try Again = bỏ video và quay lại. */
+    private fun askRetake() {
+        if (viewModel.state.value.isSaving) return
+        ConfirmDialogFragment.show(
+            host = this,
+            requestKey = REQUEST_RETAKE,
+            title = R.string.preview_retake_title,
+            message = R.string.preview_retake_message,
+            negative = R.string.cancel,
+            positive = R.string.preview_retake_confirm,
+        )
+    }
+
     /** Bỏ video vừa quay, về Camera quay lại (cùng filter, cùng nhạc). */
     private fun retake() {
         if (viewModel.state.value.isSaving) return
@@ -203,6 +218,7 @@ class PreviewFragment : Fragment() {
     private companion object {
         const val REQUEST_LEAVE_BACK = "preview_leave_back"
         const val REQUEST_LEAVE_HOME = "preview_leave_home"
+        const val REQUEST_RETAKE = "preview_retake"
         const val DISABLED_ALPHA = 0.5f
     }
 }

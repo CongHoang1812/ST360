@@ -151,6 +151,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTrending"
+                android:splitMotionEvents="false"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/home_rv_trending_margin_top"

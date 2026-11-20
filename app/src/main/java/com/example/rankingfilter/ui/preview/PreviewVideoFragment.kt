@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.preview
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -73,12 +74,12 @@ class PreviewVideoFragment : Fragment() {
             if (id != null) {
                 // Video gắn với một filter có sẵn: lưu lựa chọn rồi mở thẳng Camera.
                 SelectedFilterStore(requireContext()).save(id, isUserFilter = false)
-                findNavController().navigate(
+                findNavController().navigateSafe(
                     R.id.action_preview_to_camera,
                     bundleOf(ARG_FILTER_ID to id, ChooseFilterFragment.ARG_IS_USER_FILTER to false),
                 )
             } else {
-                findNavController().navigate(R.id.action_preview_to_chooseFilter)
+                findNavController().navigateSafe(R.id.action_preview_to_chooseFilter)
             }
         }
     }
@@ -115,7 +116,21 @@ class PreviewVideoFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        releasePlayer()
+        // Rời màn (Back / vuốt sang trang khác): chỉ dừng, giữ khung hình cuối cho animation chuyển màn,
+        // release ở onDestroyView (sau animation). release() chặn luồng chính tới vài trăm ms, mà pager giữ
+        // 2–3 player cùng lúc → nếu release ở đây thì animation Back về Home bị giật và đen màn.
+        // Xuống nền thì release ngay để trả decoder.
+        if (isLeaving()) player?.playWhenReady = false else releasePlayer()
+    }
+
+    /** Fragment này (hoặc PreviewPagerFragment chứa nó) đang bị gỡ khỏi màn hình. */
+    private fun isLeaving(): Boolean {
+        var f: Fragment? = this
+        while (f != null) {
+            if (f.isRemoving) return true
+            f = f.parentFragment
+        }
+        return false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -134,6 +149,7 @@ class PreviewVideoFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        releasePlayer()
         super.onDestroyView()
         _binding = null
     }

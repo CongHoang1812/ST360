@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.rankingfilter.data.trending.TrendingVideo
@@ -71,6 +73,20 @@ class PreviewPagerFragment : Fragment() {
             val start = args.getInt(ARG_START_INDEX, 0).coerceIn(0, pages.lastIndex)
             binding.pager.setCurrentItem(start, false)
         }
+        // Tablet: nhảy tới trang N xong thì khung pager còn đổi chiều cao (thanh điều hướng / taskbar ẩn hiện),
+        // RecyclerView giữ độ lệch cũ theo pixel → lộ mép video trên/dưới. Đổi kích thước là căn lại cho khít trang.
+        binding.pager.addOnLayoutChangeListener { v, _, top, _, bottom, _, oldTop, _, oldBottom ->
+            if (bottom - top != oldBottom - oldTop) v.post(::snapToCurrentPage)
+        }
+        binding.pager.post(::snapToCurrentPage)
+    }
+
+    /** Đưa trang hiện tại về khít mép trên (bỏ qua khi người dùng đang vuốt). */
+    private fun snapToCurrentPage() {
+        val pager = _binding?.pager ?: return
+        if (pager.scrollState != ViewPager2.SCROLL_STATE_IDLE) return
+        val recycler = pager.getChildAt(0) as? RecyclerView ?: return
+        (recycler.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(pager.currentItem, 0)
     }
 
     override fun onDestroyView() {

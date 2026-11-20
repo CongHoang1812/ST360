@@ -26,6 +26,8 @@ data class MusicRow(
     val selected: Boolean,
     /** Đang nghe thử bài này (kể cả đang tải). */
     val playing: Boolean,
+    /** Thời gian đã phát của bài đang nạp vào trình phát (đang phát hoặc tạm dừng); null = hiện thời lượng. */
+    val positionMs: Long? = null,
 )
 
 data class AddSoundUi(
@@ -53,6 +55,8 @@ class AddSoundViewModel(
         savedState.get<Int>(KEY_SELECTED) ?: savedState.get<Int>(ARG_SELECTED)?.takeIf { it > 0 }
     )
     private val playingId = MutableStateFlow<Int?>(null)
+    /** Bài đang nạp vào trình phát và vị trí đã phát (ms). */
+    private var progress: Pair<Int, Long>? = null
     private val durations = MutableStateFlow(
         tracks.mapNotNull { t -> MusicRepository.knownDuration(t.id)?.let { t.id to it } }.toMap()
     )
@@ -89,6 +93,14 @@ class AddSoundViewModel(
     fun setPlaying(id: Int?) {
         if (playingId.value == id) return
         playingId.value = id
+        publish()
+    }
+
+    /** Fragment báo vị trí phát của bài [id] (null = không có bài nào trong trình phát). Đổi theo giây mới vẽ lại. */
+    fun setProgress(id: Int?, positionMs: Long) {
+        val next = id?.let { it to positionMs / 1000 * 1000 }
+        if (progress == next) return
+        progress = next
         publish()
     }
 
@@ -135,9 +147,13 @@ class AddSoundViewModel(
         val selected = selectedId.value
         val playing = playingId.value
         val known = durations.value
+        val current = progress
         _state.value = AddSoundUi(
             rows = tracks.map { t ->
-                MusicRow(t, known[t.id], selected = t.id == selected, playing = t.id == playing)
+                MusicRow(
+                    t, known[t.id], selected = t.id == selected, playing = t.id == playing,
+                    positionMs = current?.takeIf { it.first == t.id }?.second,
+                )
             },
             selectedId = selected,
             isDownloading = downloading.value,

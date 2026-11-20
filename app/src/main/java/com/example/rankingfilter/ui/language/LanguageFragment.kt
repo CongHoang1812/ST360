@@ -1,5 +1,6 @@
 package com.example.rankingfilter.ui.language
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -101,7 +102,7 @@ class LanguageFragment : Fragment() {
         val nav = findNavController()
         // Đi tiếp trước rồi mới đổi ngôn ngữ: setApplicationLocales tạo lại Activity,
         // back stack của Navigation được khôi phục theo màn đích.
-        if (fromSettings) nav.navigateUp() else nav.navigate(R.id.action_language_to_intro)
+        if (fromSettings) nav.navigateUp() else nav.navigateSafe(R.id.action_language_to_intro)
         val wanted = LocaleListCompat.forLanguageTags(tag)
         if (AppCompatDelegate.getApplicationLocales().toLanguageTags() != wanted.toLanguageTags()) {
             AppCompatDelegate.setApplicationLocales(wanted)

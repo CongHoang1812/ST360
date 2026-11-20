@@ -84,6 +84,7 @@
         <!-- Lưới 2 cột: bắt đầu ở y=165 (dưới tab 20dp); khi ẩn tab (New filter) bắt đầu ở y=108 -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFilters"
+            android:splitMotionEvents="false"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/choose_filter_rv_filters_margin_top"

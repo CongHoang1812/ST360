@@ -22,16 +22,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Tâm tab Home ở x=96/360, tab Gallery ở x=264/360 -->
+        <!-- Mỗi tab phủ kín một nửa thanh (vùng chạm rộng); nút camera đè lên giữa nên chạm giữa vẫn là camera.
+             Nội dung lệch vào trong `bottom_nav_tab_content_offset` để tâm icon ở x=96/360 và x=264/360 như Figma. -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/navCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="206dp" />
+
         <LinearLayout
             android:id="@+id/tabHome"
-            android:layout_width="@dimen/bottom_nav_tab_home_width"
+            android:layout_width="0dp"
             android:layout_height="@dimen/bottom_nav_tab_home_height"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2083"
+            android:paddingStart="@dimen/bottom_nav_tab_content_offset"
+            app:layout_constraintEnd_toStartOf="@id/navCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -55,14 +65,16 @@
 
         <LinearLayout
             android:id="@+id/tabGallery"
-            android:layout_width="@dimen/bottom_nav_tab_gallery_width"
+            android:layout_width="0dp"
             android:layout_height="@dimen/bottom_nav_tab_gallery_height"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
+            android:paddingEnd="@dimen/bottom_nav_tab_content_offset"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.7917"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/navCenter"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView

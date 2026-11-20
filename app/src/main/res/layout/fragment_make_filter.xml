@@ -131,13 +131,14 @@
                             android:paddingVertical="@dimen/space_xs"
                             android:textColor="@color/white"
                             android:textSize="@dimen/make_filter_tv_photos_hint_text_size"
-                            tools:backgroundTint="#8000AAFF"
-                            tools:text="Need 12 photos" />
+                            android:backgroundTint="@color/primary_50"
+                            tools:text="Minimum 10 photos" />
                     </LinearLayout>
 
                     <!-- Lưới 3 cột, ô vuông 100dp, cách nhau 6dp -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvPhotos"
+                        android:splitMotionEvents="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_s"

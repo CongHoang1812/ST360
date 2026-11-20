@@ -22,19 +22,21 @@
     <string name="make_filter_name_label">फ़िल्टर का नाम</string>
     <string name="make_filter_name_hint">फ़िल्टर का नाम लिखें</string>
     <string name="make_filter_photos_count">फ़ोटो %1$d/%2$d</string>
-    <string name="make_filter_need_photos">%1$d फ़ोटो चाहिए</string>
+    <string name="make_filter_need_photos">कम से कम %1$d फ़ोटो</string>
     <string name="make_filter_add">जोड़ें</string>
     <string name="make_filter_add_photos">फ़ोटो जोड़ें</string>
     <string name="make_filter_cover_label">कवर फ़ोटो</string>
     <string name="make_filter_cover_hint">छोड़ दें और अपनी पहली फ़ोटो को कवर बनाएँ।</string>
     <string name="make_filter_choose_photos">फ़ोटो चुनें</string>
     <string name="make_filter_save">फ़िल्टर सहेजें</string>
-    <string name="make_filter_saved">फ़िल्टर सहेजा गया</string>
+    <string name="make_filter_updated">फ़िल्टर सफलतापूर्वक अपडेट हुआ</string>
+    <string name="filter_deleted">फ़िल्टर सफलतापूर्वक हटाया गया</string>
+    <string name="filter_success_message">आपका रैंकिंग फ़िल्टर खेलने के लिए तैयार है।</string>
     <string name="make_filter_save_error">फ़िल्टर सहेजा नहीं जा सका। कृपया फिर कोशिश करें।</string>
     <string name="make_filter_load_error">यह फ़िल्टर खोला नहीं जा सका।</string>
     <plurals name="make_filter_too_many">
-        <item quantity="one">सिर्फ़ %1$d और फ़ोटो जोड़ी गई (एक फ़िल्टर में %2$d फ़ोटो होती हैं)।</item>
-        <item quantity="other">सिर्फ़ %1$d और फ़ोटो जोड़ी गईं (एक फ़िल्टर में %2$d फ़ोटो होती हैं)।</item>
+        <item quantity="one">सिर्फ़ %1$d और फ़ोटो जोड़ी गई (एक फ़िल्टर में ज़्यादा से ज़्यादा %2$d फ़ोटो हो सकती हैं)।</item>
+        <item quantity="other">सिर्फ़ %1$d और फ़ोटो जोड़ी गईं (एक फ़िल्टर में ज़्यादा से ज़्यादा %2$d फ़ोटो हो सकती हैं)।</item>
     </plurals>
     <string name="add_photo_title">फ़ोटो जोड़ें</string>
     <string name="add_photo_take">फ़ोटो खींचें</string>
@@ -123,12 +125,12 @@
     <string name="cd_choose_filter">फ़िल्टर चुनें</string>
     <string name="cd_rank_slot">रैंक %1$d</string>
     <string name="cd_stop">रोकें</string>
-    <string name="cd_restart">फिर से शुरू करें</string>
     <string name="cd_play_music">%1$s चलाएँ</string>
     <string name="cd_pause_music">%1$s रोकें</string>
     <string name="cd_confirm_music">यह साउंड इस्तेमाल करें</string>
     <string name="cd_retake">फिर से रिकॉर्ड करें</string>
     <string name="cd_home">होम</string>
+    <string name="cd_remove_music">संगीत हटाएँ</string>
     <string name="cd_video_preview">वीडियो प्रीव्यू</string>
     <string name="cd_video_thumbnail">सहेजा गया वीडियो</string>
     <string name="cd_share_more">और ऐप</string>
@@ -137,18 +139,11 @@
 
     <string name="title_permission">अनुमतियाँ</string>
     <string name="language_title">भाषा</string>
-    <string name="lang_english">अंग्रेज़ी</string>
-    <string name="lang_spanish">स्पेनिश</string>
-    <string name="lang_french">फ़्रेंच</string>
-    <string name="lang_hindi">हिन्दी</string>
-    <string name="lang_portuguese">पुर्तगाली</string>
-    <string name="lang_indonesian">इंडोनेशियाई</string>
     <string name="cd_confirm_language">भाषा की पुष्टि करें</string>
-    <string name="intro_1">उन्हें #1 से #12 तक रैंक करने के लिए टैप करें।</string>
+    <string name="intro_1">खींचें, छोड़ें और उन्हें #1 से #10 तक रैंक करें।</string>
     <string name="intro_2">अपना खुद का रैंकिंग फ़िल्टर बनाएँ।</string>
     <string name="intro_3">अपना वीडियो बनाएँ और शेयर करें।</string>
     <string name="intro_next">आगे</string>
-    <string name="intro_skip">छोड़ें</string>
     <string name="permission_desc">मज़ेदार रैंकिंग वीडियो बनाने और शेयर करने के लिए कैमरा और माइक्रोफ़ोन की अनुमति दें।</string>
     <string name="permission_camera">कैमरा</string>
     <string name="permission_storage">स्टोरेज</string>
@@ -169,4 +164,8 @@
     <string name="rate_button">रेट करें</string>
     <string name="rate_exit">बाहर निकलें</string>
     <string name="rate_thanks">आपकी राय के लिए धन्यवाद!</string>
+    <!-- Preview: nút thử lại (Figma 4045:35) -->
+    <string name="preview_retake_title">वीडियो छोड़ें?</string>
+    <string name="preview_retake_message">आपका वीडियो सेव नहीं होगा। क्या आप फिर से कोशिश करना चाहते हैं?</string>
+    <string name="preview_retake_confirm">फिर कोशिश करें</string>
 </resources>

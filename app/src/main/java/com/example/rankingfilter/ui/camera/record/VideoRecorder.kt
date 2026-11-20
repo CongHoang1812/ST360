@@ -89,9 +89,6 @@ class VideoRecorder(context: Context) {
 
     private var session: Session? = null
 
-    /** Đang có bản ghi (kể cả đang chờ đóng file). */
-    val isBusy: Boolean get() = session != null
-
     /**
      * Bắt đầu quay vào [output]. [durationLimitMs] = null là không giới hạn (chế độ Free).
      * Trả về null nếu bắt đầu được; nếu không, trả về lý do và KHÔNG gọi callback nào.

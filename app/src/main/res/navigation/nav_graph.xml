@@ -14,17 +14,29 @@
             android:id="@+id/action_splash_to_home"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
         <action
             android:id="@+id/action_splash_to_intro"
             app:destination="@id/introFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
         <action
             android:id="@+id/action_splash_to_language"
             app:destination="@id/languageFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
     </fragment>
 
     <fragment
@@ -40,7 +52,11 @@
             android:id="@+id/action_language_to_intro"
             app:destination="@id/introFragment"
             app:popUpTo="@id/languageFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
     </fragment>
 
     <fragment
@@ -51,12 +67,20 @@
             android:id="@+id/action_intro_to_permission"
             app:destination="@id/permissionFragment"
             app:popUpTo="@id/introFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
         <action
             android:id="@+id/action_intro_to_home"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/introFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
     </fragment>
 
     <fragment
@@ -68,7 +92,11 @@
             android:id="@+id/action_permission_to_home"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/permissionFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
     </fragment>
 
     <!-- Giai đoạn 2 -->
@@ -79,19 +107,39 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_newFilter"
-            app:destination="@id/newFilterFragment" />
+            app:destination="@id/newFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_home_to_chooseFilter"
-            app:destination="@id/chooseFilterFragment" />
+            app:destination="@id/chooseFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_home_to_gallery"
-            app:destination="@id/galleryFragment" />
+            app:destination="@id/galleryFragment"
+            app:enterAnim="@animator/nav_fade_in"
+            app:exitAnim="@animator/nav_fade_out"
+            app:popEnterAnim="@animator/nav_fade_in"
+            app:popExitAnim="@animator/nav_fade_out" />
         <action
             android:id="@+id/action_home_to_setting"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_home_to_preview"
-            app:destination="@id/previewVideoFragment" />
+            app:destination="@id/previewVideoFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter_solid"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <fragment
@@ -119,10 +167,18 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_preview_to_chooseFilter"
-            app:destination="@id/chooseFilterFragment" />
+            app:destination="@id/chooseFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_preview_to_camera"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 3: Choose a Filter (mode ALL) -->
@@ -135,12 +191,25 @@
             android:name="mode"
             android:defaultValue="ALL"
             app:argType="string" />
+        <!-- true = mở từ nút chọn filter của Camera: chọn xong trả filter về Camera đó (không mở Camera mới) -->
+        <argument
+            android:name="pick_for_camera"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_chooseFilter_to_camera"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_chooseFilter_to_makeFilter"
-            app:destination="@id/makeFilterFragment" />
+            app:destination="@id/makeFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 3: New filter (node 25:532), cùng Fragment với mode NEW_PACK.
@@ -154,12 +223,24 @@
             android:name="mode"
             android:defaultValue="NEW_PACK"
             app:argType="string" />
+        <argument
+            android:name="pick_for_camera"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_chooseFilter_to_camera"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_chooseFilter_to_makeFilter"
-            app:destination="@id/makeFilterFragment" />
+            app:destination="@id/makeFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 4: Make a Filter / Edit filter (filter_id khác null = sửa filter tự tạo) -->
@@ -173,6 +254,37 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <!-- Tạo filter mới xong → Successful (57:137); gỡ Make a Filter khỏi back stack -->
+        <action
+            android:id="@+id/action_makeFilter_to_filterSuccess"
+            app:destination="@id/filterSuccessFragment"
+            app:popUpTo="@id/makeFilterFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
+    </fragment>
+
+    <!-- Successful sau khi tạo filter (Figma 57:137) -->
+    <fragment
+        android:id="@+id/filterSuccessFragment"
+        android:name="com.example.rankingfilter.ui.makefilter.FilterSuccessFragment"
+        android:label="@string/title_success"
+        tools:layout="@layout/fragment_filter_success">
+        <argument
+            android:name="filter_id"
+            app:argType="string" />
+        <!-- Try now: Back từ Camera về màn danh sách filter (bỏ Successful) -->
+        <action
+            android:id="@+id/action_filterSuccess_to_camera"
+            app:destination="@id/cameraFragment"
+            app:popUpTo="@id/filterSuccessFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Màn tạm, làm ở các giai đoạn sau -->
@@ -193,10 +305,34 @@
         <!-- Quay xong thì sang màn Preview (giai đoạn 6) -->
         <action
             android:id="@+id/action_camera_to_preview"
-            app:destination="@id/resultPreviewFragment" />
+            app:destination="@id/resultPreviewFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
+        <!-- Nút chọn filter: mở màn chọn filter (pick_for_camera = true) chồng lên Camera. Back = về Camera giữ filter cũ;
+             chọn filter = về lại chính Camera này và đổi filter (ChooseFilterFragment.RESULT_FILTER_ID). -->
+        <action
+            android:id="@+id/action_camera_to_chooseFilter"
+            app:destination="@id/chooseFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
+        <action
+            android:id="@+id/action_camera_to_newFilter"
+            app:destination="@id/newFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_camera_to_addSound"
-            app:destination="@id/addSoundFragment" />
+            app:destination="@id/addSoundFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 6: Preview video vừa quay (Figma 8:334) -->
@@ -218,7 +354,11 @@
         <action
             android:id="@+id/action_preview_to_success"
             app:destination="@id/successFragment"
-            app:popUpTo="@id/homeFragment" />
+            app:popUpTo="@id/homeFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 6: Successful (Figma 14:451) -->
@@ -230,11 +370,16 @@
         <argument
             android:name="video_path"
             app:argType="string" />
-        <!-- Try More Filters: quay tiếp với filter khác; Back từ Camera về Home -->
+        <!-- Try More Filters: quay tiếp với filter khác; popUpTo Home gỡ Successful khỏi back stack
+             nên Back từ Camera về Home (back stack: Home → Camera). -->
         <action
             android:id="@+id/action_success_to_camera"
             app:destination="@id/cameraFragment"
-            app:popUpTo="@id/homeFragment" />
+            app:popUpTo="@id/homeFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 6: Add Sound (Figma 14:620 / 22:738), mở từ pill trên Camera -->
@@ -257,19 +402,39 @@
         tools:layout="@layout/fragment_gallery">
         <action
             android:id="@+id/action_gallery_to_viewer"
-            app:destination="@id/videoViewerFragment" />
+            app:destination="@id/videoViewerFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_gallery_to_chooseFilter"
-            app:destination="@id/chooseFilterFragment" />
+            app:destination="@id/chooseFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_gallery_to_camera"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_gallery_to_makeFilter"
-            app:destination="@id/makeFilterFragment" />
+            app:destination="@id/makeFilterFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
         <action
             android:id="@+id/action_gallery_to_setting"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
     <!-- Giai đoạn 7: xem một video đã lưu (Figma 8:278 / 21:368) -->
@@ -291,7 +456,11 @@
         tools:layout="@layout/fragment_setting">
         <action
             android:id="@+id/action_setting_to_language"
-            app:destination="@id/languageFragment" />
+            app:destination="@id/languageFragment"
+            app:enterAnim="@animator/nav_enter"
+            app:exitAnim="@animator/nav_exit"
+            app:popEnterAnim="@animator/nav_pop_enter"
+            app:popExitAnim="@animator/nav_pop_exit" />
     </fragment>
 
 </navigation>

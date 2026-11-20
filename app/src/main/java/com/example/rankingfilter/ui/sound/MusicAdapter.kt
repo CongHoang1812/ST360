@@ -30,7 +30,10 @@ class MusicAdapter(
         fun bind(row: MusicRow) = with(binding) {
             val context = root.context
             tvTitle.text = row.track.title
-            tvDuration.text = row.durationMs?.let(::formatDuration) ?: context.getString(R.string.add_sound_duration_unknown)
+            // Bài đang nghe thử: thời gian đã phát đếm từ 00:00; bài khác: tổng thời lượng.
+            tvDuration.text = row.positionMs?.let(::formatElapsed)
+                ?: row.durationMs?.let(::formatDuration)
+                ?: context.getString(R.string.add_sound_duration_unknown)
             if (row.durationMs == null) onNeedDuration(row.track.id)
 
             root.setBackgroundColor(
@@ -52,6 +55,12 @@ class MusicAdapter(
     }
 
     companion object {
+        /** Thời gian đã phát, làm tròn xuống (bắt đầu đúng 00:00): 33900 → "00:33". */
+        fun formatElapsed(ms: Long): String {
+            val totalSeconds = ms.coerceAtLeast(0) / 1000
+            return String.format(Locale.US, "%02d:%02d", totalSeconds / 60, totalSeconds % 60)
+        }
+
         /** 33000 → "00:33". */
         fun formatDuration(ms: Long): String {
             val totalSeconds = (ms + 500) / 1000

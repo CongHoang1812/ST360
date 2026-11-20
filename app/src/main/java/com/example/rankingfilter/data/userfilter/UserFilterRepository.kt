@@ -23,8 +23,6 @@ class UserFilterRepository(context: Context) {
 
     fun observeAll(): Flow<List<UserFilterWithPhotos>> = dao.observeAll()
 
-    fun observeById(id: String): Flow<UserFilterWithPhotos?> = dao.observeById(id)
-
     suspend fun getById(id: String): UserFilterWithPhotos? = dao.getById(id)
 
     /**

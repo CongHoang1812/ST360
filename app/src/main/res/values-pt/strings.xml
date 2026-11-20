@@ -22,20 +22,22 @@
     <string name="make_filter_name_label">Nome do filtro</string>
     <string name="make_filter_name_hint">Digite o nome do filtro</string>
     <string name="make_filter_photos_count">Fotos %1$d/%2$d</string>
-    <string name="make_filter_need_photos">Faltam %1$d fotos</string>
+    <string name="make_filter_need_photos">Mínimo de %1$d fotos</string>
     <string name="make_filter_add">Adicionar</string>
     <string name="make_filter_add_photos">Adicionar fotos</string>
     <string name="make_filter_cover_label">Foto de capa</string>
     <string name="make_filter_cover_hint">Pule esta etapa e use sua primeira foto como capa.</string>
     <string name="make_filter_choose_photos">Escolher fotos</string>
     <string name="make_filter_save">Salvar filtro</string>
-    <string name="make_filter_saved">Filtro salvo</string>
+    <string name="make_filter_updated">Filtro atualizado com sucesso</string>
+    <string name="filter_deleted">Filtro excluído com sucesso</string>
+    <string name="filter_success_message">Seu filtro de ranking está pronto para jogar.</string>
     <string name="make_filter_save_error">Não foi possível salvar o filtro. Tente novamente.</string>
     <string name="make_filter_load_error">Não foi possível abrir este filtro.</string>
     <plurals name="make_filter_too_many">
-        <item quantity="one">Somente mais %1$d foto foi adicionada (um filtro tem %2$d fotos).</item>
-        <item quantity="many">Somente mais %1$d fotos foram adicionadas (um filtro tem %2$d fotos).</item>
-        <item quantity="other">Somente mais %1$d fotos foram adicionadas (um filtro tem %2$d fotos).</item>
+        <item quantity="one">Somente mais %1$d foto foi adicionada (um filtro pode ter até %2$d fotos).</item>
+        <item quantity="many">Somente mais %1$d fotos foram adicionadas (um filtro pode ter até %2$d fotos).</item>
+        <item quantity="other">Somente mais %1$d fotos foram adicionadas (um filtro pode ter até %2$d fotos).</item>
     </plurals>
     <string name="add_photo_title">Adicionar foto</string>
     <string name="add_photo_take">Tirar uma foto</string>
@@ -124,12 +126,12 @@
     <string name="cd_choose_filter">Escolher um filtro</string>
     <string name="cd_rank_slot">Posição %1$d</string>
     <string name="cd_stop">Parar</string>
-    <string name="cd_restart">Recomeçar</string>
     <string name="cd_play_music">Reproduzir %1$s</string>
     <string name="cd_pause_music">Pausar %1$s</string>
     <string name="cd_confirm_music">Usar este som</string>
     <string name="cd_retake">Gravar novamente</string>
     <string name="cd_home">Início</string>
+    <string name="cd_remove_music">Remover música</string>
     <string name="cd_video_preview">Pré-visualização do vídeo</string>
     <string name="cd_video_thumbnail">Vídeo salvo</string>
     <string name="cd_share_more">Mais apps</string>
@@ -138,18 +140,11 @@
 
     <string name="title_permission">Permissões</string>
     <string name="language_title">Idioma</string>
-    <string name="lang_english">Inglês</string>
-    <string name="lang_spanish">Espanhol</string>
-    <string name="lang_french">Francês</string>
-    <string name="lang_hindi">Hindi</string>
-    <string name="lang_portuguese">Português</string>
-    <string name="lang_indonesian">Indonésio</string>
     <string name="cd_confirm_language">Confirmar idioma</string>
-    <string name="intro_1">Toque para classificá-los do nº 1 ao nº 12.</string>
+    <string name="intro_1">Arraste, solte e classifique-os do nº 1 ao nº 10.</string>
     <string name="intro_2">Crie seu próprio filtro de ranking.</string>
     <string name="intro_3">Crie e compartilhe seu vídeo.</string>
     <string name="intro_next">Avançar</string>
-    <string name="intro_skip">Pular</string>
     <string name="permission_desc">Permita o acesso à câmera e ao microfone para criar e compartilhar vídeos de ranking divertidos.</string>
     <string name="permission_camera">Câmera</string>
     <string name="permission_storage">Armazenamento</string>
@@ -170,4 +165,8 @@
     <string name="rate_button">Avaliar</string>
     <string name="rate_exit">Sair</string>
     <string name="rate_thanks">Obrigado pelo seu feedback!</string>
+    <!-- Preview: nút thử lại (Figma 4045:35) -->
+    <string name="preview_retake_title">Sair do vídeo?</string>
+    <string name="preview_retake_message">Seu vídeo não será salvo. Quer tentar de novo?</string>
+    <string name="preview_retake_confirm">Tentar de novo</string>
 </resources>

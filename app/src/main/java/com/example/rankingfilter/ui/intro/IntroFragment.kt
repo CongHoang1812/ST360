@@ -1,10 +1,10 @@
 package com.example.rankingfilter.ui.intro
 
+import com.example.rankingfilter.ui.common.navigateSafe
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +14,7 @@ import com.example.rankingfilter.data.AppPrefs
 import com.example.rankingfilter.databinding.FragmentIntroBinding
 import com.example.rankingfilter.databinding.ItemIntroPageBinding
 
-/** Giới thiệu 3 trang (Figma 3:4, 3:5, 3:6): ảnh minh họa, câu mô tả, 3 chấm, Next và Skip. */
+/** Giới thiệu 3 trang (Figma 3:4, 3:5, 3:6): ảnh minh họa, câu mô tả, 3 chấm và Next. */
 class IntroFragment : Fragment() {
 
     private var _binding: FragmentIntroBinding? = null
@@ -46,7 +46,6 @@ class IntroFragment : Fragment() {
             val next = binding.pager.currentItem + 1
             if (next < pages.size) binding.pager.setCurrentItem(next, true) else finish()
         }
-        binding.btnSkip.setOnClickListener { finish() }
     }
 
     override fun onDestroyView() {
@@ -72,13 +71,12 @@ class IntroFragment : Fragment() {
 
     private fun renderPage(position: Int) {
         dots.forEachIndexed { i, dot -> dot.isSelected = i == position }
-        binding.btnSkip.isVisible = position < pages.lastIndex
     }
 
     private fun finish() {
         val firstTime = !AppPrefs.isIntroSeen(requireContext())
         AppPrefs.setIntroSeen(requireContext())
-        findNavController().navigate(if (firstTime) R.id.action_intro_to_permission else R.id.action_intro_to_home)
+        findNavController().navigateSafe(if (firstTime) R.id.action_intro_to_permission else R.id.action_intro_to_home)
     }
 
     private class IntroPage(val imageRes: Int, val textRes: Int)

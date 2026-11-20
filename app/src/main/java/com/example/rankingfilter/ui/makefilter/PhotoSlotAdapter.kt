@@ -13,7 +13,7 @@ import com.example.rankingfilter.R
 import com.example.rankingfilter.data.FilterDto
 import com.example.rankingfilter.databinding.ItemPhotoSlotBinding
 
-/** Một ô trong lưới 12 ô của Make a Filter. [index] là vị trí 0..11. */
+/** Một ô trong lưới Make a Filter (10–12 ô). [index] là vị trí 0..11. */
 sealed interface PhotoSlot {
     val index: Int
 
@@ -22,11 +22,14 @@ sealed interface PhotoSlot {
     data class Empty(override val index: Int) : PhotoSlot
 
     companion object {
-        /** Ảnh đã chọn, rồi ô "Add" (nếu chưa đủ), rồi các ô trống có số: luôn đủ 12 ô. */
+        /**
+         * Ảnh đã chọn, rồi ô "Add" (nếu chưa đủ 12), rồi các ô mờ có số cho tới ô thứ 10 (Figma 57:247 / 28:1638 /
+         * 29:1796 / 29:1884): 0 ảnh = Add + ô 2..10; 10 ảnh = 10 ảnh + Add; 12 ảnh = 12 ảnh, không còn Add.
+         */
         fun build(photos: List<Uri>, selected: Int?): List<PhotoSlot> = buildList {
             photos.forEachIndexed { i, uri -> add(Photo(i, uri, selected == i)) }
             if (photos.size < FilterDto.PHOTO_COUNT) add(Add(photos.size))
-            for (i in size until FilterDto.PHOTO_COUNT) add(Empty(i))
+            for (i in size until FilterDto.MIN_PHOTO_COUNT) add(Empty(i))
         }
     }
 }
